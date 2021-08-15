@@ -224,7 +224,6 @@ func NewJdCookie(ck *JdCookie) error {
 	date := Date()
 	ck.CreateAt = date
 	tx := db.Begin()
-	ck.Priority = Config.DefaultPriority
 	if err := tx.Create(ck).Error; err != nil {
 		tx.Rollback()
 		return err
