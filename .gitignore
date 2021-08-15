@@ -16,3 +16,4 @@ session.token
 device.json
 data/
 logs/
+conf/*
