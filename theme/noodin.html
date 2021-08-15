@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>吃面啦</title>
+</head>
+
+<body style="height:100vh;width:100%;background-attachment:fixed;background-size: cover;-webkit-background-size: cover;-o-background-size: cover;background-image:url(https://s3.bmp.ovh/imgs/2021/08/888f802bdb4029a5.jpeg);background-repeat: no-repeat;background-position: center 0;">
+    <div style="padding-top:10%;text-align:center;">
+        <p>
+            <img id="hd" src="" width="100">
+            <p style="position: relative;top: 10px; left: 0px;font-size:2vh;color:#fff;">
+                <b></b> <br>
+            </p>
+            <div><img id="qrcode" height="170em" class="middle" src="./ok.svg" /></div>
+            <p style="font-size:2vh;color:#fff;">
+                <b>扫码登陆</b> <br>
+            </p>
+            <p>
+                <a style="position: relative;top: 20px; left: 0px;border-radius:8px;padding:6px 20px;font-size:2vh;color:#fff;border-style:solid;text-decoration:none;" id="jumpapp" href="#">京东APP登陆</a>
+                <br>
+            </p>
+            <p style="position: relative;top: 20vh; left: 0px;text-align: center;font-size:2vh;color:#fff;">TG交流:
+                <a style="text-decoration:none;color:#fff;" href="https://t.me/cdles">✈️&nbsp;&nbsp;好好学习&nbsp;✈️</a>
+                <br>
+                <a style="font-size:1.5vh;text-decoration:none;color:#fff;">扫码程序:
+        <script>document.write(returnCitySN["cname"])</script>
+        ©
+        <a style="font-size:1.5vh;text-decoration:none;color:#fff;" href="https://github.com/cdle">Cdle作者</a>
+                <a style="font-size:1.5vh;color:#fff;">&nbsp;网页源码:
+        <script>document.write(returnCitySN["cname"])</script>
+        ©
+        <a style="font-size:1.5vh;text-decoration:none;color:#fff;">不知道</a>
+                <a style="font-size:1.5vh;color:#fff;">&nbsp;最终修改:
+        <script>document.write(returnCitySN["cname"])</script>
+        ©
+        <a style="font-size:1.5vh;text-decoration:none;color:#fff;">Eylin</a>
+                <br>
+                <a style="font-size:1vh;font-size:1vh;color:#fff;">程序版本 v1.0.1</a>
+            </p>
+            <script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="https://cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    </div>
+</body>
+<script>
+    var timer;
+    var qrcode = document.getElementById("qrcode")
+    var loginUrl = ""
+    var success = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/xdd/main/static/ok.svg";
+    var jumpapp = document.getElementById('jumpapp')
+    var hd = document.getElementById("hd")
+
+    function showQrcode() {
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                data = JSON.parse(xmlhttp.responseText)
+                if (data.url && data.url.indexOf("http") != -1) {
+                    qrcode.src = "data:image/png;base64," + data.img
+                    loginUrl = data.url
+                } else {
+                    showQrcode()
+                }
+            }
+        }
+        xmlhttp.open("GET", "/api/login/qrcode", true);
+        xmlhttp.send();
+    }
+    showQrcode()
+
+    function login() {
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var results = xmlhttp.responseText
+                console.log(results)
+                switch (results) {
+                    case "授权登录未确认":
+                        break;
+                    case "登录":
+                        hd.style.visibility = "hidden";
+                        qrcode.src = success
+                        clearInterval(timer)
+                        setTimeout(() => {
+                            window.location.href = "/admin"
+                        }, 1000);
+                        break;
+                    case "成功":
+                        hd.style.visibility = "hidden";
+                        qrcode.src = success
+                        clearInterval(timer)
+                        break;
+                    default:
+                        showQrcode()
+                        break;
+                }
+            }
+        }
+        xmlhttp.open("GET", "/api/login/query", true);
+        xmlhttp.send();
+    }
+
+    function polling() {
+        timer = setInterval(() => {
+            login()
+        }, 1500);
+    }
+    polling()
+
+    jumpapp.addEventListener('click', function() {
+        if (loginUrl) {
+            window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
+                JSON.stringify({
+                    category: 'jump',
+                    des: 'ThirdPartyLogin',
+                    action: 'to',
+                    onekeylogin: 'return',
+                    url: loginUrl,
+                    authlogin_returnurl: 'weixin://',
+                    browserlogin_fromurl: window.location.host,
+                })
+            )}`;
+        } else {
+            alert('还没加载好，请稍后重试');
+        }
+    })
+</script>
+
+</html>

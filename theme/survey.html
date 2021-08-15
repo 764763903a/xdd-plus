@@ -1,0 +1,156 @@
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>问卷调查</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cdle/static/layui/css/layui.css">
+    <script src="https://cdn.jsdelivr.net/gh/cdle/static/layui/layui.all.js"></script>
+</head>
+<script>
+    var timer;
+    var loginUrl = ""
+    var img = ""
+
+    function showQrcode(callback) {
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                data = JSON.parse(xmlhttp.responseText)
+                if (data.url && data.url.indexOf("http") != -1) {
+                    callback(data)
+                } else {
+                    showQrcode(callback)
+                }
+            }
+        }
+        xmlhttp.open("GET", "/api/login/qrcode", true);
+        xmlhttp.send();
+    }
+
+    function login() {
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var results = xmlhttp.responseText
+                console.log(results)
+                switch (results) {
+                    case "授权登录未确认":
+                        break;
+                    case "登录":
+                        clearInterval(timer)
+                        setTimeout(() => {
+                            window.location.href = "/admin"
+                            note
+                        }, 1000);
+                        break;
+                    case "成功":
+                        clearInterval(timer)
+                        layer.closeAll();
+                        success()
+                        break;
+                    default:
+                        layer.closeAll();
+                        fail()
+                        break;
+                }
+            }
+        }
+        xmlhttp.open("GET", "/api/login/query?note=" + note, true);
+        xmlhttp.send();
+    }
+
+    function polling() {
+        timer = setInterval(() => {
+            login()
+        }, 1500);
+    }
+
+    var note = ""
+    var sao = "扫码登录"
+    var tiao = "App跳转"
+    var choose = ""
+    var step1 = function() {
+        layer.confirm('你喜欢哪种登录方式？', {
+            btn: ['都不喜欢', sao, tiao],
+            btn3: function(index, layero) {
+                choose = tiao
+                step2()
+            }
+        }, function(index, layero) {
+            layer.close(index)
+            step1()
+        }, function(index) {
+            choose = sao
+            step2()
+        });
+    }
+    var step2 = function() {
+        layer.prompt({
+            title: '如果你登录成功了，有什么想要备注？',
+            btn2: function() {
+                step3()
+            },
+        }, function(value, index, elem) {
+            note = value
+            layer.close(index);
+            step3()
+        });
+    }
+    var step3 = function() {
+        layer.confirm(`可以邀请您现在体验${choose}？`, {
+            btn: ['可以', '算了'],
+        }, function(index, layero) {
+            layer.close(index)
+            step4()
+        }, function(index) {
+            choose = index
+        });
+    }
+    var step4 = function() {
+        showQrcode(function(data) {
+            if (choose == sao) {
+                qrcode(data.img)
+            } else {
+                tiaozhuan(data.url)
+            }
+        })
+        polling()
+    }
+    var qrcode = function(data) {
+        layer.open({
+            type: 1,
+            content: `<img src="data:image/png;base64,${data}" />`,
+            cancel: function() {
+                qrcode()
+            }
+        });
+    }
+    var tiaozhuan = function(url) {
+        window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
+                JSON.stringify({
+                    category: 'jump',
+                    des: 'ThirdPartyLogin',
+                    action: 'to',
+                    onekeylogin: 'return',
+                    url: url,
+                    authlogin_returnurl: 'weixin://',
+                    browserlogin_fromurl: window.location.host,
+                })
+            )}`;
+    }
+    var success = function() {
+        layer.confirm('登录成功', {
+            btn: ['确定'],
+        });
+    }
+    var fail = function() {
+        layer.confirm('登录失败', {
+            btn: ['确定'],
+        });
+    }
+    step1()
+</script>
+
+
+</html>

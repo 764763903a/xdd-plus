@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        JD — 任务助手
+    </title>
+    <meta charset="utf-8" />
+    <meta content="webkit" name="renderer" />
+    <meta content="Updates and statistics" name="description" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="IE=Edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="no-siteapp" http-equiv="Cache-Control" />
+    <link href="https://cdn.jsdelivr.net/gh/mt-theme/metron-assets@3.0.2/metron/css/fonts.css?family=Poppins:300,400,500,600,700" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/gh/mt-theme/metron-assets@3.0.2/metron/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/mt-theme/metron-assets@3.0.2/metron/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/mt-theme/metron-assets@3.0.2/metron/css/pages/auth/style-1.css" rel="stylesheet" type="text/css" />
+    <link href="https://i.loli.net/2021/07/29/ID6WEsptP8i1Fhq.gif" rel="shortcut icon" />
+</head>
+
+<body class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading" id="kt_body">
+    <div class="d-flex flex-column flex-root">
+        <div class="login login-1 login-signin-on d-flex flex-row-fluid" id="kt_login">
+            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" id="bd">
+                <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
+                    <div class="login-signin">
+                        <form class="form" id="login_form">
+                            <br>
+                            <br>
+                            <br>
+                            <br><br>
+                            <div>
+                                <img class="middle" height="170em" id="qrcode" src="./ok.svg" />
+                            </div>
+                            <div class="form-group text-center mt-10" style="white-space:nowrap;">
+                                <button class="btn btn-pill btn-outline-white font-weight-bold opacity-90 px-15 py-3" href="#" id="jumpapp" type="button"> 
+                                        <b style="text-shadow: black 0.2em 0.2em  0em"> 
+                                            跳转APP登录 
+                                        </b> 
+                                    </button>
+                            </div>
+                        </form>
+                        <div style="margin-right: 25px;font-size: 15px">
+                            <a class="pdl" clstag="pageclick|keycount|login_pc_201804112|3" href="javascript:void(0)" onclick="window.location.href='https://qm.qq.com/cgi-bin/qm/qr?k=qxuXFR_ljJErBKqwksVWnpN2ljPMkXVe&jump_from=webapi'" style="margin: 0px; padding: 0px 0px 0px 24px; color: white; text-decoration: none; position: relative;">
+                                <span style="margin: 0px; padding: 0px;text-shadow: black 0.2em 0.2em  0em"><b>
+                                            QQ通知 </b>
+                                        </span>
+                            </a>
+                            <span class="line" style="margin: 0px; padding: 0px 10px; color: rgb(204, 204, 204);"> 
+                                        | 
+                                    </span>
+                            <a class="pdl" clstag="pageclick|keycount|login_pc_201804112|4" href="javascript:void(0)" onclick="window.location.href='https://ghproxy.com/https://github.com/U188/JDC/blob/master/showqrcode.jpg'" style="margin: 0px; padding: 0px 0px 0px 1px; color: white; text-decoration: none; position: relative;">
+                                <span style="margin: 0px; padding:0px;text-shadow: black 0.2em 0.2em  0em"> <b>
+                                            微信通知 </b>
+                                        </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    var backbd = Math.floor(Math.random() * 11);
+    document.getElementById("bd").style = "background-image:url('./static/rz" + backbd + ".jpeg')";
+    var timer;
+    var qrcode = document.getElementById("qrcode")
+    var loginUrl = ""
+    var success = "https://ghproxy.com/https://raw.githubusercontent.com/U188/JDC/master/ok.svg";
+    var jumpapp = document.getElementById('jumpapp')
+    var hd = document.getElementById("hd")
+
+    function showQrcode() {
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                data = JSON.parse(xmlhttp.responseText)
+                if (data.url && data.url.indexOf("http") != -1) {
+                    qrcode.src = "data:image/png;base64," + data.img
+                    loginUrl = data.url
+                } else {
+                    showQrcode()
+                }
+            }
+        }
+        xmlhttp.open("GET", "/api/login/qrcode", true);
+        xmlhttp.send();
+    }
+    showQrcode()
+
+    function login() {
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var results = xmlhttp.responseText
+                console.log(results)
+                switch (results) {
+                    case "授权登录未确认":
+                        break;
+                    case "登录":
+                        setTimeout(() => {
+                            window.location.href = "/admin"
+                        }, 1000);
+                    case "成功":
+                        //hd.style.visibility = "hidden"; 
+                        qrcode.src = success
+                        clearInterval(timer)
+                        break;
+                    default:
+                        showQrcode()
+                        break;
+                }
+            }
+        }
+        xmlhttp.open("GET", "/api/login/query", true);
+        xmlhttp.send();
+    }
+
+    function polling() {
+        timer = setInterval(() => {
+            login()
+        }, 1500);
+    }
+    polling()
+    jumpapp.addEventListener('click', function() {
+        if (loginUrl) {
+            window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI( 
+                JSON.stringify({ 
+                    category: 'jump', 
+                    des: 'ThirdPartyLogin', 
+                    action: 'to', 
+                    onekeylogin: 'return', 
+                    url: loginUrl, 
+                    authlogin_returnurl: 'weixin://', 
+                    browserlogin_fromurl: window.location.host, 
+                }) 
+            )}`;
+        } else {
+            alert('还没加载好，请稍后重试');
+        }
+    })
+</script>
+
+</html>

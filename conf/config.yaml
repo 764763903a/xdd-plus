@@ -1,0 +1,23 @@
+mode: parallel
+containers:
+  - address: http://192.168.31.233:5700
+    username: admin
+    password: admin
+    weigth:  
+    mode: parallel
+    limit: 9999
+theme:  
+static: ./static
+master: 
+database:  
+qywx_key:
+daily_push:
+resident:
+user_agent:
+telegram_bot_token:
+telegram_user_id:
+qquid:
+qqgid:
+default_priority:
+no_ghproxy: true
+daily_asset_push_cron:

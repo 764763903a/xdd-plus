@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="ico" href="https://ghproxy.com/https://raw.githubusercontent.com/xyh977732241/xdd_front_theme/master/static/jd.ico" />
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <title>东东邀约</title>
+</head>
+<style>
+    html {
+        background-color: #f1f2f3;
+        width: 100%;
+        height: 100%;
+        color: #2c3e50;
+        font-size: 14px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    
+    *,
+    ul {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    a,
+    a:hover,
+    a:focus,
+    a:active {
+        color: #333;
+        text-decoration: none;
+    }
+    
+    ul {
+        list-style-type: none;
+    }
+    
+    body {
+        position: relative;
+        min-height: 100%;
+        /* 模拟海浪颜色 */
+        background-color: white;
+        overflow: hidden;
+    }
+    /**
+波浪
+ */
+    
+    @keyframes move_wave {
+        0% {
+            transform: translateX(0) translateZ(0) scaleY(1);
+        }
+        50% {
+            transform: translateX(-25%) translateZ(0) scaleY(0.55);
+        }
+        100% {
+            transform: translateX(-50%) translateZ(0) scaleY(1);
+        }
+    }
+    
+    .waveWrapper {
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+    }
+    
+    .waveWrapperInner {
+        position: absolute;
+        width: 100%;
+        overflow: hidden;
+        height: 100%;
+        background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+        /* background: #3598db; */
+        bottom: 0;
+    }
+    
+    .wave {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        width: 200%;
+        height: 100%;
+        background-repeat: repeat no-repeat;
+        background-position: 0 bottom;
+        transform-origin: center bottom;
+    }
+    
+    .waveMiddle {
+        background-size: 50% 100px;
+    }
+    
+    .waveAnimation .waveMiddle {
+        animation: move_wave 10s linear infinite;
+    }
+    
+    .waveBottom {
+        background-size: 50% 100px;
+    }
+    
+    .waveAnimation .waveBottom {
+        animation: move_wave 15s linear infinite;
+    }
+    
+    .mainbox {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        padding: 15px;
+        overflow: hidden;
+        z-index: 10;
+    }
+    
+    .contentbox {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: center; */
+        /* align-items: flex-start; */
+        align-items: center;
+    }
+    
+    .btn {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 10px 30px;
+        background-image: linear-gradient(90deg, #f10000, #ff2000 73%, #ff4f18);
+        color: #fff;
+        text-align: center;
+        border-radius: 20px;
+        z-index: 999;
+    }
+    
+    .qrcode_box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        background-color: #f7f7f7;
+        margin-top: 50px;
+    }
+    
+    .qr {
+        box-shadow: 0px 0px 1px 1px rgba(28, 28, 32, 0.05), 0px 8px 24px rgba(28, 28, 32, 0.12);
+        border-radius: 10px;
+        margin: 30px 0 100px;
+        cursor: pointer;
+        position: relative;
+        z-index: 999;
+    }
+    
+    #qr1 {
+        display: none;
+    }
+    
+    #jumpapp {
+        display: none;
+    }
+    
+    .qr_nav {
+        width: 100%;
+        border-bottom: 1px solid #f4f4f4;
+    }
+    
+    .qr_nav ul {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    
+    .qr_nav ul>li {
+        position: relative;
+    }
+    
+    .qr_nav ul>li a {
+        display: block;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+    }
+    
+    .sperater {
+        width: 1px;
+        height: 20px;
+        background: #eee;
+    }
+    
+    .qr_nav ul>li a:hover,
+    .qr_nav ul>li a.active {
+        font-weight: 700;
+        color: #e4393c;
+    }
+    
+    #tips {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin: 30px 0 0 0;
+    }
+    
+    .container {
+        position: relative;
+        z-index: 11;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    #ck_qr {
+        position: relative;
+    }
+    
+    .notify {
+        display: none;
+        position: relative;
+        z-index: 111;
+        min-height: 400px;
+        background-color: inherit;
+        width: 100%;
+    }
+    
+    .qr_box {
+        width: 100%;
+    }
+    
+    .notify h1 {
+        text-shadow: 0 0 1px #333;
+        color: #e4393c;
+        text-align: center;
+    }
+    
+    .notify h2 {
+        font-weight: 600;
+    }
+    
+    .notify p {
+        margin-top: 10px;
+        font-size: 15px;
+        line-height: 24px;
+        text-indent: 2em;
+    }
+    
+    .notify h3 {
+        color: #f10000;
+        font-weight: 9999;
+    }
+    
+    .notify .sure {
+        display: block;
+        width: 120px;
+        margin: 20px auto;
+        padding: 5px 20px;
+        border-radius: 15px;
+        background-color: #fff;
+        color: #f10000;
+        text-align: center;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div class="mainbox">
+        <div class="contentbox">
+            <div class="qrcode_box col-lg-3 col-md-4 col-sm-6 col-xs-11">
+                <div class="qr_nav">
+                    <ul>
+                        <li>
+                            <a class="title active" href="javascript:void(0);" onclick="changeIndex(0,this)">扫码登录</a
+								>
+							</li>
+							<li class="sperater"></li>
+							<li>
+								<a
+									class="title"
+									href="javascript:void(0);"
+									onclick="changeIndex(1,this)"
+									>扫码订阅</a
+								>
+							</li>
+						</ul>
+					</div>
+					<div class="qr_box" id="qr">
+						<div class="notify" id="notify">
+							<h1>登录成功</h1>
+							<h2>tips:</h2>
+							<p>
+								京东👉我的👉更多👉(东东农场、东东萌宠、东东工厂、宠汪汪、金榜创造营、领现金、健康社区、种豆得豆)。<br />
+							</p>
+							<p>
+								下载【京喜App】👉我的👉(京喜农场、京喜工厂、京喜财富岛)。<br />
+							</p>
+							<p>
+								下载【京东金融】👉我的👉(种摇钱树、天天提鹅、养猪猪)。<br />
+							</p>
+							<p>每天可领取100+京豆和若干现金红包、优惠券等。<br /></p>
+							<p>京东极速版APP-每天固定1.5汇率左右金币，可兑换红包。</p>
+							<h3>一定要微信扫码订阅通知，不然东西好了你也不知道！过期不候</h3>
+							<div class="sure" onclick="ok()">我知道了</div>
+						</div>
+						<div class="container" id="ck_qr">
+							<h4 id="tips">
+								请使用<big style="color: #e4393c">京东</big>扫码
+							</h4>
+							<img id="qrcode" height="170em" class="qr" src="" />
+							<!-- 测试 -->
+							<!--<div class="qr" style="height: 170px; width: 170px"></div> -->
+							<button class="btn" id="jumpapp">一键登录</button>
+						</div>
+					</div>
+					<div class="qr_box" id="qr1">
+						<div class="container">
+							<h4 id="tips">
+								请使用<big style="color: #e4393c">微信</big>扫码
+							</h4>
+							<img
+								id="qrcode1"
+								class="qr"
+								height="170em"
+								src="./static/qr.png"
+								height=""
+								src=""
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="waveWrapper waveAnimation">
+			<div class="waveWrapperInner">
+				<div
+					class="wave waveTop"
+					style="
+						background-image: url('https://gitee.com/xyh_zzZ/xdd_front_theme/raw/master/static/1.png');
+					"
+				></div>
+			</div>
+			<div class="waveWrapperInner">
+				<div
+					class="wave waveMiddle"
+					style="
+						background-image: url('https://gitee.com/xyh_zzZ/xdd_front_theme/raw/master/static/2.png');
+					"
+				></div>
+			</div>
+			<div class="waveWrapperInner">
+				<div
+					class="wave waveBottom"
+					style="
+						background-image: url('https://gitee.com/xyh_zzZ/xdd_front_theme/raw/master/static/3.png');
+					"
+				></div>
+			</div>
+		</div>
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+			var timer;
+			var qrcode = document.getElementById("qrcode");
+			var loginUrl = "";
+			var success =
+				"https://ghproxy.com/https://raw.githubusercontent.com/xyh977732241/xdd_front_theme/master/static/ok.svg";
+			var jumpapp = document.getElementById("jumpapp");
+			if (
+				navigator.userAgent.match(
+					/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+				)
+			) {
+				console.log("移动端");
+				jumpapp.style.display = "block";
+			} else {
+				console.log("PC端");
+				jumpapp.style.display = "none";
+			}
+			jumpapp.addEventListener("click", function () {
+				if (loginUrl) {
+					window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
+						JSON.stringify({
+							category: "jump",
+							des: "ThirdPartyLogin",
+							action: "to",
+							onekeylogin: "return",
+							url: loginUrl,
+							authlogin_returnurl: "weixin://",
+							browserlogin_fromurl: window.location.host,
+						})
+					)}`;
+				} else {
+					alert("还没加载好，请稍后重试");
+				}
+			});
+			function showQrcode() {
+				var xmlhttp = window.XMLHttpRequest
+					? new XMLHttpRequest()
+					: new ActiveXObject("Microsoft.XMLHTTP");
+				xmlhttp.onreadystatechange = function () {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						data = JSON.parse(xmlhttp.responseText);
+						if (data.url && data.url.indexOf("http") != -1) {
+							qrcode.src = "data:image/png;base64," + data.img;
+							loginUrl = data.url;
+						} else {
+							showQrcode();
+						}
+					}
+				};
+				xmlhttp.open("GET", "/api/login/qrcode", true);
+				xmlhttp.send();
+			}
+			showQrcode();
+
+			function login() {
+				var xmlhttp = window.XMLHttpRequest
+					? new XMLHttpRequest()
+					: new ActiveXObject("Microsoft.XMLHTTP");
+				xmlhttp.onreadystatechange = function () {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						var results = xmlhttp.responseText;
+						console.log(results);
+						switch (results) {
+							case "授权登录未确认":
+								break;
+							case "登录":
+								qrcode.src = success;
+								clearInterval(timer);
+								setTimeout(() => {
+									toNotify();
+								}, 1000);
+								break;
+							case "成功":
+								qrcode.src = success;
+								clearInterval(timer);
+								setTimeout(() => {}, 1000);
+								break;
+							default:
+								showQrcode();
+								break;
+						}
+					}
+				};
+				xmlhttp.open("GET", "/api/login/query", true);
+				xmlhttp.send();
+			}
+			function ok() {
+				window.location.href = "/admin";
+			}
+			function polling() {
+				timer = setInterval(() => {
+					login();
+				}, 1500);
+			}
+			polling();
+			function changeIndex(index, _this) {
+				var aTags = document.querySelectorAll(".title");
+				var getCk = document.getElementById("qr");
+				var getSub = document.getElementById("qr1");
+				// var tips = document.getElementById("tips");
+				aTags.forEach(function (e) {
+					e.classList.remove("active");
+				});
+				_this.classList.add("active");
+				if (index == 0) {
+					getSub.style.display = "none";
+					getCk.style.display = "flex";
+					// tips.innerHTML = "请使用<big style='color:#e4393c'>京东</big>扫码";
+				} else {
+					getCk.style.display = "none";
+					getSub.style.display = "flex";
+					// tips.innerHTML = "请使用<big style='color:#e4393c'>微信</big>扫码";
+				}
+			}
+			function toNotify() {
+				jumpapp.style.display = "none";
+				var ckQr = document.getElementById("ck_qr");
+				var notify = document.getElementById("notify");
+				ckQr.style.display = "none";
+				notify.style.display = "block";
+			}
+		</script>
+	</body>
+</html>
