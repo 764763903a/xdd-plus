@@ -1,8 +1,11 @@
 package models
 
 import (
+	"fmt"
 	"io"
+	"log"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/beego/beego/v2/client/httplib"
@@ -10,14 +13,16 @@ import (
 )
 
 type Task struct {
-	ID     int
-	Cron   string
-	Path   string
-	Enable bool
-	Mode   string //obo alo
-	Word   string
-	Run    func()
-	Name   string
+	ID      int
+	Cron    string
+	Path    string
+	Enable  bool
+	Mode    string //obo alo
+	Word    string
+	Run     func()
+	Name    string
+	Timeout int
+	Envs    []Env
 }
 
 type Env struct {
@@ -35,6 +40,7 @@ func initTask() {
 			}
 			Config.Tasks[i].Name = slice[len-1]
 		}
+		// runTask(&Config.Tasks[i])
 		createTask(&Config.Tasks[i])
 	}
 }
@@ -44,10 +50,10 @@ func createTask(task *Task) {
 		runTask(task)
 	})
 	if err != nil {
-		logs.Warn(task.Word, "任务创建失败：", err)
+		logs.Warn(task.Word, "任务创建失败")
 	} else {
 		task.ID = int(id)
-		logs.Info(task.Word, "任务创建成功：", err)
+		logs.Info(task.Word, "任务创建成功")
 	}
 
 }
@@ -70,9 +76,27 @@ func runTask(task *Task) {
 		io.Copy(f, r.Body)
 		f.Close()
 	}
-	// lan := Config.Node
-	// if strings.Contains(task.Name, ".py") {
-	// 	lan = Config.Python
-	// }
-	// cmd := exec.Command(lan, )
+	lan := Config.Node
+	if strings.Contains(task.Name, ".py") {
+		lan = Config.Python
+	}
+	envs := ""
+	for _, env := range task.Envs {
+		envs += fmt.Sprintf("export %s=%s", env.Name, env.Value)
+	}
+	sh := fmt.Sprintf(`
+%s
+cd %s
+%s %s
+	`, envs,
+		ExecPath+"/scripts/",
+		lan, task.Name)
+	cmd := exec.Command("sh", "-c", sh)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	log.Printf("path: %s", cmd.Path)
+	err := cmd.Run()
+	if err != nil {
+		logs.Warn("%v", err)
+	}
 }
