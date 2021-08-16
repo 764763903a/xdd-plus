@@ -22,6 +22,25 @@ const (
 	LI = "li"
 )
 
+type Container struct {
+	Type      string
+	Name      string
+	Default   bool
+	Address   string
+	Username  string
+	Password  string
+	Path      string
+	Version   string
+	Token     string
+	Available bool
+	Delete    []string
+	Weigth    int
+	Mode      string
+	Reader    *bufio.Reader
+	Config    string
+	Limit     int
+}
+
 func initContainer() {
 	for i := range Config.Containers {
 		if Config.Containers[i].Weigth == 0 {

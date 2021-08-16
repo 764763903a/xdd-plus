@@ -1,7 +1,6 @@
 package models
 
 import (
-	"bufio"
 	"io"
 	"io/ioutil"
 	"os"
@@ -11,26 +10,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type Container struct {
-	Type      string
-	Name      string
-	Default   bool
-	Address   string
-	Username  string
-	Password  string
-	Path      string
-	Version   string
-	Token     string
-	Available bool
-	Delete    []string
-	Weigth    int
-	Mode      string
-	Reader    *bufio.Reader
-	Config    string
-	Limit     int
-}
 type Yaml struct {
 	Containers         []Container
+	Tasks              []Task
 	Qrcode             string
 	Master             string
 	Mode               string
