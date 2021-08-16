@@ -1,9 +1,13 @@
 package models
 
 import (
+	"fmt"
 	"math"
+	"os"
 	"strings"
 	"time"
+
+	"github.com/beego/beego/v2/core/logs"
 )
 
 func initHandle() {
@@ -25,6 +29,21 @@ func initHandle() {
 				}
 			}
 			cks = tmp
+			cookies := "{"
+			hh := []string{}
+			for i, ck := range cks {
+				hh = append(hh,
+					fmt.Sprintf("CookieJD%d:'pt_key=%s;pt_pin=%s;'", i+1, ck.PtKey, ck.PtPin),
+				)
+			}
+			cookies += strings.Join(hh, ",")
+			cookies += "}"
+			f, err := os.OpenFile(ExecPath+"/scripts/jdCookie.js", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+			if err != nil {
+				logs.Warn("创建jdCookie.js失败，", err)
+			}
+			f.WriteString("module.exports =" + cookies)
+			f.Close()
 			if Config.Mode == Parallel {
 				for i := range Config.Containers {
 					(&Config.Containers[i]).read()

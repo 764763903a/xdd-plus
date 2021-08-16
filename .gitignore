@@ -17,3 +17,4 @@ device.json
 data/
 logs/
 conf/*
+jdCookie.js

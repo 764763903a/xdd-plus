@@ -184,18 +184,18 @@ function serverNotify(text, desp, time = 2100) {
                 $.post(options, (err, resp, data) => {
                     try {
                         if (err) {
-                            console.log('发送通知调用API失败！！\n')
-                            console.log(err);
+                            //console.log('发送通知调用API失败！！\n')
+                            //console.log(err);
                         } else {
                             data = JSON.parse(data);
                             //server酱和Server酱·Turbo版的返回json格式不太一样
                             if (data.errno === 0 || data.data.errno === 0) {
-                                console.log('server酱发送通知消息成功🎉\n')
+                                //console.log('server酱发送通知消息成功🎉\n')
                             } else if (data.errno === 1024) {
                                 // 一分钟内发送相同的内容会触发
-                                console.log(`server酱发送通知消息异常: ${data.errmsg}\n`)
+                                //console.log(`server酱发送通知消息异常: ${data.errmsg}\n`)
                             } else {
-                                console.log(`server酱发送通知消息异常\n${JSON.stringify(data)}`)
+                                //console.log(`server酱发送通知消息异常\n${JSON.stringify(data)}`)
                             }
                         }
                     } catch (e) {
@@ -206,7 +206,7 @@ function serverNotify(text, desp, time = 2100) {
                 })
             }, time)
         } else {
-            console.log('\n\n您未提供server酱的SCKEY，取消微信推送消息通知🚫\n');
+            //console.log('\n\n您未提供server酱的SCKEY，取消微信推送消息通知🚫\n');
             resolve()
         }
     })
@@ -259,18 +259,18 @@ function CoolPush(text, desp) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log(`发送${pushMode(QQ_MODE)}通知调用API失败！！\n`)
-                        console.log(err);
+                        //console.log(`发送${pushMode(QQ_MODE)}通知调用API失败！！\n`)
+                        //console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.code === 200) {
-                            console.log(`酷推发送${pushMode(QQ_MODE)}通知消息成功🎉\n`)
+                            //console.log(`酷推发送${pushMode(QQ_MODE)}通知消息成功🎉\n`)
                         } else if (data.code === 400) {
-                            console.log(`QQ酷推(Cool Push)发送${pushMode(QQ_MODE)}推送失败：${data.msg}\n`)
+                            //console.log(`QQ酷推(Cool Push)发送${pushMode(QQ_MODE)}推送失败：${data.msg}\n`)
                         } else if (data.code === 503) {
-                            console.log(`QQ酷推出错，${data.message}：${data.data}\n`)
+                            //console.log(`QQ酷推出错，${data.message}：${data.data}\n`)
                         } else {
-                            console.log(`酷推推送异常: ${JSON.stringify(data)}`);
+                            //console.log(`酷推推送异常: ${JSON.stringify(data)}`);
                         }
                     }
                 } catch (e) {
@@ -280,7 +280,7 @@ function CoolPush(text, desp) {
                 }
             })
         } else {
-            console.log('您未提供酷推的SKEY，取消QQ推送消息通知🚫\n');
+            //console.log('您未提供酷推的SKEY，取消QQ推送消息通知🚫\n');
             resolve()
         }
     })
@@ -299,14 +299,14 @@ function BarkNotify(text, desp, params = {}) {
             $.get(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log('Bark APP发送通知调用API失败！！\n')
-                        console.log(err);
+                        //console.log('Bark APP发送通知调用API失败！！\n')
+                        //console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.code === 200) {
-                            console.log('Bark APP发送通知消息成功🎉\n')
+                            //console.log('Bark APP发送通知消息成功🎉\n')
                         } else {
-                            console.log(`${data.message}\n`);
+                            //console.log(`${data.message}\n`);
                         }
                     }
                 } catch (e) {
@@ -316,7 +316,7 @@ function BarkNotify(text, desp, params = {}) {
                 }
             })
         } else {
-            console.log('您未提供Bark的APP推送BARK_PUSH，取消Bark推送消息通知🚫\n');
+            //console.log('您未提供Bark的APP推送BARK_PUSH，取消Bark推送消息通知🚫\n');
             resolve()
         }
     })
@@ -349,16 +349,16 @@ function tgBotNotify(text, desp) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log('telegram发送通知消息失败！！\n')
-                        console.log(err);
+                        //console.log('telegram发送通知消息失败！！\n')
+                        //console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.ok) {
-                            console.log('Telegram发送通知消息成功🎉。\n')
+                            //console.log('Telegram发送通知消息成功🎉。\n')
                         } else if (data.error_code === 400) {
-                            console.log('请主动给bot发送一条消息并检查接收用户ID是否正确。\n')
+                            //console.log('请主动给bot发送一条消息并检查接收用户ID是否正确。\n')
                         } else if (data.error_code === 401) {
-                            console.log('Telegram bot token 填写错误。\n')
+                            //console.log('Telegram bot token 填写错误。\n')
                         }
                     }
                 } catch (e) {
@@ -368,7 +368,7 @@ function tgBotNotify(text, desp) {
                 }
             })
         } else {
-            console.log('您未提供telegram机器人推送所需的TG_BOT_TOKEN和TG_USER_ID，取消telegram推送消息通知🚫\n');
+            //console.log('您未提供telegram机器人推送所需的TG_BOT_TOKEN和TG_USER_ID，取消telegram推送消息通知🚫\n');
             resolve()
         }
     })
@@ -399,14 +399,14 @@ function ddBotNotify(text, desp) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log('钉钉发送通知消息失败！！\n')
-                        console.log(err);
+                        //console.log('钉钉发送通知消息失败！！\n')
+                        //console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.errcode === 0) {
-                            console.log('钉钉发送通知消息成功🎉。\n')
+                            //console.log('钉钉发送通知消息成功🎉。\n')
                         } else {
-                            console.log(`${data.errmsg}\n`)
+                            //console.log(`${data.errmsg}\n`)
                         }
                     }
                 } catch (e) {
@@ -419,14 +419,14 @@ function ddBotNotify(text, desp) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log('钉钉发送通知消息失败！！\n')
-                        console.log(err);
+                        //console.log('钉钉发送通知消息失败！！\n')
+                        //console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.errcode === 0) {
-                            console.log('钉钉发送通知消息完成。\n')
+                            //console.log('钉钉发送通知消息完成。\n')
                         } else {
-                            console.log(`${data.errmsg}\n`)
+                            //console.log(`${data.errmsg}\n`)
                         }
                     }
                 } catch (e) {
@@ -436,7 +436,7 @@ function ddBotNotify(text, desp) {
                 }
             })
         } else {
-            console.log('您未提供钉钉机器人推送所需的DD_BOT_TOKEN或者DD_BOT_SECRET，取消钉钉推送消息通知🚫\n');
+            //console.log('您未提供钉钉机器人推送所需的DD_BOT_TOKEN或者DD_BOT_SECRET，取消钉钉推送消息通知🚫\n');
             resolve()
         }
     })
@@ -461,14 +461,14 @@ function qywxBotNotify(text, desp) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log('企业微信发送通知消息失败！！\n');
-                        console.log(err);
+                        //console.log('企业微信发送通知消息失败！！\n');
+                        //console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.errcode === 0) {
-                            console.log('企业微信发送通知消息成功🎉。\n');
+                            //console.log('企业微信发送通知消息成功🎉。\n');
                         } else {
-                            console.log(`${data.errmsg}\n`);
+                            //console.log(`${data.errmsg}\n`);
                         }
                     }
                 } catch (e) {
@@ -478,7 +478,7 @@ function qywxBotNotify(text, desp) {
                 }
             });
         } else {
-            console.log('您未提供企业微信机器人推送所需的QYWX_KEY，取消企业微信推送消息通知🚫\n');
+            //console.log('您未提供企业微信机器人推送所需的QYWX_KEY，取消企业微信推送消息通知🚫\n');
             resolve();
         }
     });
@@ -586,14 +586,14 @@ function qywxamNotify(text, desp) {
                 $.post(options, (err, resp, data) => {
                     try {
                         if (err) {
-                            console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息失败！！\n');
-                            console.log(err);
+                            //console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息失败！！\n');
+                            //console.log(err);
                         } else {
                             data = JSON.parse(data);
                             if (data.errcode === 0) {
-                                console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息成功🎉。\n');
+                                //console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息成功🎉。\n');
                             } else {
-                                console.log(`${data.errmsg}\n`);
+                                //console.log(`${data.errmsg}\n`);
                             }
                         }
                     } catch (e) {
@@ -604,7 +604,7 @@ function qywxamNotify(text, desp) {
                 });
             });
         } else {
-            console.log('您未提供企业微信应用消息推送所需的QYWX_AM，取消企业微信应用消息推送消息通知🚫\n');
+            //console.log('您未提供企业微信应用消息推送所需的QYWX_AM，取消企业微信应用消息推送消息通知🚫\n');
             resolve();
         }
     });
@@ -616,7 +616,7 @@ function iGotNotify(text, desp, params = {}) {
             // 校验传入的IGOT_PUSH_KEY是否有效
             const IGOT_PUSH_KEY_REGX = new RegExp("^[a-zA-Z0-9]{24}$")
             if (!IGOT_PUSH_KEY_REGX.test(IGOT_PUSH_KEY)) {
-                console.log('您所提供的IGOT_PUSH_KEY无效\n')
+                //console.log('您所提供的IGOT_PUSH_KEY无效\n')
                 resolve()
                 return
             }
@@ -631,14 +631,14 @@ function iGotNotify(text, desp, params = {}) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log('发送通知调用API失败！！\n')
-                        console.log(err);
+                        //console.log('发送通知调用API失败！！\n')
+                        //console.log(err);
                     } else {
                         if (typeof data === 'string') data = JSON.parse(data);
                         if (data.ret === 0) {
-                            console.log('iGot发送通知消息成功🎉\n')
+                            //console.log('iGot发送通知消息成功🎉\n')
                         } else {
-                            console.log(`iGot发送通知消息失败：${data.errMsg}\n`)
+                            //console.log(`iGot发送通知消息失败：${data.errMsg}\n`)
                         }
                     }
                 } catch (e) {
@@ -648,7 +648,7 @@ function iGotNotify(text, desp, params = {}) {
                 }
             })
         } else {
-            console.log('您未提供iGot的推送IGOT_PUSH_KEY，取消iGot推送消息通知🚫\n');
+            //console.log('您未提供iGot的推送IGOT_PUSH_KEY，取消iGot推送消息通知🚫\n');
             resolve()
         }
     })
@@ -675,14 +675,14 @@ function pushPlusNotify(text, desp) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败！！\n`)
-                        console.log(err);
+                        //console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败！！\n`)
+                        //console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.code === 200) {
-                            console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息完成。\n`)
+                            //console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息完成。\n`)
                         } else {
-                            console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败：${data.msg}\n`)
+                            //console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败：${data.msg}\n`)
                         }
                     }
                 } catch (e) {
@@ -692,7 +692,7 @@ function pushPlusNotify(text, desp) {
                 }
             })
         } else {
-            console.log('您未提供push+推送所需的PUSH_PLUS_TOKEN，取消push+推送消息通知🚫\n');
+            //console.log('您未提供push+推送所需的PUSH_PLUS_TOKEN，取消push+推送消息通知🚫\n');
             resolve()
         }
     })
@@ -812,7 +812,9 @@ function Env(t, s) {
             const h = t => !t || !this.isLoon() && this.isSurge() ? t : "string" == typeof t ? this.isLoon() ? t : this.isQuanX() ? { "open-url": t } : void 0 : "object" == typeof t && (t["open-url"] || t["media-url"]) ? this.isLoon() ? t["open-url"] : this.isQuanX() ? t : void 0 : void 0;
             $.isMute || (this.isSurge() || this.isLoon() ? $notification.post(s, e, i, h(o)) : this.isQuanX() && $notify(s, e, i, h(o))), this.logs.push("", "==============\ud83d\udce3\u7cfb\u7edf\u901a\u77e5\ud83d\udce3=============="), this.logs.push(s), e && this.logs.push(e), i && this.logs.push(i)
         }
-        log(...t) { t.length > 0 ? this.logs = [...this.logs, ...t] : console.log(this.logs.join(this.logSeparator)) }
+        log(...t) {
+            t.length > 0 ? this.logs = [...this.logs, ...t] : console.log(this.logs.join(this.logSeparator))
+        }
         logErr(t, s) {
             const e = !this.isSurge() && !this.isQuanX() && !this.isLoon();
             e ? $.log("", `\u2757\ufe0f${this.name}, \u9519\u8bef!`, t.stack) : $.log("", `\u2757\ufe0f${this.name}, \u9519\u8bef!`, t)

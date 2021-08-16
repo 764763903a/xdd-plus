@@ -1,9 +1,9 @@
 package models
 
 import (
+	"bufio"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -32,15 +32,6 @@ type Env struct {
 
 func initTask() {
 	for i := range Config.Tasks {
-		if Config.Tasks[i].Name == "" {
-			slice := strings.Split(Config.Tasks[i].Path, "/")
-			len := len(slice)
-			if len == 0 {
-				return
-			}
-			Config.Tasks[i].Name = slice[len-1]
-		}
-		// runTask(&Config.Tasks[i])
 		createTask(&Config.Tasks[i])
 	}
 }
@@ -58,7 +49,16 @@ func createTask(task *Task) {
 
 }
 
-func runTask(task *Task) {
+func runTask(task *Task, msgs ...interface{}) {
+	if task.Name == "" {
+		slice := strings.Split(task.Path, "/")
+		len := len(slice)
+		if len == 0 {
+			logs.Warn("取法识别的文件名")
+			return
+		}
+		task.Name = slice[len-1]
+	}
 	var path = ExecPath + "/scripts/" + task.Name
 	if strings.Contains(task.Path, "http") {
 		f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
@@ -86,17 +86,32 @@ func runTask(task *Task) {
 	}
 	sh := fmt.Sprintf(`
 %s
-cd %s
 %s %s
 	`, envs,
-		ExecPath+"/scripts/",
 		lan, task.Name)
 	cmd := exec.Command("sh", "-c", sh)
-	cmd.Stdout = os.Stdout
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		logs.Warn("cmd.StdoutPipe: ", err)
+		return
+	}
+	cmd.Dir = ExecPath + "/scripts/"
 	cmd.Stderr = os.Stderr
-	log.Printf("path: %s", cmd.Path)
-	err := cmd.Run()
+	err = cmd.Start()
 	if err != nil {
 		logs.Warn("%v", err)
+		return
 	}
+	reader := bufio.NewReader(stdout)
+	for {
+		line, err2 := reader.ReadString('\n')
+		if err2 != nil || io.EOF == err2 {
+			break
+		}
+		// if len(msgs) > 0 {
+		sendAdminMessagee(line, msgs...)
+		// }
+	}
+	err = cmd.Wait()
+	return
 }

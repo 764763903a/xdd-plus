@@ -45,6 +45,9 @@ var Cdle = false
 var Config Yaml
 
 func initConfig() {
+	if ExecPath == "/Users/cdle/Desktop/xdd" {
+		Cdle = true
+	}
 	confDir := ExecPath + "/conf"
 	if _, err := os.Stat(confDir); err != nil {
 		os.MkdirAll(confDir, os.ModePerm)
@@ -64,7 +67,11 @@ func initConfig() {
 		}
 		f.Close()
 	}
-	content, err := ioutil.ReadFile(ExecPath + "/conf/config.yaml")
+	config := ExecPath + "/conf/config.yaml"
+	if Cdle {
+		config = ExecPath + "/conf/config_cdle.yaml"
+	}
+	content, err := ioutil.ReadFile(config)
 	if err != nil {
 		logs.Warn("解析config.yaml读取错误: %v", err)
 	}
@@ -79,12 +86,6 @@ func initConfig() {
 	}
 	if Config.Qrcode != "" {
 		Config.Theme = Config.Qrcode
-	}
-	//测试
-	if ExecPath == "/Users/cdle/Desktop/xdd" {
-		Cdle = true
-		// Config.QQID = 17745270
-		// Config.QQGroupID = 610790654
 	}
 	if Config.NoGhproxy {
 		GhProxy = ""
