@@ -31,6 +31,10 @@ type Yaml struct {
 	QbotPublicMode     bool   `yaml:"qbot_public_mode"`
 	DailyAssetPushCron string `yaml:"daily_asset_push_cron"`
 	Version            string `yaml:"version"`
+	Node               string
+	Npm                string
+	Python             string
+	Pip                string
 }
 
 var Balance = "balance"
@@ -79,13 +83,25 @@ func initConfig() {
 	//测试
 	if ExecPath == "/Users/cdle/Desktop/xdd" {
 		Cdle = true
-		Config.QQID = 17745270
-		Config.QQGroupID = 610790654
+		// Config.QQID = 17745270
+		// Config.QQGroupID = 610790654
 	}
 	if Config.NoGhproxy {
 		GhProxy = ""
 	}
 	if Config.Database == "" {
 		Config.Database = ExecPath + "/.xdd.db"
+	}
+	if Config.Npm == "" {
+		Config.Npm = "npm"
+	}
+	if Config.Node == "" {
+		Config.Node = "node"
+	}
+	if Config.Python == "" {
+		Config.Python = "python3"
+	}
+	if Config.Pip == "" {
+		Config.Pip = "Pip3"
 	}
 }
