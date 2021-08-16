@@ -169,9 +169,6 @@ func (c *Container) write(cks []JdCookie) error {
 			TempBlockCookie := ""
 			cookies := ""
 			for i, ck := range cks {
-				if ck.PtPin == "" || ck.PtKey == "" {
-					continue
-				}
 				if ck.Available == False {
 					TempBlockCookie += fmt.Sprintf("%d ", i+1)
 				}

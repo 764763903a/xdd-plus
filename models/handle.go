@@ -113,7 +113,6 @@ func initHandle() {
 					}
 					break
 				}
-
 				for i := range bs {
 					bs[i].Container.write(append(resident, bs[i].Ready...))
 				}
