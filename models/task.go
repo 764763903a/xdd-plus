@@ -34,7 +34,9 @@ type Env struct {
 
 func initTask() {
 	for i := range Config.Tasks {
-		createTask(&Config.Tasks[i])
+		if Config.Tasks[i].Cron != "" {
+			createTask(&Config.Tasks[i])
+		}
 	}
 }
 
@@ -50,14 +52,14 @@ func createTask(task *Task) {
 	}
 }
 
-func runTask(task *Task, msgs ...interface{}) {
+func runTask(task *Task, msgs ...interface{}) string {
 	msg := ""
 	if task.Name == "" {
 		slice := strings.Split(task.Path, "/")
 		len := len(slice)
 		if len == 0 {
 			logs.Warn("取法识别的文件名")
-			return
+			return ""
 		}
 		task.Name = slice[len-1]
 	}
@@ -95,14 +97,14 @@ func runTask(task *Task, msgs ...interface{}) {
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		logs.Warn("cmd.StdoutPipe: ", err)
-		return
+		return ""
 	}
 	cmd.Dir = ExecPath + "/scripts/"
 	cmd.Stderr = os.Stderr
 	err = cmd.Start()
 	if err != nil {
 		logs.Warn("%v", err)
-		return
+		return ""
 	}
 	reader := bufio.NewReader(stdout)
 	for {
@@ -120,5 +122,5 @@ func runTask(task *Task, msgs ...interface{}) {
 		sendAdminMessagee(msg, msgs...)
 	}
 	err = cmd.Wait()
-	return
+	return msg
 }

@@ -39,12 +39,24 @@ var Int = func(s string) int {
 
 func DailyAssetsPush() {
 	for _, ck := range GetJdCookies() {
-		msg := ck.Query()
-		if ck.QQ != 0 && Config.QQID != 0 && SendQQ != nil {
-			SendQQ(int64(ck.QQ), msg)
-		}
-		if ck.PushPlus != "" {
-			pushPlus(ck.PushPlus, msg)
+		if (ck.QQ != 0 && Config.QQID != 0 && SendQQ != nil) || ck.PushPlus != "" {
+			msg := ""
+			for _, task := range Config.Tasks {
+				if task.Word == "查询" {
+					task.Envs = []Env{{
+						Name:  "pins",
+						Value: ck.PtPin,
+					}}
+					msg = runTask(&task, true)
+					break
+				}
+			}
+			if ck.QQ != 0 && Config.QQID != 0 && SendQQ != nil {
+				SendQQ(int64(ck.QQ), msg)
+			}
+			if ck.PushPlus != "" {
+				pushPlus(ck.PushPlus, msg)
+			}
 		}
 	}
 }
