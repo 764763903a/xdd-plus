@@ -18,6 +18,7 @@ telegram_bot_token:
 telegram_user_id:
 qquid:
 qqgid:
+qbot_public_mode: true
 default_priority:
 no_ghproxy: true
 daily_asset_push_cron:
