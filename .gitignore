@@ -21,3 +21,4 @@ conf/config.yaml
 conf/config_cdle.yaml
 conf/reply.php
 jdCookie.js
+scripts/node_modules
