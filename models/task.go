@@ -46,7 +46,6 @@ func createTask(task *Task) {
 		task.ID = int(id)
 		logs.Info(task.Word, "任务创建成功")
 	}
-
 }
 
 func runTask(task *Task, msgs ...interface{}) {
@@ -96,7 +95,7 @@ func runTask(task *Task, msgs ...interface{}) {
 		return
 	}
 	cmd.Dir = ExecPath + "/scripts/"
-	cmd.Stderr = os.Stderr
+	// cmd.Stderr = os.Stderr
 	err = cmd.Start()
 	if err != nil {
 		logs.Warn("%v", err)

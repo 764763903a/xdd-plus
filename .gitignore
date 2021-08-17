@@ -16,5 +16,5 @@ session.token
 device.json
 data/
 logs/
-conf/*
+conf
 jdCookie.js
