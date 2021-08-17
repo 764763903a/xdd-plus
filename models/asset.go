@@ -47,7 +47,7 @@ func DailyAssetsPush() {
 						Name:  "pins",
 						Value: ck.PtPin,
 					}}
-					msg = runTask(&task, true)
+					msg = runTask(&task)
 					break
 				}
 			}
