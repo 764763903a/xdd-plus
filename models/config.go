@@ -52,7 +52,7 @@ func initConfig() {
 	if _, err := os.Stat(confDir); err != nil {
 		os.MkdirAll(confDir, os.ModePerm)
 	}
-	for _, name := range []string{"app.conf", "config.yaml"} {
+	for _, name := range []string{"app.conf", "config.yaml", "reply.php"} {
 		f, err := os.OpenFile(ExecPath+"/conf/"+name, os.O_RDWR|os.O_CREATE, 0777)
 		if err != nil {
 			logs.Warn(err)
@@ -67,11 +67,7 @@ func initConfig() {
 		}
 		f.Close()
 	}
-	config := ExecPath + "/conf/config.yaml"
-	if Cdle {
-		config = ExecPath + "/conf/config_cdle.yaml"
-	}
-	content, err := ioutil.ReadFile(config)
+	content, err := ioutil.ReadFile(ExecPath + "/conf/config.yaml")
 	if err != nil {
 		logs.Warn("解析config.yaml读取错误: %v", err)
 	}
