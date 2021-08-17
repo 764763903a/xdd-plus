@@ -278,7 +278,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					if pins == "" {
 						return "找不到匹配的账号"
 					}
-					fmt.Println(pins)
+
 					for _, task := range Config.Tasks {
 						if task.Word == "查询" {
 							task.Envs = []Env{{
