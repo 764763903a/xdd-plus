@@ -88,7 +88,7 @@ func runTask(task *Task, msgs ...interface{}) string {
 		io.Copy(f, r.Body)
 		f.Close()
 	} else {
-		if task.Name != task.Path {
+		if path != task.Path {
 			f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 			if err != nil {
 				logs.Warn("打开%s失败，", path, err)
