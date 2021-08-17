@@ -80,6 +80,12 @@ var Admin = `<html lang="zh-cn">
                         width: 80,
                         align: 'center',
                     }, {
+                        field: 'Hack',
+                        title: '屏蔽',
+                        edit: 'text',
+                        width: 80,
+                        align: 'center',
+                    }, {
                         field: 'Help',
                         title: '助力',
                         edit: 'text',
