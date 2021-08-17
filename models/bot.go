@@ -163,24 +163,19 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		return nil
 	case "查询", "query":
 		cks := GetJdCookies()
-		find := false
 		pins := ""
 		for _, ck := range cks {
 			if tp == "qq" {
 				if ck.QQ == id {
-					find = true
-					// SendQQ(int64(id), ck.Query())
 					pins += ck.PtPin
 				}
 			} else if tp == "qqg" {
 				if ck.QQ == msgs[3].(int) {
-					find = true
-					// SendQQGroup(int64(id), int64(msgs[3].(int)), ck.Query())
 					pins += ck.PtPin
 				}
 			}
 		}
-		if !find {
+		if pins == "" {
 			return "你尚未绑定🐶东账号，请对我说扫码，扫码后即可查询账户资产信息。"
 		}
 		for _, task := range Config.Tasks {
