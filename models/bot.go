@@ -254,58 +254,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					}
 					cks := GetJdCookies()
 					a := s[2]
-					// {
-					// 	if s := strings.Split(a, "-"); len(s) == 2 {
-					// 		for i, ck := range cks {
-					// 			if i+1 >= Int(s[0]) && i+1 <= Int(s[1]) {
-					// 				switch tp {
-					// 				case "tg":
-					// 					tgBotNotify(ck.Query())
-					// 				case "qq":
-					// 					if id == ck.QQ {
-					// 						SendQQ(int64(id), ck.Query())
-					// 					} else {
-					// 						SendQQ(Config.QQID, ck.Query())
-					// 					}
-					// 				case "qqg":
-					// 					uid := msgs[3].(int)
-					// 					if uid == ck.QQ || uid == int(Config.QQID) {
-					// 						SendQQGroup(int64(id), int64(msgs[3].(int)), ck.Query())
-					// 					}
-					// 				}
-					// 			}
-					// 		}
-					// 		return nil
-					// 	}
-					// }
-					// {
-					// 	if x := regexp.MustCompile(`^[\s\d,]+$`).FindString(a); x != "" {
-					// 		xx := regexp.MustCompile(`(\d+)`).FindAllStringSubmatch(a, -1)
-					// 		for i, ck := range cks {
-					// 			for _, x := range xx {
-					// 				if fmt.Sprint(i+1) == x[1] {
-					// 					switch tp {
-					// 					case "tg":
-					// 						tgBotNotify(ck.Query())
-					// 					case "qq":
-					// 						if id == ck.QQ {
-					// 							SendQQ(int64(id), ck.Query())
-					// 						} else {
-					// 							SendQQ(Config.QQID, ck.Query())
-					// 						}
-					// 					case "qqg":
-					// 						uid := msgs[3].(int)
-					// 						if uid == ck.QQ || uid == int(Config.QQID) {
-					// 							SendQQGroup(int64(id), int64(msgs[3].(int)), ck.Query())
-					// 						}
-					// 					}
-					// 				}
-					// 			}
-
-					// 		}
-					// 		return nil
-					// 	}
-					// }
 					{
 						a = strings.Replace(a, " ", "", -1)
 						pins := ""
@@ -314,13 +262,15 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								pins += ck.PtPin
 							}
 						}
+						if pins == "" {
+							return "找不到匹配的账号"
+						}
 						for _, task := range Config.Tasks {
 							if task.Word == "查询" {
 								task.Envs = []Env{{
 									Name:  "pins",
 									Value: pins,
 								}}
-								task.Ykq = false
 								runTask(&task, msgs...)
 								break
 							}

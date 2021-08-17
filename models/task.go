@@ -53,6 +53,13 @@ func createTask(task *Task) {
 }
 
 func runTask(task *Task, msgs ...interface{}) string {
+	if len(msgs) > 0 {
+		if msgs[1].(string) == "tg" {
+			task.Ykq = false
+		} else {
+			task.Ykq = true
+		}
+	}
 	msg := ""
 	if task.Name == "" {
 		slice := strings.Split(task.Path, "/")
@@ -112,14 +119,13 @@ func runTask(task *Task, msgs ...interface{}) string {
 		if err2 != nil || io.EOF == err2 {
 			break
 		}
-		if task.Ykq {
-			msg += line
-		} else {
-			sendAdminMessagee(line, msgs...)
+		msg += line
+		if !task.Ykq {
+			sendMessagee(line, msgs...)
 		}
 	}
 	if task.Ykq {
-		sendAdminMessagee(msg, msgs...)
+		sendMessagee(msg, msgs...)
 	}
 	err = cmd.Wait()
 	return msg
