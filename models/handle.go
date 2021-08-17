@@ -42,7 +42,25 @@ func initHandle() {
 			if err != nil {
 				logs.Warn("创建jdCookie.js失败，", err)
 			}
-			f.WriteString("module.exports =" + cookies)
+			f.WriteString(fmt.Sprintf(`
+var cookies = %s
+var pins = process.env.pins
+if(pins){
+	pins = pins.split("&")
+	for (var key in cookies) {
+	    c = false
+	    for (var pin of pins) {
+		   if (cookies[key].indexOf(pin) != -1) {
+			  c = true
+			  break
+		   }
+	    }
+	    if (!c) {
+		   delete cookies[key]
+	    }
+	}
+}
+module.exports = cookies`, cookies))
 			f.Close()
 			if Config.Mode == Parallel {
 				for i := range Config.Containers {

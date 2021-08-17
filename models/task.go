@@ -23,6 +23,8 @@ type Task struct {
 	Name    string
 	Timeout int
 	Envs    []Env
+	Args    string
+	Ykq     bool
 }
 
 type Env struct {
@@ -49,6 +51,7 @@ func createTask(task *Task) {
 }
 
 func runTask(task *Task, msgs ...interface{}) {
+	msg := ""
 	if task.Name == "" {
 		slice := strings.Split(task.Path, "/")
 		len := len(slice)
@@ -95,7 +98,7 @@ func runTask(task *Task, msgs ...interface{}) {
 		return
 	}
 	cmd.Dir = ExecPath + "/scripts/"
-	// cmd.Stderr = os.Stderr
+	cmd.Stderr = os.Stderr
 	err = cmd.Start()
 	if err != nil {
 		logs.Warn("%v", err)
@@ -107,9 +110,14 @@ func runTask(task *Task, msgs ...interface{}) {
 		if err2 != nil || io.EOF == err2 {
 			break
 		}
-		// if len(msgs) > 0 {
-		sendAdminMessagee(line, msgs...)
-		// }
+		if task.Ykq {
+			msg += line
+		} else {
+			sendAdminMessagee(line, msgs...)
+		}
+	}
+	if task.Ykq {
+		sendAdminMessagee(msg, msgs...)
 	}
 	err = cmd.Wait()
 	return
