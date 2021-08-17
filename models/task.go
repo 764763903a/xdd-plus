@@ -75,6 +75,7 @@ func runTask(task *Task, msgs ...interface{}) string {
 		f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 		if err != nil {
 			logs.Warn("打开%s失败，", path, err)
+			return ""
 		}
 		url := task.Path
 		if strings.Contains(url, "raw.githubusercontent.com") {
@@ -86,6 +87,23 @@ func runTask(task *Task, msgs ...interface{}) string {
 		}
 		io.Copy(f, r.Body)
 		f.Close()
+	} else {
+		if task.Name != task.Path {
+			f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+			if err != nil {
+				logs.Warn("打开%s失败，", path, err)
+				return ""
+			}
+			f2, err := os.Open(task.Path)
+			if err != nil {
+				f.Close()
+				logs.Warn("打开%s失败，", path, err)
+				return ""
+			}
+			io.Copy(f, f2)
+			f2.Close()
+			f.Close()
+		}
 	}
 	lan := Config.Node
 	if strings.Contains(task.Name, ".py") {
