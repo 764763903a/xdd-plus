@@ -50,7 +50,7 @@ if(pins){
 	for (var key in cookies) {
 	    c = false
 	    for (var pin of pins) {
-		   if (cookies[key].indexOf(pin) != -1) {
+		   if (pin && cookies[key].indexOf(pin) != -1) {
 			  c = true
 			  break
 		   }

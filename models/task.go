@@ -111,7 +111,7 @@ func runTask(task *Task, msgs ...interface{}) string {
 	}
 	envs := ""
 	for _, env := range task.Envs {
-		envs += fmt.Sprintf("export %s=%s", env.Name, env.Value)
+		envs += fmt.Sprintf("export %s=\"%s\"", env.Name, env.Value)
 	}
 	sh := fmt.Sprintf(`
 %s
