@@ -96,8 +96,7 @@ function tythelp() {
                 if (data.code == 0) {
                     console.log("帮砍：" + data.data.amount)
 
-                } else
-                if (data.msg.indexOf("完成") != -1) {
+                } else if (data && data.msg && data.msg.indexOf("完成") != -1) {
                     status = 1
                 }
                 console.log(data.msg)
