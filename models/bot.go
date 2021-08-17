@@ -250,51 +250,47 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					cks := GetJdCookies()
 					a := s[2]
 					pins := ""
-					{
-						if s := strings.Split(a, "-"); len(s) == 2 {
-							for i, ck := range cks {
-								if i+1 >= Int(s[0]) && i+1 <= Int(s[1]) {
+					if s := strings.Split(a, "-"); len(s) == 2 {
+						for i, ck := range cks {
+							if i+1 >= Int(s[0]) && i+1 <= Int(s[1]) {
+								pins += "&" + ck.PtPin
+							}
+						}
+					} else if x := regexp.MustCompile(`^[\s\d,]+$`).FindString(a); x != "" {
+						xx := regexp.MustCompile(`(\d+)`).FindAllStringSubmatch(a, -1)
+						for i, ck := range cks {
+							for _, x := range xx {
+								if fmt.Sprint(i+1) == x[1] {
 									pins += "&" + ck.PtPin
 								}
 							}
-						}
-					}
-					{
-						if x := regexp.MustCompile(`^[\s\d,]+$`).FindString(a); x != "" {
-							xx := regexp.MustCompile(`(\d+)`).FindAllStringSubmatch(a, -1)
-							for i, ck := range cks {
-								for _, x := range xx {
-									if fmt.Sprint(i+1) == x[1] {
-										pins += "&" + ck.PtPin
-									}
-								}
 
-							}
 						}
-					}
-					{
+					} else {
 						a = strings.Replace(a, " ", "", -1)
 						for _, ck := range cks {
 							if strings.Contains(ck.Note, a) || strings.Contains(ck.Nickname, a) || strings.Contains(ck.PtPin, a) {
 								pins += "&" + ck.PtPin
 							}
 						}
-						if pins == "" {
-							return "找不到匹配的账号"
-						}
-						fmt.Println(pins)
-						for _, task := range Config.Tasks {
-							if task.Word == "查询" {
-								task.Envs = []Env{{
-									Name:  "pins",
-									Value: pins,
-								}}
-								runTask(&task, msgs...)
-								break
-							}
-						}
-						return nil
 					}
+
+					if pins == "" {
+						return "找不到匹配的账号"
+					}
+					fmt.Println(pins)
+					for _, task := range Config.Tasks {
+						if task.Word == "查询" {
+							task.Envs = []Env{{
+								Name:  "pins",
+								Value: pins,
+							}}
+							runTask(&task, msgs...)
+							break
+						}
+					}
+					return nil
+
 				case "许愿":
 					if tp == "qqg" {
 						id = msgs[3].(int)
