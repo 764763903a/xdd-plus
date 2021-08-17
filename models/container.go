@@ -121,7 +121,7 @@ func (c *Container) write(cks []JdCookie) error {
 			if len(cks) != 0 {
 				for _, ck := range cks {
 					if ck.Available == True {
-						hh = append(hh, fmt.Sprintf(`{"name":"JD_COOKIE","value":"pt_key=%s;pt_pin=%s;","remarks":"%s"}`, ck.PtKey, ck.PtPin, ck.Note))
+						hh = append(hh, fmt.Sprintf(`{"name":"JD_COOKIE","value":"pt_key=%s;pt_pin=%s;","remarks":"%s"}`, ck.PtKey, ck.PtPin, ck.Nickname))
 					}
 				}
 				c.request("/api/envs", POST, fmt.Sprintf(`[%s]`, strings.Join(hh, ",")))
