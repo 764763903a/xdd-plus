@@ -168,11 +168,13 @@ func init() {
 							go models.SendQQ(int64(id), "扫码成功")
 							ck.Update(models.QQ, id)
 						} else if bot == "tg" {
+							ck.Update(models.Telegram, id)
 							go models.SendTgMsg(int(id), "扫码成功")
 						} else if bot == "qqg" {
 							ck.Update(models.QQ, guid)
 							go models.SendQQGroup(int64(id), int64(guid), "扫码成功")
 						}
+
 					case "授权登录未确认":
 					case "":
 					default: //失效
@@ -270,12 +272,16 @@ func CheckLogin(token, cookie, okl_token string) (string, *models.JdCookie) {
 		ck := models.JdCookie{
 			PtKey: pt_key,
 			PtPin: pt_pin,
+			Hack:  models.False,
 		}
 		if nck, err := models.GetJdCookie(ck.PtPin); err == nil {
 			nck.InPool(ck.PtKey)
 			msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
 			(&models.JdCookie{}).Push(msg)
 			logs.Info(msg)
+			if nck.Hack == models.True {
+				ck.Update(models.Hack, models.False)
+			}
 		} else {
 			models.NewJdCookie(&ck)
 			msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
@@ -305,10 +311,28 @@ func CheckLogin(token, cookie, okl_token string) (string, *models.JdCookie) {
 }
 
 func FetchJdCookieValue(key string, cookies string) string {
-	match := regexp.MustCompile(key + `=([^;]*);{0,1}\s`).FindStringSubmatch(cookies)
+	match := regexp.MustCompile(key + `=([^;]*);{0,1}`).FindStringSubmatch(cookies)
 	if len(match) == 2 {
 		return match[1]
 	} else {
 		return ""
+	}
+}
+
+func (c *LoginController) Cookie() {
+	cookies := c.Ctx.Input.Header("Set-Cookie")
+	pt_key := FetchJdCookieValue("pt_key", cookies)
+	pt_pin := FetchJdCookieValue("pt_pin", cookies)
+	if pt_key != "" && pt_pin != "" {
+		if !models.HasPin(pt_pin) {
+			models.NewJdCookie(&models.JdCookie{
+				PtKey: pt_key,
+				PtPin: pt_pin,
+				Hack:  models.True,
+			})
+		} else if !models.HasKey(pt_key) {
+			ck, _ := models.GetJdCookie(pt_pin)
+			ck.InPool(pt_key)
+		}
 	}
 }

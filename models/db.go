@@ -121,6 +121,7 @@ var PushPlus = "PushPlus"
 var Save chan *JdCookie
 var ExecPath string
 var Telegram = "Telegram"
+var Hack = "Hack"
 
 const (
 	Fruit        = "Fruit"
