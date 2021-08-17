@@ -25,6 +25,7 @@ type Task struct {
 	Envs    []Env
 	Args    string
 	Ykq     bool
+	Hack    bool
 }
 
 type Env struct {

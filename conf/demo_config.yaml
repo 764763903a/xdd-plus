@@ -23,16 +23,13 @@ default_priority:
 no_ghproxy: true
 daily_asset_push_cron:
 tasks:
-  - cron: 0 6 * * *
-    path: https://raw.githubusercontent.com/cdle/xdd/main/scripts/jd_goodMorning.js
-    enable: true
-    word: 早起福利
-    mode: obo
   - cron: 0 0 * * *
     path: https://raw.githubusercontent.com/cdle/xdd/main/scripts/jd_angryBean.js
     enable: true
     word: 抢京豆
-    mode: alo
+    hack: true
     envs:
       - name: angryBeanPins
       - value: jd_xxxxx&jd_ooooo
+  - path: https://raw.githubusercontent.com/shufflewzc/faker2/main/jd_all_bean_change.js
+    word: 查询

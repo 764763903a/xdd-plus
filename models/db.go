@@ -91,6 +91,7 @@ type JdCookie struct {
 	Cash         string `gorm:"column:Cash"`
 	Help         string `gorm:"column:Help;default:false" validate:"oneof=true false"`
 	Pool         string `gorm:"-"`
+	Hack         string `gorm:"column:Hack"  validate:"oneof=true false"`
 }
 
 type JdCookiePool struct {
