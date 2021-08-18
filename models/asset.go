@@ -516,19 +516,19 @@ func initPetTown(cookie string, state chan string) {
 	state <- rt
 }
 
-func jsGold(cookie string, state chan int64) {
-	req := httplib.Post(`https://api.m.jd.com/`)
-	req.Header("Accept", "application/json, text/plain, */*,")
+func jsGold(cookie string, state chan int64) { //
+	req := httplib.Post(`https://api.m.jd.com??functionId=MyAssetsService.execute&appid=market-task-h5`)
+	req.Header("Accept", "application/json, text/plain, */*")
+	req.Header("Accept-Encoding", "gzip, deflate, br")
+	req.Header("Cookie", cookie)
+	req.Header("Content-Type", "application/x-www-form-urlencoded")
 	req.Header("Origin", "https://gold.jd.com")
 	req.Header("Host", "api.m.jd.com")
-	req.Header("Accept-Encoding", "gzip, deflate, br")
+	req.Header("Connection", "keep-alive")
 	req.Header("User-Agent", ua)
-	req.Header("cookie", cookie)
 	req.Header("Referer", "https://gold.jd.com/")
-	req.Header("Content-Type", "application/x-www-form-urlencoded")
-	req.Body(`functionId=MyAssetsService.execute&body={"method":"goldShopPage","data":{"channel":1}}&_t=1629271472844&appid=market-task-h5;`)
+	req.Body(`functionId=MyAssetsService.execute&body={"method":"goldShopPage","data":{"channel":1}}&_t=` + fmt.Sprint(time.Now().Unix()) + `&appid=market-task-h5;`)
 	data, _ := req.Bytes()
-	fmt.Println(string(data))
 	gold, _ := jsonparser.GetInt(data, "data.balanceVO.goldBalance")
 	state <- gold
 }
