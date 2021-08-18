@@ -405,7 +405,7 @@ func initFarm(cookie string, state chan string) {
 		if a.TreeState == 2 || a.TreeState == 3 {
 			rt += "已可领取⏰"
 		} else if a.TreeState == 1 {
-			rt += "种植中🍒"
+			rt += fmt.Sprintf("种植中%f.2🍒", float64(a.FarmUserPro.TreeTotalEnergy)/float64(a.FarmUserPro.TreeEnergy))
 		} else if a.TreeState == 0 {
 			rt = "您忘了种植新的水果⏰"
 		}
