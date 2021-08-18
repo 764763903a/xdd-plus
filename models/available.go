@@ -133,6 +133,7 @@ func initCookie() {
 }
 
 func CookieOK(ck *JdCookie) bool {
+	// redPacket(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
 	if ck == nil {
 		return true
 	}

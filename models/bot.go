@@ -163,29 +163,23 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		return nil
 	case "查询", "query":
 		cks := GetJdCookies()
-		pins := ""
+		tmp := []JdCookie{}
 		for _, ck := range cks {
 			if tp == "qq" {
 				if ck.QQ == id {
-					pins += "&" + ck.PtPin
+					tmp = append(tmp, ck)
 				}
 			} else if tp == "qqg" {
 				if ck.QQ == msgs[3].(int) {
-					pins += "&" + ck.PtPin
+					tmp = append(tmp, ck)
 				}
 			}
 		}
-		if pins == "" {
+		if len(tmp) == 0 {
 			return "你尚未绑定🐶东账号，请对我说扫码，扫码后即可查询账户资产信息。"
 		}
-		for _, task := range Config.Tasks {
-			if task.Word == msg {
-				task.Envs = []Env{{
-					Name:  "pins",
-					Value: pins,
-				}}
-				runTask(&task, msgs...)
-			}
+		for _, ck := range tmp {
+			go sendMessagee(ck.Query(), msgs...)
 		}
 		return nil
 	default:
@@ -249,11 +243,11 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					}
 					cks := GetJdCookies()
 					a := s[2]
-					pins := ""
+					tmp := []JdCookie{}
 					if s := strings.Split(a, "-"); len(s) == 2 {
 						for i, ck := range cks {
 							if i+1 >= Int(s[0]) && i+1 <= Int(s[1]) {
-								pins += "&" + ck.PtPin
+								tmp = append(tmp, ck)
 							}
 						}
 					} else if x := regexp.MustCompile(`^[\s\d,]+$`).FindString(a); x != "" {
@@ -261,7 +255,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						for i, ck := range cks {
 							for _, x := range xx {
 								if fmt.Sprint(i+1) == x[1] {
-									pins += "&" + ck.PtPin
+									tmp = append(tmp, ck)
 								}
 							}
 
@@ -270,24 +264,16 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						a = strings.Replace(a, " ", "", -1)
 						for _, ck := range cks {
 							if strings.Contains(ck.Note, a) || strings.Contains(ck.Nickname, a) || strings.Contains(ck.PtPin, a) {
-								pins += "&" + ck.PtPin
+								tmp = append(tmp, ck)
 							}
 						}
 					}
 
-					if pins == "" {
+					if len(tmp) == 0 {
 						return "找不到匹配的账号"
 					}
-
-					for _, task := range Config.Tasks {
-						if task.Word == "查询" {
-							task.Envs = []Env{{
-								Name:  "pins",
-								Value: pins,
-							}}
-							runTask(&task, msgs...)
-							break
-						}
+					for _, ck := range tmp {
+						go sendMessagee(ck.Query(), msgs...)
 					}
 					return nil
 
