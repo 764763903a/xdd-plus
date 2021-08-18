@@ -35,6 +35,7 @@ type Yaml struct {
 	Npm                string
 	Python             string
 	Pip                string
+	NoAdmin            bool `yaml:"no_admin"`
 }
 
 var Balance = "balance"
@@ -45,7 +46,7 @@ var Cdle = false
 var Config Yaml
 
 func initConfig() {
-	if ExecPath == "/Users/cdle/Desktop/xdd" {
+	if ExecPath == "/Users/cdle/Desktop/xdd" || Config.NoAdmin {
 		Cdle = true
 	}
 	confDir := ExecPath + "/conf"
