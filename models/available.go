@@ -133,7 +133,7 @@ func initCookie() {
 }
 
 func CookieOK(ck *JdCookie) bool {
-	// jsGold(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
+	// Egg(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
 	if ck == nil {
 		return true
 	}
@@ -170,10 +170,8 @@ func CookieOK(ck *JdCookie) bool {
 			})
 			ck.Nickname = ui.Data.UserInfo.BaseInfo.Nickname
 			ck.BeanNum = ui.Data.AssetInfo.BeanNum
-
 		}
 	default:
-
 	}
 	return true
 }

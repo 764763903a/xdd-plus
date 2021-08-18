@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/beego/beego/v2/client/httplib"
+	"github.com/buger/jsonparser"
 )
 
 type Asset struct {
@@ -78,10 +79,12 @@ func (ck *JdCookie) Query() string {
 		var fruit = make(chan string)
 		var pet = make(chan string)
 		var gold = make(chan int64)
+		var egg = make(chan int64)
 		go redPacket(cookie, rpc)
 		go initFarm(cookie, fruit)
 		go initPetTown(cookie, pet)
 		go jsGold(cookie, gold)
+		go jxncEgg(cookie, gold)
 		today := time.Now().Local().Format("2006-01-02")
 		yestoday := time.Now().Local().Add(-time.Hour * 24).Format("2006-01-02")
 		page := 1
@@ -169,7 +172,8 @@ func (ck *JdCookie) Query() string {
 		msgs = append(msgs, fmt.Sprintf("东东农场：%s", <-fruit))
 		msgs = append(msgs, fmt.Sprintf("东东萌宠：%s", <-pet))
 		gn := <-gold
-		msgs = append(msgs, fmt.Sprintf("极速金币：%d(≈%.2f元)", gn, float64(gn)/10000))
+		msgs = append(msgs, fmt.Sprintf("极速金币：%d(≈%.2f元)💰", gn, float64(gn)/10000))
+		msgs = append(msgs, fmt.Sprintf("惊喜牧场：%d枚鸡蛋🥚", <-egg))
 	} else {
 		msgs = append(msgs, []string{
 			"提醒：该账号已过期，请重新登录",
@@ -565,4 +569,19 @@ func jsGold(cookie string, state chan int64) { //
 	data, _ := req.Bytes()
 	json.Unmarshal(data, &a)
 	state <- int64(a.Data.BalanceVO.GoldBalance)
+}
+
+func jxncEgg(cookie string, state chan int64) {
+	req := httplib.Get("https://m.jingxi.com/jxmc/queryservice/GetHomePageInfo?channel=7&sceneid=1001&activeid=null&activekey=null&isgift=1&isquerypicksite=1&_stk=activeid%2Cactivekey%2Cchannel%2Cisgift%2Cisquerypicksite%2Csceneid&_ste=1&h5st=20210818211830955%3B4408816258824161%3B10028%3Btk01w8db21b2130ny2eg0siAPpNQgBqjGzYfuG6IP7Z%2BAOB40BiqLQ%2Blglfi540AB%2FaQrTduHbnk61ngEeKn813gFeRD%3Bd9a0b833bf99a29ed726cbffa07ba955cc27d1ff7d2d55552878fc18fc667929&_=1629292710957&sceneval=2&g_login_type=1&g_ty=ls")
+	req.Header("User-Agent", ua)
+	req.Header("Host", "m.jingxi.com")
+	req.Header("Accept", "*/*")
+	req.Header("Connection", "keep-alive")
+	req.Header("Accept-Language", "zh-cn")
+	req.Header("Accept-Encoding", "gzip, deflate, br")
+	req.Header("Referer", "https://st.jingxi.com/pingou/jxmc/index.html?nativeConfig=%7B%22immersion%22%3A1%2C%22toColor%22%3A%22%23e62e0f%22%7D&;__mcwvt=sjcp&ptag=7155.9.95")
+	req.Header("Cookie", cookie)
+	data, _ := req.Bytes()
+	egg, _ := jsonparser.GetInt(data, "data", "eggcnt")
+	state <- egg
 }
