@@ -47,6 +47,7 @@ func initDB() {
 		keys[jp.PtKey] = true
 		pins[jp.PtPin] = true
 	}
+	db.Model(JdCookie{}).Where(fmt.Sprintf("%s != ? || %s != ?", Hack, Hack), False, True).Update(Hack, False)
 }
 
 func HasPin(pin string) bool {

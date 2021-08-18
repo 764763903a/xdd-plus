@@ -19,8 +19,6 @@ type Asset struct {
 		TodayOut    int
 		YestodayIn  int
 		YestodayOut int
-		MonthIn     int
-		MonthOut    int
 		ToExpire    []int
 	}
 	RedPacket struct {
@@ -68,7 +66,6 @@ func (ck *JdCookie) Query() string {
 	if CookieOK(ck) {
 		today := time.Now().Local().Format("2006-01-02")
 		yestoday := time.Now().Local().Add(-time.Hour * 24).Format("2006-01-02")
-		month := time.Now().Local().Format("2006-01")
 		page := 1
 		end := false
 		for {
@@ -82,35 +79,26 @@ func (ck *JdCookie) Query() string {
 			}
 			for _, bd := range bds {
 				amount := Int(bd.Amount)
-				if !strings.Contains(bd.Date, month) {
-					end = true
-					break
-				}
-				if amount > 0 {
-					asset.Bean.MonthIn += amount
-				} else {
-					asset.Bean.MonthOut += -amount
-				}
 				if strings.Contains(bd.Date, today) {
 					if amount > 0 {
 						asset.Bean.TodayIn += amount
 					} else {
 						asset.Bean.TodayOut += -amount
 					}
-				}
-				if strings.Contains(bd.Date, yestoday) {
+				} else if strings.Contains(bd.Date, yestoday) {
 					if amount > 0 {
 						asset.Bean.YestodayIn += amount
 					} else {
 						asset.Bean.YestodayOut += -amount
 					}
+				} else {
+					end = true
+					break
 				}
 			}
 			page++
 		}
 		msgs = append(msgs, []string{
-			fmt.Sprintf("当月收入：%d京豆", asset.Bean.MonthIn),
-			fmt.Sprintf("当月支出：%d京豆", asset.Bean.MonthOut),
 			fmt.Sprintf("昨日收入：%d京豆", asset.Bean.YestodayIn),
 			fmt.Sprintf("昨日支出：%d京豆", asset.Bean.YestodayOut),
 			fmt.Sprintf("今日收入：%d京豆", asset.Bean.TodayIn),
