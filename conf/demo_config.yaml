@@ -31,5 +31,3 @@ tasks:
     envs:
       - name: angryBeanPins
       - value: jd_xxxxx&jd_ooooo
-  - path: https://raw.githubusercontent.com/shufflewzc/faker2/main/jd_all_bean_change.js
-    word: 查询
