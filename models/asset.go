@@ -33,6 +33,11 @@ type Asset struct {
 		Js         float64
 		Jk         float64
 	}
+	Other struct {
+		JsCoin   float64
+		NcStatus float64
+		McStatus float64
+	}
 }
 
 var Int = func(s string) int {
@@ -67,13 +72,21 @@ func (ck *JdCookie) Query() string {
 	if CookieOK(ck) {
 		cookie := fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin)
 		var rpc = make(chan []RedList)
+		var fruit = make(chan string)
 		go redPacket(cookie, rpc)
+		go initFarm(cookie, fruit)
 		today := time.Now().Local().Format("2006-01-02")
 		yestoday := time.Now().Local().Add(-time.Hour * 24).Format("2006-01-02")
 		page := 1
 		end := false
 		for {
 			if end {
+				msgs = append(msgs, []string{
+					fmt.Sprintf("昨日收入：%d京豆", asset.Bean.YestodayIn),
+					fmt.Sprintf("昨日支出：%d京豆", asset.Bean.YestodayOut),
+					fmt.Sprintf("今日收入：%d京豆", asset.Bean.TodayIn),
+					fmt.Sprintf("今日支出：%d京豆", asset.Bean.TodayOut),
+				}...)
 				break
 			}
 			bds := getJingBeanBalanceDetail(page, cookie)
@@ -103,12 +116,6 @@ func (ck *JdCookie) Query() string {
 			}
 			page++
 		}
-		msgs = append(msgs, []string{
-			fmt.Sprintf("昨日收入：%d京豆", asset.Bean.YestodayIn),
-			fmt.Sprintf("昨日支出：%d京豆", asset.Bean.YestodayOut),
-			fmt.Sprintf("今日收入：%d京豆", asset.Bean.TodayIn),
-			fmt.Sprintf("今日支出：%d京豆", asset.Bean.TodayOut),
-		}...)
 		msgs = append(msgs, fmt.Sprintf("当前京豆：%v京豆", ck.BeanNum))
 		ysd := int(time.Now().Add(24 * time.Hour).Unix())
 		if rps := <-rpc; len(rps) != 0 {
@@ -152,6 +159,7 @@ func (ck *JdCookie) Query() string {
 		} else {
 			msgs = append(msgs, "暂无红包数据🧧")
 		}
+		msgs = append(msgs, fmt.Sprintf("东东农场：%s", <-fruit))
 	} else {
 		msgs = append(msgs, []string{
 			"提醒：该账号已过期，请重新登录",
@@ -231,4 +239,173 @@ func redPacket(cookie string, rpc chan []RedList) {
 	data, _ := req.Bytes()
 	json.Unmarshal(data, &a)
 	rpc <- a.Data.UseRedInfo.RedList
+}
+
+func initFarm(cookie string, state chan string) {
+	type RightUpResouces struct {
+		AdvertID string `json:"advertId"`
+		Name     string `json:"name"`
+		AppImage string `json:"appImage"`
+		AppLink  string `json:"appLink"`
+		CxyImage string `json:"cxyImage"`
+		CxyLink  string `json:"cxyLink"`
+		Type     string `json:"type"`
+		OpenLink bool   `json:"openLink"`
+	}
+	type TurntableInit struct {
+		TimeState int `json:"timeState"`
+	}
+	type MengchongResouce struct {
+		AdvertID string `json:"advertId"`
+		Name     string `json:"name"`
+		AppImage string `json:"appImage"`
+		AppLink  string `json:"appLink"`
+		CxyImage string `json:"cxyImage"`
+		CxyLink  string `json:"cxyLink"`
+		Type     string `json:"type"`
+		OpenLink bool   `json:"openLink"`
+	}
+	type GUIDPopupTask struct {
+		GUIDPopupTask string `json:"guidPopupTask"`
+	}
+	type IosConfigResouces struct {
+		AdvertID string `json:"advertId"`
+		Name     string `json:"name"`
+		AppImage string `json:"appImage"`
+		AppLink  string `json:"appLink"`
+		CxyImage string `json:"cxyImage"`
+		CxyLink  string `json:"cxyLink"`
+		Type     string `json:"type"`
+		OpenLink bool   `json:"openLink"`
+	}
+	type TodayGotWaterGoalTask struct {
+		CanPop bool `json:"canPop"`
+	}
+	type LeftUpResouces struct {
+		AdvertID string `json:"advertId"`
+		Name     string `json:"name"`
+		AppImage string `json:"appImage"`
+		AppLink  string `json:"appLink"`
+		CxyImage string `json:"cxyImage"`
+		CxyLink  string `json:"cxyLink"`
+		Type     string `json:"type"`
+		OpenLink bool   `json:"openLink"`
+	}
+	type RightDownResouces struct {
+		AdvertID string `json:"advertId"`
+		Name     string `json:"name"`
+		AppImage string `json:"appImage"`
+		AppLink  string `json:"appLink"`
+		CxyImage string `json:"cxyImage"`
+		CxyLink  string `json:"cxyLink"`
+		Type     string `json:"type"`
+		OpenLink bool   `json:"openLink"`
+	}
+	type FarmUserPro struct {
+		TotalEnergy     int    `json:"totalEnergy"`
+		TreeState       int    `json:"treeState"`
+		CreateTime      int64  `json:"createTime"`
+		TreeEnergy      int    `json:"treeEnergy"`
+		TreeTotalEnergy int    `json:"treeTotalEnergy"`
+		ShareCode       string `json:"shareCode"`
+		WinTimes        int    `json:"winTimes"`
+		NickName        string `json:"nickName"`
+		CouponKey       string `json:"couponKey"`
+		CouponID        string `json:"couponId"`
+		CouponEndTime   int64  `json:"couponEndTime"`
+		Type            string `json:"type"`
+		SimpleName      string `json:"simpleName"`
+		Name            string `json:"name"`
+		GoodsImage      string `json:"goodsImage"`
+		SkuID           string `json:"skuId"`
+		LastLoginDate   int64  `json:"lastLoginDate"`
+		NewOldState     int    `json:"newOldState"`
+		OldMarkComplete int    `json:"oldMarkComplete"`
+		CommonState     int    `json:"commonState"`
+		PrizeLevel      int    `json:"prizeLevel"`
+	}
+	type LeftDownResouces struct {
+		AdvertID string `json:"advertId"`
+		Name     string `json:"name"`
+		AppImage string `json:"appImage"`
+		AppLink  string `json:"appLink"`
+		CxyImage string `json:"cxyImage"`
+		CxyLink  string `json:"cxyLink"`
+		Type     string `json:"type"`
+		OpenLink bool   `json:"openLink"`
+	}
+	type LoadFriend struct {
+		Code            string      `json:"code"`
+		StatisticsTimes interface{} `json:"statisticsTimes"`
+		SysTime         int64       `json:"sysTime"`
+		Message         interface{} `json:"message"`
+		FirstAddUser    bool        `json:"firstAddUser"`
+	}
+	type AutoGenerated struct {
+		Code                  string                `json:"code"`
+		RightUpResouces       RightUpResouces       `json:"rightUpResouces"`
+		TurntableInit         TurntableInit         `json:"turntableInit"`
+		IosShieldConfig       interface{}           `json:"iosShieldConfig"`
+		MengchongResouce      MengchongResouce      `json:"mengchongResouce"`
+		ClockInGotWater       bool                  `json:"clockInGotWater"`
+		GUIDPopupTask         GUIDPopupTask         `json:"guidPopupTask"`
+		ToFruitEnergy         int                   `json:"toFruitEnergy"`
+		StatisticsTimes       interface{}           `json:"statisticsTimes"`
+		SysTime               int64                 `json:"sysTime"`
+		CanHongbaoContineUse  bool                  `json:"canHongbaoContineUse"`
+		ToFlowTimes           int                   `json:"toFlowTimes"`
+		IosConfigResouces     IosConfigResouces     `json:"iosConfigResouces"`
+		TodayGotWaterGoalTask TodayGotWaterGoalTask `json:"todayGotWaterGoalTask"`
+		LeftUpResouces        LeftUpResouces        `json:"leftUpResouces"`
+		MinSupportAPPVersion  string                `json:"minSupportAPPVersion"`
+		LowFreqStatus         int                   `json:"lowFreqStatus"`
+		FunCollectionHasLimit bool                  `json:"funCollectionHasLimit"`
+		Message               interface{}           `json:"message"`
+		TreeState             int                   `json:"treeState"`
+		RightDownResouces     RightDownResouces     `json:"rightDownResouces"`
+		IconFirstPurchaseInit bool                  `json:"iconFirstPurchaseInit"`
+		ToFlowEnergy          int                   `json:"toFlowEnergy"`
+		FarmUserPro           FarmUserPro           `json:"farmUserPro"`
+		RetainPopupLimit      int                   `json:"retainPopupLimit"`
+		ToBeginEnergy         int                   `json:"toBeginEnergy"`
+		LeftDownResouces      LeftDownResouces      `json:"leftDownResouces"`
+		EnableSign            bool                  `json:"enableSign"`
+		LoadFriend            LoadFriend            `json:"loadFriend"`
+		HadCompleteXgTask     bool                  `json:"hadCompleteXgTask"`
+		OldUserIntervalTimes  []int                 `json:"oldUserIntervalTimes"`
+		ToFruitTimes          int                   `json:"toFruitTimes"`
+		OldUserSendWater      []string              `json:"oldUserSendWater"`
+	}
+	a := AutoGenerated{}
+	req := httplib.Post(`https://api.m.jd.com/client.action?functionId=initForFarm`)
+	req.Header("accept", "*/*")
+	req.Header("accept-encoding", "gzip, deflate, br")
+	req.Header("accept-language", "zh-CN,zh;q=0.9")
+	req.Header("cache-control", "no-cache")
+	req.Header("cookie", cookie)
+	req.Header("origin", "https://home.m.jd.com")
+	req.Header("pragma", "no-cache")
+	req.Header("referer", "https://home.m.jd.com/myJd/newhome.action")
+	req.Header("sec-fetch-dest", "empty")
+	req.Header("sec-fetch-mode", "cors")
+	req.Header("sec-fetch-site", "same-site")
+	req.Header("User-Agent", ua)
+	req.Header("Content-Type", "application/x-www-form-urlencoded")
+	req.Body(`body={"version":4}&appid=wh5&clientVersion=9.1.0`)
+	data, _ := req.Bytes()
+	json.Unmarshal(data, &a)
+
+	rt := a.FarmUserPro.Name
+	if rt == "" {
+		rt = "数据异常"
+	} else {
+		if a.TreeState == 2 || a.TreeState == 3 {
+			rt += "已可领取⏰"
+		} else if a.TreeState == 1 {
+			rt += "种植中..."
+		} else if a.TreeState == 0 {
+			rt = "您忘了种植新的水果⏰"
+		}
+	}
+	state <- rt
 }
