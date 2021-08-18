@@ -496,7 +496,6 @@ func initPetTown(cookie string, state chan string) {
 	req.Header("Content-Type", "application/x-www-form-urlencoded")
 	req.Body(`body={}&appid=wh5&loginWQBiz=pet-town&clientVersion=9.0.4`)
 	data, _ := req.Bytes()
-	fmt.Println(data)
 	json.Unmarshal(data, &a)
 	rt := ""
 	if a.Code == "0" && a.ResultCode == "0" && a.Message == "success" {
@@ -519,11 +518,13 @@ func initPetTown(cookie string, state chan string) {
 
 func jsGold(cookie string, state chan int64) {
 	req := httplib.Post(`https://api.m.jd.com/`)
+	req.Header("Accept", "application/json, text/plain, */*,")
 	req.Header("Origin", "https://gold.jd.com")
 	req.Header("Host", "api.m.jd.com")
 	req.Header("Accept-Encoding", "gzip, deflate, br")
 	req.Header("User-Agent", ua)
 	req.Header("cookie", cookie)
+	req.Header("Referer", "https://gold.jd.com/")
 	req.Header("Content-Type", "application/x-www-form-urlencoded")
 	req.Body(`functionId=MyAssetsService.execute&body={"method":"goldShopPage","data":{"channel":1}}&_t=1629271472844&appid=market-task-h5;`)
 	data, _ := req.Bytes()
