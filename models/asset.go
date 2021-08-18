@@ -117,26 +117,26 @@ func (ck *JdCookie) Query() string {
 				asset.RedPacket.Total += b
 				if strings.Contains(rp.ActivityName, "京喜") {
 					asset.RedPacket.Jx += b
-					if ysd >= rp.BeginTime {
+					if ysd >= rp.EndTime {
 						asset.RedPacket.ToExpireJx += b
 						asset.RedPacket.ToExpire += b
 					}
 				} else if strings.Contains(rp.ActivityName, "极速版") {
 					asset.RedPacket.Js += b
-					if ysd >= rp.BeginTime {
+					if ysd >= rp.EndTime {
 						asset.RedPacket.ToExpireJs += b
 						asset.RedPacket.ToExpire += b
 					}
 
 				} else if strings.Contains(rp.ActivityName, "京东健康") {
 					asset.RedPacket.Jk += b
-					if ysd >= rp.BeginTime {
+					if ysd >= rp.EndTime {
 						asset.RedPacket.ToExpireJk += b
 						asset.RedPacket.ToExpire += b
 					}
 				} else {
 					asset.RedPacket.Jd += b
-					if ysd >= rp.BeginTime {
+					if ysd >= rp.EndTime {
 						asset.RedPacket.ToExpireJd += b
 						asset.RedPacket.ToExpire += b
 					}
