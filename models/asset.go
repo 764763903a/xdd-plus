@@ -409,7 +409,7 @@ func initFarm(cookie string, state chan string) {
 		if a.TreeState == 2 || a.TreeState == 3 {
 			rt += "已可领取⏰"
 		} else if a.TreeState == 1 {
-			rt += fmt.Sprintf("种植中，进度%.2f%%🍒", 1-float64(a.FarmUserPro.TreeTotalEnergy)/float64(a.FarmUserPro.TreeEnergy))
+			rt += fmt.Sprintf("种植中，进度%.2f%%🍒", 1-(float64(a.FarmUserPro.TreeTotalEnergy)/float64(a.FarmUserPro.TreeEnergy)))
 		} else if a.TreeState == 0 {
 			rt = "您忘了种植新的水果⏰"
 		}
@@ -515,7 +515,7 @@ func initPetTown(cookie string, state chan string) {
 	state <- rt
 }
 
-func jsGold(cookie string, state chan int64) {
+func jsGold(cookie string, state chan int64) { //
 
 	type BalanceVO struct {
 		CashBalance       string `json:"cashBalance"`
