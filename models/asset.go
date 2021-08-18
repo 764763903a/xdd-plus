@@ -527,6 +527,6 @@ func jsGold(cookie string, state chan int64) {
 	req.Header("Content-Type", "application/x-www-form-urlencoded")
 	req.Body(`functionId=MyAssetsService.execute&body={"method":"goldShopPage","data":{"channel":1}}&_t=1629271472844&appid=market-task-h5;`)
 	data, _ := req.Bytes()
-	gold, _ := jsonparser.GetInt(data, "data.content.balanceVO.formateGoldBalance")
+	gold, _ := jsonparser.GetInt(data, "data.balanceVO.formateGoldBalance")
 	state <- gold
 }
