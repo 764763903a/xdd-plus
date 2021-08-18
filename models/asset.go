@@ -162,12 +162,18 @@ func (ck *JdCookie) Query() string {
 					}
 				}
 			}
+			e := func(m float64) string {
+				if m > 0 {
+					return fmt.Sprintf(`(今日过期%.2f)`, m)
+				}
+				return ""
+			}
 			msgs = append(msgs, []string{
-				fmt.Sprintf("所有红包：%.2f(今日总过期%.2f)元🧧", asset.RedPacket.Total, asset.RedPacket.ToExpire),
-				fmt.Sprintf("京喜红包：%.2f(今日总过期%.2f)元🧧", asset.RedPacket.Jx, asset.RedPacket.ToExpireJx),
-				fmt.Sprintf("极速红包：%.2f(今日总过期%.2f)元🧧", asset.RedPacket.Js, asset.RedPacket.ToExpireJs),
-				fmt.Sprintf("健康红包：%.2f(今日总过期%.2f)元🧧", asset.RedPacket.Jk, asset.RedPacket.ToExpireJk),
-				fmt.Sprintf("京东红包：%.2f(今日总过期%.2f)元🧧", asset.RedPacket.Jd, asset.RedPacket.ToExpireJd),
+				fmt.Sprintf("所有红包：%.2f%s元🧧", asset.RedPacket.Total, e(asset.RedPacket.ToExpire)),
+				fmt.Sprintf("京喜红包：%.2f%s元🧧", asset.RedPacket.Jx, e(asset.RedPacket.ToExpireJx)),
+				fmt.Sprintf("极速红包：%.2f%s元🧧", asset.RedPacket.Js, e(asset.RedPacket.ToExpireJs)),
+				fmt.Sprintf("健康红包：%.2f%s元🧧", asset.RedPacket.Jk, e(asset.RedPacket.ToExpireJk)),
+				fmt.Sprintf("京东红包：%.2f%s元🧧", asset.RedPacket.Jd, e(asset.RedPacket.ToExpireJd)),
 			}...)
 		} else {
 			msgs = append(msgs, "暂无红包数据🧧")
