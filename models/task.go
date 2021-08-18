@@ -54,13 +54,13 @@ func createTask(task *Task) {
 }
 
 func runTask(task *Task, msgs ...interface{}) string {
-	if len(msgs) > 0 {
-		if msgs[1].(string) == "tg" {
-			task.Ykq = false
-		} else {
-			task.Ykq = true
-		}
-	}
+	// if len(msgs) > 0 {
+	// 	if msgs[1].(string) == "tg" {
+	// 		task.Ykq = false
+	// 	} else {
+	// 		task.Ykq = true
+	// 	}
+	// }
 	msg := ""
 	if task.Name == "" {
 		slice := strings.Split(task.Path, "/")
