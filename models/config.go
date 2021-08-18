@@ -46,9 +46,6 @@ var Cdle = false
 var Config Yaml
 
 func initConfig() {
-	if ExecPath == "/Users/cdle/Desktop/xdd" || Config.NoAdmin {
-		Cdle = true
-	}
 	confDir := ExecPath + "/conf"
 	if _, err := os.Stat(confDir); err != nil {
 		os.MkdirAll(confDir, os.ModePerm)
@@ -74,6 +71,9 @@ func initConfig() {
 	}
 	if yaml.Unmarshal(content, &Config) != nil {
 		logs.Warn("解析config.yaml出错: %v", err)
+	}
+	if ExecPath == "/Users/cdle/Desktop/xdd" || Config.NoAdmin {
+		Cdle = true
 	}
 	if Config.Master == "" {
 		Config.Master = "xxxx"
