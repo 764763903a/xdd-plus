@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/beego/beego/v2/client/httplib"
+	"github.com/buger/jsonparser"
 )
 
 type Asset struct {
@@ -74,9 +75,11 @@ func (ck *JdCookie) Query() string {
 		var rpc = make(chan []RedList)
 		var fruit = make(chan string)
 		var pet = make(chan string)
+		var gold = make(chan int64)
 		go redPacket(cookie, rpc)
 		go initFarm(cookie, fruit)
 		go initPetTown(cookie, pet)
+		go jsGold(cookie, gold)
 		today := time.Now().Local().Format("2006-01-02")
 		yestoday := time.Now().Local().Add(-time.Hour * 24).Format("2006-01-02")
 		page := 1
@@ -163,6 +166,8 @@ func (ck *JdCookie) Query() string {
 		}
 		msgs = append(msgs, fmt.Sprintf("东东农场：%s", <-fruit))
 		msgs = append(msgs, fmt.Sprintf("东东萌宠：%s", <-pet))
+		gn := <-gold
+		msgs = append(msgs, fmt.Sprintf("极速金币：%d(≈%.2f元)", gn, float64(gn)/1000))
 	} else {
 		msgs = append(msgs, []string{
 			"提醒：该账号已过期，请重新登录",
@@ -504,10 +509,22 @@ func initPetTown(cookie string, state chan string) {
 		} else if a.Result.PetStatus == 6 {
 			rt = a.Result.GoodsInfo.GoodsName + "未继续领养新的物品⏰"
 		} else {
-			rt = a.Result.GoodsInfo.GoodsName + fmt.Sprintf("领养中，进度%.2f%%，勋章%d/%d", a.Result.MedalPercent, a.Result.MedalNum, a.Result.GoodsInfo.ExchangeMedalNum)
+			rt = a.Result.GoodsInfo.GoodsName + fmt.Sprintf("领养中，进度%.2f%%，勋章%d/%d🐶", a.Result.MedalPercent, a.Result.MedalNum, a.Result.GoodsInfo.ExchangeMedalNum)
 		}
 	} else {
 		rt = "数据异常"
 	}
 	state <- rt
+}
+
+func jsGold(cookie string, state chan int64) {
+	req := httplib.Post(`https://api.m.jd.com/client.action?functionId=initPetTown`)
+	req.Header("Host", "api.m.jd.com")
+	req.Header("User-Agent", ua)
+	req.Header("cookie", cookie)
+	req.Header("Content-Type", "application/x-www-form-urlencoded")
+	req.Body(`body={"method": "userCashRecord", "data": {"channel": 1, "pageNum": 1, "pageSize": 20}}&appid=wh5&loginWQBiz=pet-town&clientVersion=9.0.4`)
+	data, _ := req.Bytes()
+	gold, _ := jsonparser.GetInt(data, "data.content.balanceVO.formateGoldBalance")
+	state <- gold
 }
