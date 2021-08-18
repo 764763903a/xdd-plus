@@ -166,7 +166,7 @@ func (ck *JdCookie) Query() string {
 		msgs = append(msgs, fmt.Sprintf("东东农场：%s", <-fruit))
 		msgs = append(msgs, fmt.Sprintf("东东萌宠：%s", <-pet))
 		gn := <-gold
-		msgs = append(msgs, fmt.Sprintf("极速金币：%d(≈%.2f元)", gn, float64(gn)/1000))
+		msgs = append(msgs, fmt.Sprintf("极速金币：%d(≈%.2f元)", gn, float64(gn)/10000))
 	} else {
 		msgs = append(msgs, []string{
 			"提醒：该账号已过期，请重新登录",
