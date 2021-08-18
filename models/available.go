@@ -133,7 +133,7 @@ func initCookie() {
 }
 
 func CookieOK(ck *JdCookie) bool {
-	// initFarm(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
+	// initPetTown(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
 	if ck == nil {
 		return true
 	}
