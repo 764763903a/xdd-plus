@@ -515,7 +515,7 @@ func initPetTown(cookie string, state chan string) {
 	state <- rt
 }
 
-func jsGold(cookie string, state chan int64) { //
+func jsGold(cookie string, state chan int64) {
 
 	type BalanceVO struct {
 		CashBalance       string `json:"cashBalance"`
