@@ -139,11 +139,11 @@ func runTask(task *Task, msgs ...interface{}) string {
 			break
 		}
 		msg += line
-		if !task.Ykq {
+		if !task.Ykq && len(msgs) > 0 {
 			sendMessagee(line, msgs...)
 		}
 	}
-	if task.Ykq {
+	if task.Ykq && len(msgs) > 0 {
 		sendMessagee(msg, msgs...)
 	}
 	err = cmd.Wait()
