@@ -169,11 +169,11 @@ func (ck *JdCookie) Query() string {
 				return ""
 			}
 			msgs = append(msgs, []string{
-				fmt.Sprintf("所有红包：%.2f%s元🧧", asset.RedPacket.Total, e(asset.RedPacket.ToExpire)),
-				fmt.Sprintf("京喜红包：%.2f%s元🧧", asset.RedPacket.Jx, e(asset.RedPacket.ToExpireJx)),
-				fmt.Sprintf("极速红包：%.2f%s元🧧", asset.RedPacket.Js, e(asset.RedPacket.ToExpireJs)),
-				fmt.Sprintf("健康红包：%.2f%s元🧧", asset.RedPacket.Jk, e(asset.RedPacket.ToExpireJk)),
-				fmt.Sprintf("京东红包：%.2f%s元🧧", asset.RedPacket.Jd, e(asset.RedPacket.ToExpireJd)),
+				fmt.Sprintf("所有红包：%.2f%s元", asset.RedPacket.Total, e(asset.RedPacket.ToExpire)),
+				fmt.Sprintf("京喜红包：%.2f%s元", asset.RedPacket.Jx, e(asset.RedPacket.ToExpireJx)),
+				fmt.Sprintf("极速红包：%.2f%s元", asset.RedPacket.Js, e(asset.RedPacket.ToExpireJs)),
+				fmt.Sprintf("健康红包：%.2f%s元", asset.RedPacket.Jk, e(asset.RedPacket.ToExpireJk)),
+				fmt.Sprintf("京东红包：%.2f%s元", asset.RedPacket.Jd, e(asset.RedPacket.ToExpireJd)),
 			}...)
 		} else {
 			msgs = append(msgs, "暂无红包数据🧧")
