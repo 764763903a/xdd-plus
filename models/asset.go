@@ -68,6 +68,9 @@ func (ck *JdCookie) Query() string {
 	msgs := []string{
 		fmt.Sprintf("账号昵称：%s", ck.Nickname),
 	}
+	if ck.Note != "" {
+		msgs = append(msgs, fmt.Sprintf("账号备注：%s", ck.Note))
+	}
 	asset := Asset{}
 	if CookieOK(ck) {
 		cookie := fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin)
