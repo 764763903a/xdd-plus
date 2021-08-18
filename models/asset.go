@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/beego/beego/v2/client/httplib"
-	"github.com/buger/jsonparser"
 )
 
 type Asset struct {
@@ -518,13 +517,14 @@ func initPetTown(cookie string, state chan string) {
 }
 
 func jsGold(cookie string, state chan int64) {
-	req := httplib.Post(`https://api.m.jd.com/client.action?functionId=initPetTown`)
-	req.Header("Host", "api.m.jd.com")
-	req.Header("User-Agent", ua)
-	req.Header("cookie", cookie)
-	req.Header("Content-Type", "application/x-www-form-urlencoded")
-	req.Body(`body={"method": "userCashRecord", "data": {"channel": 1, "pageNum": 1, "pageSize": 20}}&appid=wh5&loginWQBiz=pet-town&clientVersion=9.0.4`)
-	data, _ := req.Bytes()
-	gold, _ := jsonparser.GetInt(data, "data.content.balanceVO.formateGoldBalance")
+	// req := httplib.Post(`https://api.m.jd.com/client.action?functionId=MyAssetsService.execute`)
+	// req.Header("Host", "api.m.jd.com")
+	// req.Header("User-Agent", ua)
+	// req.Header("cookie", cookie)
+	// req.Header("Content-Type", "application/x-www-form-urlencoded")
+	// req.Body(``)
+	// data, _ := req.Bytes()
+	// gold, _ := jsonparser.GetInt(data, "data.content.balanceVO.formateGoldBalance")
+	gold := int64(0)
 	state <- gold
 }
