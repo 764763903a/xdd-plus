@@ -30,4 +30,4 @@ tasks:
     hack: true
     envs:
       - name: angryBeanPins
-      - value: jd_xxxxx&jd_ooooo
+        value: jd_xxxxx&jd_ooooo
