@@ -48,18 +48,7 @@ var Float64 = func(s string) float64 {
 func DailyAssetsPush() {
 	for _, ck := range GetJdCookies() {
 		if (ck.QQ != 0 && Config.QQID != 0 && SendQQ != nil) || ck.PushPlus != "" {
-			msg := ""
-			for _, task := range Config.Tasks {
-				if task.Word == "查询" {
-					task.Envs = []Env{{
-						Name:  "pins",
-						Value: ck.PtPin,
-					}}
-					task.Ykq = false
-					msg = runTask(&task)
-					break
-				}
-			}
+			msg := ck.Query()
 			if ck.QQ != 0 && Config.QQID != 0 && SendQQ != nil {
 				SendQQ(int64(ck.QQ), msg)
 			}
