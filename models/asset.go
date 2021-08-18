@@ -405,7 +405,7 @@ func initFarm(cookie string, state chan string) {
 		if a.TreeState == 2 || a.TreeState == 3 {
 			rt += "已可领取⏰"
 		} else if a.TreeState == 1 {
-			rt += fmt.Sprintf("种植中%.2f%%🍒", float64(a.FarmUserPro.TreeTotalEnergy)/float64(a.FarmUserPro.TreeEnergy))
+			rt += fmt.Sprintf("种植中，进度%.2f%%🍒", float64(a.FarmUserPro.TreeTotalEnergy)/float64(a.FarmUserPro.TreeEnergy))
 		} else if a.TreeState == 0 {
 			rt = "您忘了种植新的水果⏰"
 		}
@@ -504,7 +504,7 @@ func initPetTown(cookie string, state chan string) {
 		} else if a.Result.PetStatus == 6 {
 			rt = a.Result.GoodsInfo.GoodsName + "未继续领养新的物品⏰"
 		} else {
-			rt = a.Result.GoodsInfo.GoodsName + fmt.Sprintf("领养中%.2f%%🐶", a.Result.MedalPercent)
+			rt = a.Result.GoodsInfo.GoodsName + fmt.Sprintf("领养中，进度%.2f%%🐶", a.Result.MedalPercent)
 		}
 	} else {
 		rt = "数据异常"
