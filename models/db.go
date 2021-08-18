@@ -247,6 +247,7 @@ func CheckIn(pin, key string) int {
 		NewJdCookie(&JdCookie{
 			PtKey: key,
 			PtPin: pin,
+			Hack:  False,
 		})
 		return 0
 	} else if !HasKey(key) {
