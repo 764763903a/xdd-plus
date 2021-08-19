@@ -133,7 +133,7 @@ func runTask(task *Task, msgs ...interface{}) string {
 		}
 		msg += line
 		if !task.Ykq && len(msgs) > 0 {
-			sendMessagee(line, msgs...)
+			sendMessagee(strings.Replace(line, "\n", "", -1), msgs...)
 		}
 	}
 	if task.Ykq && len(msgs) > 0 {
