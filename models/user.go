@@ -69,3 +69,13 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 		sendMessagee(msg, msgs...)
 	}
 }
+
+func AddCoin(uid int) int {
+	var u User
+	db.Where("number = ?", uid).First(&u)
+	db.Updates(map[string]interface{}{
+		"coin": gorm.Expr("coin+1"),
+	})
+	u.Coin++
+	return u.Coin
+}

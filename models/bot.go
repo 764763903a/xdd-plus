@@ -178,21 +178,23 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						} else if tp == "tg" || tp == "tgg" {
 							ck.Telegram = uid
 						}
-						if nck, err := GetJdCookie(ck.PtPin); err == nil {
-							nck.InPool(ck.PtKey)
-							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-							(&JdCookie{}).Push(msg)
-							sendMessagee("许愿币+1", msgs...)
-							logs.Info(msg)
+						if HasKey(ck.PtKey) {
+							sendMessagee("作弊许愿币-1", msgs...)
 						} else {
-							if Cdle {
-								ck.Hack = True
+							if nck, err := GetJdCookie(ck.PtPin); err == nil {
+								nck.InPool(ck.PtKey)
+								msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+								(&JdCookie{}).Push(msg)
+								logs.Info(msg)
+							} else {
+								if Cdle {
+									ck.Hack = True
+								}
+								NewJdCookie(&ck)
+								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+								sendMessagee(fmt.Sprintf("许愿币+1，余额%d", AddCoin(uid)), msgs...)
+								logs.Info(msg)
 							}
-							NewJdCookie(&ck)
-							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-							(&JdCookie{}).Push(msg)
-							sendMessagee("许愿币+1", msgs...)
-							logs.Info(msg)
 						}
 					}
 				}
