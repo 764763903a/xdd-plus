@@ -30,6 +30,7 @@ func initVersion() {
 				err := Update()
 				if err != nil {
 					logs.Warn("更新失败,", err)
+					return
 				}
 				// rsp, err := httplib.Get(GhProxy + "https://github.com/cdle/jd_study/releases/download/main/" + name).Response()
 				// if err != nil {

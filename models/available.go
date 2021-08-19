@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/beego/beego/v2/client/httplib"
 )
@@ -133,12 +134,12 @@ func initCookie() {
 }
 
 func CookieOK(ck *JdCookie) bool {
-	// tytCoupon(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
+	cookie := fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin)
 	if ck == nil {
 		return true
 	}
 	req := httplib.Get("https://me-api.jd.com/user_new/info/GetJDUserInfoUnion")
-	req.Header("Cookie", fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
+	req.Header("Cookie", cookie)
 	req.Header("Accept", "*/*")
 	req.Header("Accept-Language", "zh-cn,")
 	req.Header("Connection", "keep-alive,")
@@ -171,7 +172,24 @@ func CookieOK(ck *JdCookie) bool {
 			ck.Nickname = ui.Data.UserInfo.BaseInfo.Nickname
 			ck.BeanNum = ui.Data.AssetInfo.BeanNum
 		}
-	default:
+		return true
 	}
-	return true
+	return av2(cookie)
+}
+
+func av2(cookie string) bool {
+	req := httplib.Get(`https://m.jingxi.com/user/info/GetJDUserBaseInfo?_=1629334995401&sceneval=2&g_login_type=1&g_ty=ls`)
+	req.Header("User-Agent", ua)
+	req.Header("Host", "m.jingxi.com")
+	req.Header("Accept", "*/*")
+	req.Header("Connection", "keep-alive")
+	req.Header("Accept-Language", "zh-cn")
+	req.Header("Accept-Encoding", "gzip, deflate, br")
+	req.Header("Referer", "https://st.jingxi.com/my/userinfo.html?&ptag=7205.12.4")
+	req.Header("Cookie", cookie)
+	data, err := req.String()
+	if err != nil {
+		return true
+	}
+	return !strings.Contains(data, "login")
 }
