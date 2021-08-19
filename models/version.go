@@ -26,7 +26,7 @@ func initVersion() {
 		// name := AppName + "_" + runtime.GOOS + "_" + runtime.GOARCH
 		if match := regexp.MustCompile(`var version = "(\d{10})"`).FindStringSubmatch(value); len(match) != 0 {
 			if match[1] > version {
-				logs.Warn("版本过低，自动更新")
+				(&JdCookie{}).Push("版本过低，自动更新")
 				err := Update()
 				if err != nil {
 					logs.Warn("更新失败,", err)
