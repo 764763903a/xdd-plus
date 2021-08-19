@@ -55,7 +55,7 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 	} else {
 		if zero.Unix() > u.ActiveAt.Unix() {
 			first = true
-			db.Updates(map[string]interface{}{
+			db.Model(&u).Updates(map[string]interface{}{
 				"active_at": ntime,
 				"coin":      gorm.Expr("coin+1"),
 			})
