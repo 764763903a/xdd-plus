@@ -19,12 +19,6 @@ type QywxNotifyMessage struct {
 }
 
 func qywxNotify(c *QywxConfig) {
-	// if Config.TelegramBotToken == "" {
-
-	// }
-	if c.QywxKey == "" {
-		c.QywxKey = Config.QywxKey
-	}
 	if c.QywxKey == "" {
 		return
 	}

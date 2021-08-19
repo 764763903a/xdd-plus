@@ -7,6 +7,9 @@ import (
 )
 
 func pushPlus(token string, content string) {
+	if token == "" {
+		return
+	}
 	req := httplib.Post("http://pushplus.hxtrip.com/send")
 	req.Header("Content-Type", "application/json")
 	data, _ := json.Marshal(struct {

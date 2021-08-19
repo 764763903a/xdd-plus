@@ -38,17 +38,6 @@ func initTgBot() {
 	}()
 }
 
-func tgBotNotify(msg string) {
-	if b == nil {
-		return
-	}
-	if Config.TelegramUserID == 0 {
-		logs.Warn("tgbot未绑定用id")
-		return
-	}
-	b.Send(&tb.User{ID: Config.TelegramUserID}, msg)
-}
-
 func SendTgMsg(id int, msg string) {
 	if b == nil || id == 0 {
 		return
