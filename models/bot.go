@@ -14,7 +14,9 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-var SendQQ func(int64, interface{})
+var SendQQ = func(a int64, b interface{}) {
+
+}
 var SendQQGroup func(int64, int64, interface{})
 var ListenQQPrivateMessage = func(uid int64, msg string) {
 	SendQQ(uid, handleMessage(msg, "qq", int(uid)))
