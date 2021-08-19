@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -26,10 +25,10 @@ func initTgBot() {
 			return
 		}
 		b.Handle(tb.OnText, func(m *tb.Message) {
-			fmt.Println(m.Text, m.FromGroup())
+			// fmt.Println(m.Text, m.FromGroup())
 			if !m.FromGroup() {
 				rt := handleMessage(m.Text, "tg", m.Sender.ID)
-				fmt.Println(rt)
+				// fmt.Println(rt)
 				switch rt.(type) {
 				case string:
 					b.Send(m.Sender, rt.(string))
