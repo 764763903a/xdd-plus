@@ -100,7 +100,7 @@ function tythelp() {
                     console.log("帮砍：" + data.data.amount)
 
                 } else if (data.msg.indexOf("完成") != -1) {
-                    console.log("砍价成功")
+                    console.log("已完成砍价")
                     status = 1
                 } else {
                     console.log(data.msg)
