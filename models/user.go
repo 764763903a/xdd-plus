@@ -26,8 +26,10 @@ func NewActiveUser(class string, uid int) (bool, string) {
 	var u User
 	var ntime = time.Now()
 	var first = false
+	msg := ""
 	total := []int{}
-	err := db.Where("class = ? and number = ?", class, uid).First(&u).Error
+	tx := db.Begin()
+	err := tx.Where("class = ? and number = ?", class, uid).First(&u).Error
 	if err != nil {
 		first = true
 		u = User{
@@ -36,13 +38,14 @@ func NewActiveUser(class string, uid int) (bool, string) {
 			Coin:     1,
 			ActiveAt: ntime,
 		}
-		if err := db.Create(u).Error; err != nil {
+		if err := tx.Create(&u).Error; err != nil {
+			tx.Rollback()
 			return true, err.Error()
 		}
 	} else {
 		if zero.After(u.ActiveAt) {
 			first = true
-			db.Updates(map[string]interface{}{
+			tx.Updates(map[string]interface{}{
 				"active_at": ntime,
 				"coin":      gorm.Expr("coin+1"),
 			})
@@ -50,7 +53,9 @@ func NewActiveUser(class string, uid int) (bool, string) {
 		}
 	}
 	if first {
-		db.Select("count(id) as total").Where("active_at > ?", u.ActiveAt).Pluck("total", &total)
+		tx.Model(User{}).Select("count(id) as total").Where("active_at > ?", zero).Pluck("total", &total)
+		msg = fmt.Sprintf("你是今天第%d个发言的用户，奖励%d个心愿币，心愿币余额%d。", total[0]+1, 1, u.Coin)
 	}
-	return first, fmt.Sprintf("你是今天第%d个发言的用户，奖励%d个心愿币，心愿币余额%d", total[0]+1, 1, u.Coin)
+	tx.Commit()
+	return first, msg
 }
