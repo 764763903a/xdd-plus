@@ -89,3 +89,9 @@ func RemCoin(uid int) int {
 	u.Coin--
 	return u.Coin
 }
+
+func GetCoin(uid int) int {
+	var u User
+	db.Where("number = ?", uid).First(&u)
+	return u.Coin
+}
