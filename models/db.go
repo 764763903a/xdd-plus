@@ -187,7 +187,7 @@ func (ck *JdCookie) InPool(pt_key string) error {
 			tx.Rollback()
 			return err
 		}
-		tx.Model(ck).Where(fmt.Sprintf("%s = '%s'", Available, False)).Updates(map[string]interface{}{
+		tx.Model(ck).Updates(map[string]interface{}{
 			Available: True,
 			PtKey:     pt_key,
 		})
