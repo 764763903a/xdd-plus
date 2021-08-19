@@ -73,7 +73,7 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 func AddCoin(uid int) int {
 	var u User
 	db.Where("number = ?", uid).First(&u)
-	db.Updates(map[string]interface{}{
+	db.Model(User{}).Updates(map[string]interface{}{
 		"coin": gorm.Expr("coin+1"),
 	})
 	u.Coin++
@@ -83,7 +83,7 @@ func AddCoin(uid int) int {
 func RemCoin(uid int) int {
 	var u User
 	db.Where("number = ?", uid).First(&u)
-	db.Updates(map[string]interface{}{
+	db.Model(User{}).Updates(map[string]interface{}{
 		"coin": gorm.Expr("coin-1"),
 	})
 	u.Coin--
