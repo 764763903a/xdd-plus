@@ -24,7 +24,7 @@ func initHandle() {
 			cks := GetJdCookies()
 			tmp := []JdCookie{}
 			for _, ck := range cks {
-				if ck.Priority >= 0 {
+				if ck.Priority >= 0 && ck.Hack == False {
 					tmp = append(tmp, ck)
 				}
 			}
