@@ -179,7 +179,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							ck.Telegram = uid
 						}
 						if HasKey(ck.PtKey) {
-							sendMessagee("作弊许愿币-1", msgs...)
+							sendMessagee(fmt.Sprintf("作弊，许愿币-1，余额%d", RemCoin(uid)), msgs...)
 						} else {
 							if nck, err := GetJdCookie(ck.PtPin); err == nil {
 								nck.InPool(ck.PtKey)
@@ -192,7 +192,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								}
 								NewJdCookie(&ck)
 								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-								sendMessagee(fmt.Sprintf("许愿币+1，余额%d", AddCoin(uid)), msgs...)
+								sendMessagee(fmt.Sprintf("很棒，许愿币+1，余额%d", AddCoin(uid)), msgs...)
 								logs.Info(msg)
 							}
 						}
