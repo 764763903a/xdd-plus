@@ -114,17 +114,29 @@ func runTask(task *Task, msgs ...interface{}) string {
 		lan, task.Name)
 	cmd := exec.Command("sh", "-c", sh)
 	stdout, err := cmd.StdoutPipe()
+	stderr, err := cmd.StderrPipe()
 	if err != nil {
 		logs.Warn("cmd.StdoutPipe: ", err)
 		return ""
 	}
 	cmd.Dir = ExecPath + "/scripts/"
-	cmd.Stderr = os.Stderr
 	err = cmd.Start()
 	if err != nil {
 		logs.Warn("%v", err)
 		return ""
 	}
+	go func() {
+		msg := ""
+		reader := bufio.NewReader(stderr)
+		for {
+			line, err2 := reader.ReadString('\n')
+			if err2 != nil || io.EOF == err2 {
+				break
+			}
+			msg += line
+		}
+		sendMessagee(msg, msgs...)
+	}()
 	reader := bufio.NewReader(stdout)
 	for {
 		line, err2 := reader.ReadString('\n')
