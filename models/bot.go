@@ -196,6 +196,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								logs.Info(msg)
 							}
 						}
+					} else {
+						sendMessagee(fmt.Sprintf("无效，许愿币-1，余额%d", RemCoin(uid)), msgs...)
 					}
 				}
 				go func() {
