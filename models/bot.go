@@ -278,6 +278,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					}
 					return fmt.Sprintf("操作成功，%d剩余许愿币%d", id, b)
 				case "run", "执行":
+					if !isAdmin(msgs...) {
+						return "你没有权限操作"
+					}
 					runTask(&Task{Path: v}, msgs...)
 				}
 
