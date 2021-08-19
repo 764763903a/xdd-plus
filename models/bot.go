@@ -147,7 +147,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return err.Error()
 		}
 		fallthrough
-	case "重启", "reload", "restart":
+	case "重启", "reload", "restart", "reboot":
 		if !isAdmin(msgs...) {
 			return "你没有权限操作"
 		}
