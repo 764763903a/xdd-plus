@@ -107,7 +107,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return "你没有权限操作"
 		}
 		return Count()
-	case "打卡", "sign":
+	case "打卡", "签到", "sign":
 		NewActiveUser(tp, uid, msgs...)
 	case "许愿币":
 		return fmt.Sprintf("余额%d", GetCoin(uid))
