@@ -100,9 +100,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	if len(msgs) == 4 {
 		gid = msgs[3].(int)
 	}
-	if new, rt := NewActiveUser(tp, uid); new {
-		sendMessagee(rt, msgs...)
-	}
+	// if new, rt := NewActiveUser(tp, uid); new {
+	// sendMessagee(rt, msgs...)
+	// }
 	switch msg {
 	case "status", "状态":
 		if !isAdmin(msgs...) {
