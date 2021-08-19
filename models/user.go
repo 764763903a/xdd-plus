@@ -60,11 +60,14 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 				"coin":      gorm.Expr("coin+1"),
 			})
 			u.Coin++
+		} else {
+			msg += fmt.Sprintf("你打过卡了，许愿币余额%d。", u.Coin)
+			sendMessagee(msg, msgs...)
 		}
 	}
 	if first {
 		db.Model(User{}).Select("count(id) as total").Where("active_at > ?", zero).Pluck("total", &total)
-		msg += fmt.Sprintf("你是今天第%d个发言的用户，奖励%d个许愿币，许愿币余额%d。", total[0]+1, 1, u.Coin)
+		msg += fmt.Sprintf("你是打卡第%d人，奖励%d个许愿币，许愿币余额%d。", total[0]+1, 1, u.Coin)
 		// fmt.Println(msg)
 		sendMessagee(msg, msgs...)
 	}
