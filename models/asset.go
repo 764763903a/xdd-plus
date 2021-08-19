@@ -135,7 +135,7 @@ func (ck *JdCookie) Query() string {
 			for _, rp := range rps {
 				b := Float64(rp.Balance)
 				asset.RedPacket.Total += b
-				if strings.Contains(rp.ActivityName, "京喜") && strings.Contains(rp.OrgLimitStr, "京喜") {
+				if strings.Contains(rp.ActivityName, "京喜") || strings.Contains(rp.OrgLimitStr, "京喜") {
 					asset.RedPacket.Jx += b
 					if ysd >= rp.EndTime {
 						asset.RedPacket.ToExpireJx += b

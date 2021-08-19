@@ -17,7 +17,9 @@ import (
 var SendQQ = func(a int64, b interface{}) {
 
 }
-var SendQQGroup func(int64, int64, interface{})
+var SendQQGroup = func(aint64, b int64, c interface{}) {
+
+}
 var ListenQQPrivateMessage = func(uid int64, msg string) {
 	SendQQ(uid, handleMessage(msg, "qq", int(uid)))
 }
@@ -123,7 +125,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return "你没有权限操作"
 		}
 		return Count()
-	case "qrcode", "扫码", "二维码":
+	case "sign", "打卡":
+		return "打卡成功"
+	case "qrcode", "扫码", "二维码", "scan":
 		url := ""
 		if tp == "qqg" {
 			url = fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v&qqguid=%v", web.BConfig.Listen.HTTPPort, tp, id, msgs[3].(int))
@@ -135,7 +139,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return nil
 		}
 		return rsp
-	case "升级":
+	case "升级", "更新", "update", "upgrade":
 		if !isAdmin(msgs...) { //
 			return "你没有权限操作"
 		}
@@ -143,7 +147,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return err.Error()
 		}
 		fallthrough
-	case "重启":
+	case "重启", "reload", "restart":
 		if !isAdmin(msgs...) {
 			return "你没有权限操作"
 		}
