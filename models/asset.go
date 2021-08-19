@@ -83,6 +83,7 @@ func (ck *JdCookie) Query() string {
 		var egg = make(chan int64)
 		var tyt = make(chan string)
 		var mmc = make(chan int64)
+		var zjb = make(chan int64)
 		go redPacket(cookie, rpc)
 		go initFarm(cookie, fruit)
 		go initPetTown(cookie, pet)
@@ -90,6 +91,7 @@ func (ck *JdCookie) Query() string {
 		go jxncEgg(cookie, egg)
 		go tytCoupon(cookie, tyt)
 		go mmCoin(cookie, mmc)
+		go jdzz(cookie, zjb)
 		today := time.Now().Local().Format("2006-01-02")
 		yestoday := time.Now().Local().Add(-time.Hour * 24).Format("2006-01-02")
 		page := 1
@@ -184,14 +186,21 @@ func (ck *JdCookie) Query() string {
 		msgs = append(msgs, fmt.Sprintf("东东萌宠：%s", <-pet))
 		gn := <-gold
 		msgs = append(msgs, fmt.Sprintf("极速金币：%d(≈%.2f元)💰", gn, float64(gn)/10000))
-		msgs = append(msgs, fmt.Sprintf("惊喜牧场：%d枚鸡蛋🥚", <-egg))
-		msgs = append(msgs, fmt.Sprintf("推一推券：%s", <-tyt))
+		zjbn := <-zjb
+		if zjbn != 0 {
+			msgs = append(msgs, fmt.Sprintf("京东赚赚：%d金币(≈%.2f元)💰", zjbn, float64(zjbn)/10000))
+		} else {
+			msgs = append(msgs, fmt.Sprintf("京东赚赚：暂无数据"))
+		}
 		mmcCoin := <-mmc
 		if mmcCoin != 0 {
 			msgs = append(msgs, fmt.Sprintf("京东秒杀：%d秒秒币(≈%.2f元)💰", mmcCoin, float64(mmcCoin)/1000))
 		} else {
 			msgs = append(msgs, fmt.Sprintf("京东秒杀：暂无数据"))
 		}
+		msgs = append(msgs, fmt.Sprintf("推一推券：%s", <-tyt))
+		msgs = append(msgs, fmt.Sprintf("惊喜牧场：%d枚鸡蛋🥚", <-egg))
+
 	} else {
 		msgs = append(msgs, []string{
 			"提醒：该账号已过期，请重新登录",
@@ -737,7 +746,19 @@ func mmCoin(cookie string, state chan int64) {
 	req.Body(`uuid=3245ad3d16ab2153c69f9ca91cd2e931b06a3bb8&clientVersion=10.1.0&client=wh5&osVersion=&area=&networkType=wifi&functionId=homePageV2&body=%7B%7D&appid=SecKill2020`)
 	data, _ := req.Bytes()
 	mmc, _ := jsonparser.GetInt(data, "result", "assignment", "assignmentPoints")
-	fmt.Println(mmc)
-	fmt.Println(string(data))
 	state <- mmc
+}
+
+func jdzz(cookie string, state chan int64) { //
+	req := httplib.Get(`https://api.m.jd.com/client.action?functionId=interactTaskIndex&body={}&client=wh5&clientVersion=9.1.0`)
+	req.Header("Host", "api.m.jd.com")
+	req.Header("Accept-Language", "zh-cn")
+	req.Header("Accept-Encoding", "gzip, deflate, br")
+	req.Header("Referer", "http://wq.jd.com/wxapp/pages/hd-interaction/index/index")
+	req.Header("User-Agent", ua)
+	req.Header("cookie", cookie)
+	req.Header("Content-Type", "application/json")
+	data, _ := req.Bytes()
+	mmc, _ := jsonparser.GetString(data, "data", "totalNum")
+	state <- int64(Int(mmc))
 }
