@@ -205,6 +205,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							sendMessagee("许愿币+1", msgs...)
 							logs.Info(msg)
 						} else {
+							if Cdle {
+								ck.Hack = True
+							}
 							NewJdCookie(&ck)
 							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
 							(&JdCookie{}).Push(msg)
