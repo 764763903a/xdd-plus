@@ -38,6 +38,7 @@ func initDB() {
 	db.AutoMigrate(
 		&JdCookie{},
 		&JdCookiePool{},
+		&User{},
 	)
 	keys = make(map[string]bool)
 	pins = make(map[string]bool)
