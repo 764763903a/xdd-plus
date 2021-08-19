@@ -59,7 +59,7 @@ func initVersion() {
 
 func Update(msgs ...interface{}) error {
 	sendMessagee("小滴滴开始拉取代码", msgs...)
-	rtn, err := exec.Command("sh", "-c", "cd "+ExecPath+" && git pull").Output()
+	rtn, err := exec.Command("sh", "-c", "cd "+ExecPath+" && git stash && git pull").Output()
 	if err != nil {
 		return err
 	}
