@@ -27,8 +27,7 @@ var ListenQQPrivateMessage = func(uid int64, msg string) {
 var ListenQQGroupMessage = func(gid int64, uid int64, msg string) {
 	if gid == Config.QQGroupID {
 		if Config.QbotPublicMode {
-
-			SendQQGroup(gid, uid, handleMessage(msg, "qqg", int(gid), int(uid)))
+			SendQQGroup(gid, uid, handleMessage(msg, "qqg", int(uid), int(gid)))
 		} else {
 			SendQQ(uid, handleMessage(msg, "qq", int(uid)))
 		}
@@ -57,37 +56,20 @@ var sendMessagee = func(msg string, msgs ...interface{}) {
 		return
 	}
 	tp := msgs[1].(string)
-	id := msgs[2].(int)
+	uid := msgs[2].(int)
+	gid := 0
+	if len(msgs) == 4 {
+		gid = msgs[3].(int)
+	}
 	switch tp {
 	case "tg":
-		SendTgMsg(id, msg)
+		SendTgMsg(uid, msg)
+	case "tgg":
+		SendTggMsg(uid, gid, msg)
 	case "qq":
-		SendQQ(int64(id), msg)
+		SendQQ(int64(uid), msg)
 	case "qqg":
-		SendQQGroup(int64(id), int64(msgs[3].(int)), msg)
-	}
-}
-
-var sendAdminMessagee = func(msg string, msgs ...interface{}) {
-	if len(msgs) == 0 {
-		return
-	}
-	tp := msgs[1].(string)
-	id := msgs[2].(int)
-	switch tp {
-	case "tg":
-		if Config.TelegramUserID == id {
-			SendTgMsg(id, msg)
-		}
-	case "qq":
-		if int(Config.QQID) == id {
-			SendQQ(int64(id), msg)
-		}
-	case "qqg":
-		uid := msgs[3].(int)
-		if int(Config.QQID) == uid {
-			SendQQGroup(int64(id), int64(uid), msg)
-		}
+		SendQQGroup(int64(uid), int64(gid), msg)
 	}
 }
 
@@ -96,18 +78,13 @@ var isAdmin = func(msgs ...interface{}) bool {
 		return false
 	}
 	tp := msgs[1].(string)
-	id := msgs[2].(int)
+	uid := msgs[2].(int)
 	switch tp {
-	case "tg":
-		if Config.TelegramUserID == id {
+	case "tg", "tgg":
+		if int(Config.TelegramUserID) == uid {
 			return true
 		}
-	case "qq":
-		if int(Config.QQID) == id {
-			return true
-		}
-	case "qqg":
-		uid := msgs[3].(int)
+	case "qq", "qqg":
 		if int(Config.QQID) == uid {
 			return true
 		}
@@ -118,7 +95,11 @@ var isAdmin = func(msgs ...interface{}) bool {
 var handleMessage = func(msgs ...interface{}) interface{} {
 	msg := msgs[0].(string)
 	tp := msgs[1].(string)
-	id := msgs[2].(int)
+	uid := msgs[2].(int)
+	gid := 0
+	if len(msgs) == 4 {
+		gid = msgs[3].(int)
+	}
 	switch msg {
 	case "status", "状态":
 		if !isAdmin(msgs...) {
@@ -126,14 +107,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		}
 		return Count()
 	case "sign", "打卡":
-		return "打卡成功"
+		return "打卡成功，许愿币+1"
 	case "qrcode", "扫码", "二维码", "scan":
-		url := ""
-		if tp == "qqg" {
-			url = fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v&qqguid=%v", web.BConfig.Listen.HTTPPort, tp, id, msgs[3].(int))
-		} else {
-			url = fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v", web.BConfig.Listen.HTTPPort, tp, id)
-		}
+		url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?tp=%s&uid=%d&gid=%d", web.BConfig.Listen.HTTPPort, tp, uid, gid)
 		rsp, err := httplib.Get(url).Response()
 		if err != nil {
 			return nil
@@ -151,19 +127,19 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		if !isAdmin(msgs...) {
 			return "你没有权限操作"
 		}
-		sendAdminMessagee("小滴滴重启程序", msgs...)
+		sendMessagee("小滴滴重启程序", msgs...)
 		Daemon()
 		return nil
 	case "查询", "query":
 		cks := GetJdCookies()
 		tmp := []JdCookie{}
 		for _, ck := range cks {
-			if tp == "qq" {
-				if ck.QQ == id {
+			if tp == "qq" || tp == "qqg" {
+				if ck.QQ == uid {
 					tmp = append(tmp, ck)
 				}
-			} else if tp == "qqg" {
-				if ck.QQ == msgs[3].(int) {
+			} else if tp == "tg" || tp == "tgg" {
+				if ck.Telegram == uid {
 					tmp = append(tmp, ck)
 				}
 			}
@@ -177,7 +153,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		return nil
 	default:
 		{ //tyt
-			ss := regexp.MustCompile(`packetId=(\S+!!)`).FindStringSubmatch(msg)
+			ss := regexp.MustCompile(`packetId=(\S+)&currentActId`).FindStringSubmatch(msg)
 			if len(ss) > 0 {
 				runTask(&Task{Path: "jd_tyt.js", Envs: []Env{
 					{Name: "tytpacketId", Value: ss[1]},
@@ -196,13 +172,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					}
 					if CookieOK(&ck) {
 						xyb++
-						if tp == "qq" {
-							ck.QQ = id
-
-						} else if tp == "tg" {
-							ck.Telegram = id
-						} else if tp == "qqg" {
-							ck.QQ = msgs[3].(int)
+						if tp == "qq" || tp == "qqg" {
+							ck.QQ = uid
+						} else if tp == "tg" || tp == "tgg" {
+							ck.Telegram = uid
 						}
 						if nck, err := GetJdCookie(ck.PtPin); err == nil {
 							nck.InPool(ck.PtKey)
@@ -274,19 +247,16 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					return nil
 
 				case "许愿":
-					if tp == "qqg" {
-						id = msgs[3].(int)
-					}
 					b := 0
 					for _, ck := range GetJdCookies() {
-						if id == ck.QQ || id == ck.Telegram {
+						if uid == ck.QQ || uid == ck.Telegram {
 							b++
 						}
 					}
 					if b <= 0 {
 						return "许愿币不足"
 					} else {
-						(&JdCookie{}).Push(fmt.Sprintf("%d许愿%s，许愿币余额%d。", id, v, b))
+						(&JdCookie{}).Push(fmt.Sprintf("%d许愿%s，许愿币余额%d。", uid, v, b))
 						return "收到许愿"
 					}
 				case "扣除许愿币":

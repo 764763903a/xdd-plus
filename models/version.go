@@ -80,7 +80,7 @@ func Update(msgs ...interface{}) error {
 	if err != nil {
 		return errors.New("小滴滴编译失败：" + err.Error())
 	} else {
-		sendAdminMessagee("小滴滴编译成功", msgs...)
+		sendMessagee("小滴滴编译成功", msgs...)
 	}
 	return nil
 }
