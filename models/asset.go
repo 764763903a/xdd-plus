@@ -258,7 +258,7 @@ func redPacket(cookie string, rpc chan []RedList) {
 	req.Header("Connection", "keep-alive")
 	req.Header("Accept-Language", "zh-cn")
 	req.Header("Accept-Encoding", "gzip, deflate, br")
-	req.Header("Referer", "https://st.jingxi.com/my/redpacket.shtml?newPg=App&jxsid=16156262265849285961")
+	req.Header("Referer", "https://st.jingxi.com/my/redpacket.shtml?newPg=App")
 	req.Header("Cookie", cookie)
 	data, _ := req.Bytes()
 	json.Unmarshal(data, &a)

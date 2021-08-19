@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
-	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
@@ -50,6 +49,9 @@ func InitReplies() {
 }
 
 var sendMessagee = func(msg string, msgs ...interface{}) {
+	if len(msgs) == 0 {
+		return
+	}
 	tp := msgs[1].(string)
 	id := msgs[2].(int)
 	switch tp {
@@ -63,6 +65,9 @@ var sendMessagee = func(msg string, msgs ...interface{}) {
 }
 
 var sendAdminMessagee = func(msg string, msgs ...interface{}) {
+	if len(msgs) == 0 {
+		return
+	}
 	tp := msgs[1].(string)
 	id := msgs[2].(int)
 	switch tp {
@@ -83,6 +88,9 @@ var sendAdminMessagee = func(msg string, msgs ...interface{}) {
 }
 
 var isAdmin = func(msgs ...interface{}) bool {
+	if len(msgs) == 0 {
+		return false
+	}
 	tp := msgs[1].(string)
 	id := msgs[2].(int)
 	switch tp {
@@ -129,29 +137,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		if !isAdmin(msgs...) { //
 			return "你没有权限操作"
 		}
-		sendMessagee("小滴滴开始拉取代码", msgs...)
-		rtn, err := exec.Command("sh", "-c", "cd "+ExecPath+" && git pull").Output()
-		if err != nil {
+		if err := Update(msgs...); err != nil {
 			return err.Error()
-		}
-		t := string(rtn)
-		if !strings.Contains(t, "changed") {
-			if strings.Contains(t, "Already") || strings.Contains(t, "已经是最新") {
-				sendMessagee("小滴滴已是最新版啦", msgs...)
-			} else {
-				sendMessagee("小滴滴拉取代失败：", msgs...)
-			}
-			return nil
-		} else {
-			sendMessagee("小滴滴拉取代码成功", msgs...)
-		}
-		sendMessagee("小滴滴正在编译程序", msgs...)
-		rtn, err = exec.Command("sh", "-c", "cd "+ExecPath+" && go build -o "+pname).Output()
-		if err != nil {
-			sendMessagee("小滴滴编译失败：", msgs...)
-			return nil
-		} else {
-			sendAdminMessagee("小滴滴编译成功", msgs...)
 		}
 		fallthrough
 	case "重启":
