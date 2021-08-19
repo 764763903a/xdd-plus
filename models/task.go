@@ -135,7 +135,9 @@ func runTask(task *Task, msgs ...interface{}) string {
 			}
 			msg += line
 		}
-		sendMessagee(msg, msgs...)
+		if msg != "" {
+			sendMessagee(msg, msgs...)
+		}
 	}()
 	reader := bufio.NewReader(stdout)
 	for {
