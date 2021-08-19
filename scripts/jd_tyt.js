@@ -39,7 +39,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
         });
         return;
     }
-    console.log("推一推开始")
+    process.stdout.write("推一推开始")
     for (let i = cookiesArr.length - 1; i > 0; i--) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
@@ -67,7 +67,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
             await $.wait(10000)
         }
     }
-    console.log("推一推结束")
+    process.stdout.write("推一推结束")
 })()
 .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -97,13 +97,13 @@ function tythelp() {
                 data = JSON.parse(data);
 
                 if (data.code == 0) {
-                    console.log("帮砍：" + data.data.amount)
+                    process.stdout.write("帮砍：" + data.data.amount)
 
                 } else if (data.msg.indexOf("完成") != -1) {
-                    console.log("已完成砍价")
+                    process.stdout.write("已完成砍价")
                     status = 1
                 } else {
-                    console.log(data.msg)
+                    process.stdout.write(data.msg)
                 }
             } catch (e) {
                 $.logErr(e, resp);
