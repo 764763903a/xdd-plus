@@ -210,12 +210,12 @@ func (ck *JdCookie) OutPool() (string, error) {
 			us[Available] = True
 			us[PtKey] = jp.PtKey
 		}
-		e := tx.Where(fmt.Sprintf("%s = '%s'", Available, True)).Model(ck).Updates(us).RowsAffected
+		e := tx.Model(ck).Updates(us).RowsAffected
 		if e == 0 {
 			tx.Rollback()
 			return "", nil
 		}
-		ck.Available = True
+		ck.Available = us[Available].(string)
 		ck.PtKey = jp.PtKey
 		return jp.PtKey, tx.Commit().Error
 	}
