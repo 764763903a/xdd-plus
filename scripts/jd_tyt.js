@@ -49,11 +49,12 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
             $.nickName = '';
             message = '';
             await TotalBean();
-            console.log(`\n******开始【京东账号${$.index}】*********\n`);
+            console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
             if (!$.isLogin) {
                 $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {
                     "open-url": "https://bean.m.jd.com/bean/signIndex.action"
                 });
+
                 if ($.isNode()) {
                     await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
                 }
@@ -92,11 +93,16 @@ function tythelp() {
 
         $.post(options, async(err, resp, data) => {
             try {
+
                 data = JSON.parse(data);
+
+                console.log(data.msg)
+
                 if (data.code == 0) {
                     console.log("帮砍：" + data.data.amount)
 
-                } else if (data && data.msg && data.msg.indexOf("完成") != -1) {
+                } else
+                if (data.msg.indexOf("完成") != -1) {
                     status = 1
                 }
                 console.log(data.msg)
