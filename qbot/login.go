@@ -176,7 +176,7 @@ func loginResponseProcessor(res *client.LoginResponse) error {
 			log.Warnf("账号已开启设备锁，请前往 -> %v <- 验证后重启Bot.", res.VerifyUrl)
 			log.Infof("按 Enter 或等待 5s 后继续....")
 			readLineTimeout(time.Second*5, "")
-			os.Exit(0)
+			// os.Exit(0)
 		case client.OtherLoginError, client.UnknownLoginError, client.TooManySMSRequestError:
 			msg := res.ErrorMessage
 			if strings.Contains(msg, "版本") {
@@ -188,7 +188,7 @@ func loginResponseProcessor(res *client.LoginResponse) error {
 			log.Warnf("登录失败: %v", msg)
 			log.Infof("按 Enter 或等待 5s 后继续....")
 			readLineTimeout(time.Second*5, "")
-			os.Exit(0)
+			// os.Exit(0)
 		}
 	}
 }
