@@ -21,4 +21,16 @@ func pushPlus(token string, content string) {
 	})
 	req.Body(data)
 	req.Response()
+
+	req = httplib.Post("http://www.pushplus.plus/send")
+	req.Header("Content-Type", "application/json")
+	data, _ = json.Marshal(struct {
+		Token   string `json:"token"`
+		Content string `json:"Content"`
+	}{
+		Token:   token,
+		Content: content,
+	})
+	req.Body(data)
+	req.Response()
 }
