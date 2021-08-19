@@ -58,7 +58,7 @@ var sendMessagee = func(msg string, msgs ...interface{}) {
 	tp := msgs[1].(string)
 	uid := msgs[2].(int)
 	gid := 0
-	if len(msgs) == 4 {
+	if len(msgs) >= 4 {
 		gid = msgs[3].(int)
 	}
 	switch tp {
@@ -100,17 +100,15 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	if len(msgs) == 4 {
 		gid = msgs[3].(int)
 	}
-	if new, rt := NewActiveUser(tp, uid); new {
-		sendMessagee(rt, msgs...)
-	}
+	go NewActiveUser(tp, uid, msgs...)
 	switch msg {
 	case "status", "状态":
 		if !isAdmin(msgs...) {
 			return "你没有权限操作"
 		}
 		return Count()
-	case "sign", "打卡":
-		return "打卡成功，许愿币+1"
+	// case "sign", "打卡":
+	// 	return "打卡成功，许愿币+1"
 	case "qrcode", "扫码", "二维码", "scan":
 		url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?tp=%s&uid=%d&gid=%d", web.BConfig.Listen.HTTPPort, tp, uid, gid)
 		rsp, err := httplib.Get(url).Response()

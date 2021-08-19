@@ -36,7 +36,7 @@ func initTgBot() {
 					b.SendAlbum(m.Sender, tb.Album{&tb.Photo{File: tb.FromReader(rt.(*http.Response).Body)}})
 				}
 			} else {
-				rt := handleMessage(m.Text, "tgg", m.Sender.ID, int(m.Chat.ID))
+				rt := handleMessage(m.Text, "tgg", m.Sender.ID, int(m.Chat.ID), m.Sender)
 				// fmt.Println(rt)
 				switch rt.(type) {
 				case string:
