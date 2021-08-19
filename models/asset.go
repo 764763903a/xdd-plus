@@ -187,7 +187,7 @@ func (ck *JdCookie) Query() string {
 		msgs = append(msgs, fmt.Sprintf("惊喜牧场：%d枚鸡蛋🥚", <-egg))
 		msgs = append(msgs, fmt.Sprintf("推一推券：%s", <-tyt))
 		mmcCoin := <-mmc
-		if mmcCoin == 0 {
+		if mmcCoin != 0 {
 			msgs = append(msgs, fmt.Sprintf("京东秒杀：%d秒秒币(≈%.2f元)💰", mmcCoin, float64(mmcCoin)/1000))
 		} else {
 			msgs = append(msgs, fmt.Sprintf("京东秒杀：暂无数据"))
@@ -737,5 +737,7 @@ func mmCoin(cookie string, state chan int64) {
 	req.Body(`uuid=3245ad3d16ab2153c69f9ca91cd2e931b06a3bb8&clientVersion=10.1.0&client=wh5&osVersion=&area=&networkType=wifi&functionId=homePageV2&body=%7B%7D&appid=SecKill2020`)
 	data, _ := req.Bytes()
 	mmc, _ := jsonparser.GetInt(data, "result", "assignment", "assignmentPoints")
+	fmt.Println(mmc)
+	fmt.Println(string(data))
 	state <- mmc
 }
