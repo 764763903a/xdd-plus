@@ -106,7 +106,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		if !isAdmin(msgs...) {
 			return "你没有权限操作"
 		}
-
 		return fmt.Sprintf("操作成功，更新%d条记录", db.Model(JdCookie{}).Update(Hack, False).RowsAffected)
 	case "status", "状态":
 		if !isAdmin(msgs...) {
