@@ -58,6 +58,7 @@ func getVhelpRule(num int) string {
 	}
 	for k := range codes {
 		for i, code := range codes[k] {
+			code = strings.Replace(code, `\n`, ``, -1)
 			code = strings.Replace(code, `"`, `\"`, -1)
 			rules += fmt.Sprintf("My%s%d=\"%s\"\n", k, i+1, code)
 			codes[k][i] = fmt.Sprintf("${My%s%d}", k, i+1)
