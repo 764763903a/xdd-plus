@@ -69,7 +69,7 @@ var sendMessagee = func(msg string, msgs ...interface{}) {
 	case "qq":
 		SendQQ(int64(uid), msg)
 	case "qqg":
-		SendQQGroup(int64(uid), int64(gid), msg)
+		SendQQGroup(int64(gid), int64(uid), msg)
 	}
 }
 
