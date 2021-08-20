@@ -70,7 +70,7 @@ func SendTgMsg(uid int, msg string) {
 	b.Send(&tb.User{ID: uid}, msg)
 }
 
-func SendTggMsg(uid int, gid int, msg string) {
+func SendTggMsg(gid int, uid int, msg string) {
 	if b == nil || uid == 0 {
 		return
 	}
