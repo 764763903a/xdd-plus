@@ -117,7 +117,12 @@ func Main() {
 	// config.DefaultConfigFile = models.ExecPath + "/qbot"
 	// conf = config.Get()
 
-	conf = &config.Config{}
+	if models.Config.QbotConfigFile != "" {
+		config.DefaultConfigFile = models.Config.QbotConfigFile
+		conf = config.Get()
+	} else {
+		conf = &config.Config{}
+	}
 	// if *debug {
 	// 	conf.Output.Debug = true
 	// }

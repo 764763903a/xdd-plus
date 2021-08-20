@@ -35,7 +35,8 @@ type Yaml struct {
 	Npm                string
 	Python             string
 	Pip                string
-	NoAdmin            bool `yaml:"no_admin"`
+	NoAdmin            bool   `yaml:"no_admin"`
+	QbotConfigFile     string `yaml:"qbot_config_file"`
 }
 
 var Balance = "balance"
