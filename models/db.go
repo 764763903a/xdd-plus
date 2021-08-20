@@ -167,7 +167,7 @@ func (ck *JdCookie) Update(column string, value interface{}) {
 		db.Model(ck).Update(column, value)
 	}
 	if ck.PtPin != "" {
-		db.Model(ck).Where(PtPin+" = ?", ck.PtPin).Update(column, value)
+		db.Model(JdCookie{}).Where(PtPin+" = ?", ck.PtPin).Update(column, value)
 	}
 }
 
