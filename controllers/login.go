@@ -171,14 +171,14 @@ func init() {
 						case "qq", "qqg":
 							// ck.Update(models.QQ, uid)
 							if gid != 0 {
-								go models.SendQQGroup(int64(uid), int64(gid), "扫码失败")
+								go models.SendQQGroup(int64(gid), int64(uid), "扫码失败")
 							} else {
 								go models.SendQQ(int64(uid), "扫码失败")
 							}
 						case "tg", "tgg":
 							// ck.Update(models.Telegram, uid)
 							if gid != 0 {
-								go models.SendTggMsg(int(uid), int(gid), "扫码失败")
+								go models.SendTggMsg(int(gid), int(uid), "扫码失败")
 							} else {
 								go models.SendTgMsg(int(uid), "扫码失败")
 							}

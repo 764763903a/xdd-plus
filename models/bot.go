@@ -65,7 +65,7 @@ var sendMessagee = func(msg string, msgs ...interface{}) {
 	case "tg":
 		SendTgMsg(uid, msg)
 	case "tgg":
-		SendTggMsg(uid, gid, msg)
+		SendTggMsg(gid, uid, msg)
 	case "qq":
 		SendQQ(int64(uid), msg)
 	case "qqg":
