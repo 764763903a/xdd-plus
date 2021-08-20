@@ -152,7 +152,7 @@ func init() {
 						case "qq", "qqg":
 							ck.Update(models.QQ, uid)
 							if gid != 0 {
-								go models.SendQQGroup(int64(uid), int64(gid), "扫码成功")
+								go models.SendQQGroup(int64(gid), int64(uid), "扫码成功")
 							} else {
 								go models.SendQQ(int64(uid), "扫码成功")
 							}

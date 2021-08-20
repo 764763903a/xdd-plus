@@ -17,7 +17,7 @@ import (
 var SendQQ = func(a int64, b interface{}) {
 
 }
-var SendQQGroup = func(aint64, b int64, c interface{}) {
+var SendQQGroup = func(a int64, b int64, c interface{}) {
 
 }
 var ListenQQPrivateMessage = func(uid int64, msg string) {
