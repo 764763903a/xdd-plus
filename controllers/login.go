@@ -169,14 +169,14 @@ func init() {
 					default: //失效
 						switch bot {
 						case "qq", "qqg":
-							ck.Update(models.QQ, uid)
+							// ck.Update(models.QQ, uid)
 							if gid != 0 {
 								go models.SendQQGroup(int64(uid), int64(gid), "扫码失败")
 							} else {
 								go models.SendQQ(int64(uid), "扫码失败")
 							}
 						case "tg", "tgg":
-							ck.Update(models.Telegram, uid)
+							// ck.Update(models.Telegram, uid)
 							if gid != 0 {
 								go models.SendTggMsg(int(uid), int(gid), "扫码失败")
 							} else {
