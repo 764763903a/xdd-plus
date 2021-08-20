@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
@@ -185,14 +186,19 @@ func cmd(str string, msgs ...interface{}) {
 			sendMessagee(msg, msgs...)
 		}
 	}()
+	msg := ""
 	reader := bufio.NewReader(stdout)
+	st := time.Now()
 	for {
 		line, err2 := reader.ReadString('\n')
 		if err2 != nil || io.EOF == err2 {
 			break
 		}
-		if len(msgs) > 0 {
-			sendMessagee(strings.Replace(line, "\n", "", -1), msgs...)
+		msg += line
+		nt := time.Now()
+		if (nt.UnixNano()-st.UnixNano())/1e6 > 100 {
+			go sendMessagee(msg, msgs...)
+			msg = ""
 		}
 	}
 	err = cmd.Wait()
