@@ -309,7 +309,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		}
 		{
 			o := false
-			for _, v := range regexp.MustCompile(`京东账号\d*（(.*)）(.*)】(.*)`).FindAllStringSubmatch(msg, -1) {
+			for _, v := range regexp.MustCompile(`京东账号\d*（(.*)）(.*)】(\S*)`).FindAllStringSubmatch(msg, -1) {
 				if !strings.Contains(v[3], "种子") && !strings.Contains(v[3], "undefined") {
 					pt_pin := url.QueryEscape(v[1])
 					for key, ss := range map[string][]string{
