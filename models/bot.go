@@ -102,6 +102,12 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	}
 
 	switch msg {
+	case "取消屏蔽":
+		if !isAdmin(msgs...) {
+			return "你没有权限操作"
+		}
+		db.Model(JdCookie{}).Update(Hack, False)
+		return "操作成功"
 	case "status", "状态":
 		if !isAdmin(msgs...) {
 			return "你没有权限操作"
