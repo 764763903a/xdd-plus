@@ -196,11 +196,14 @@ func cmd(str string, msgs ...interface{}) {
 		}
 		msg += line
 		nt := time.Now()
-		if (nt.UnixNano()-st.UnixNano())/1e6 > 100 {
+		if (nt.Unix() - st.Unix()) > 1 {
 			go sendMessagee(msg, msgs...)
 			st = nt
 			msg = ""
 		}
+	}
+	if msg != "" {
+		sendMessagee(msg, msgs...)
 	}
 	err = cmd.Wait()
 }
