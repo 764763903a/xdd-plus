@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"net/http"
+	"regexp"
 	"time"
 
 	"github.com/beego/beego/v2/core/logs"
@@ -51,6 +52,9 @@ func initTgBot() {
 
 		b.Handle(tb.OnDocument, func(m *tb.Message) {
 			if m.Sender.ID != Config.TelegramUserID {
+				return
+			}
+			if regexp.MustCompile(`.js$`).FindString(m.Document.FileName) == "" && regexp.MustCompile(`.py$`).FindString(m.Document.FileName) == "" {
 				return
 			}
 			b.Download(m.Document.MediaFile(), ExecPath+"/scripts/"+m.Document.FileName)
