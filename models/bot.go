@@ -344,7 +344,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						return nil
 					}
 					ctp := rsp.Header.Get("content-type")
-					if strings.Contains(ctp, "text") {
+					if ctp == "" {
+						rsp.Header.Get("Content-Type")
+					}
+					if strings.Contains(ctp, "text") || strings.Contains(ctp, "json") {
 						data, _ := ioutil.ReadAll(rsp.Body)
 						return string(data)
 					}
