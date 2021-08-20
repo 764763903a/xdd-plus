@@ -140,6 +140,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		sendMessagee("小滴滴重启程序", msgs...)
 		Daemon()
 		return nil
+	case "ping":
+
 	case "查询", "query":
 		cks := GetJdCookies()
 		tmp := []JdCookie{}
@@ -296,6 +298,11 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						return "你没有权限操作"
 					}
 					runTask(&Task{Path: v}, msgs...)
+				case "cmd", "command":
+					if !isAdmin(msgs...) {
+						return "你没有权限操作"
+					}
+					cmd(v, msgs...)
 				}
 
 			}
