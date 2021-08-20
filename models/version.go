@@ -27,12 +27,13 @@ func initVersion() {
 		// name := AppName + "_" + runtime.GOOS + "_" + runtime.GOARCH
 		if match := regexp.MustCompile(`var version = "(\d{10})"`).FindStringSubmatch(value); len(match) != 0 {
 			if match[1] > version {
-				(&JdCookie{}).Push("版本过低，自动更新")
+
 				err := Update()
 				if err != nil {
 					logs.Warn("更新失败,", err)
 					return
 				}
+				(&JdCookie{}).Push("版本过低，自动更新")
 				// rsp, err := httplib.Get(GhProxy + "https://github.com/cdle/jd_study/releases/download/main/" + name).Response()
 				// if err != nil {
 				// 	logs.Warn("无法下载更新")
