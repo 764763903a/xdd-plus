@@ -216,6 +216,7 @@ func Count() string {
 		}
 	}
 	jps := []JdCookiePool{}
+	db.Find(&jps)
 	for _, jp := range jps {
 		if jp.CreateAt == dt {
 			ts++
