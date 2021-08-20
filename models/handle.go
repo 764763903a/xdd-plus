@@ -64,7 +64,7 @@ module.exports = cookies`, cookies))
 			f.Close()
 			tmp = []JdCookie{}
 			for _, ck := range cks {
-				if ck.Hack == False {
+				if ck.Hack != True {
 					tmp = append(tmp, ck)
 				}
 			}

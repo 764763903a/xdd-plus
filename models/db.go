@@ -48,7 +48,6 @@ func initDB() {
 		keys[jp.PtKey] = true
 		pins[jp.PtPin] = true
 	}
-	db.Model(JdCookie{}).Where(fmt.Sprintf("%s = ?", Hack), "").Update(Hack, False)
 }
 
 func HasPin(pin string) bool {
@@ -224,6 +223,9 @@ func (ck *JdCookie) OutPool() (string, error) {
 }
 
 func NewJdCookie(ck *JdCookie) error {
+	if ck.Hack == "" {
+		ck.Hack = False
+	}
 	ck.Priority = Config.DefaultPriority
 	date := Date()
 	ck.CreateAt = date
