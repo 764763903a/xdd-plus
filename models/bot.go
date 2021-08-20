@@ -97,7 +97,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	tp := msgs[1].(string)
 	uid := msgs[2].(int)
 	gid := 0
-	if len(msgs) == 4 {
+	if len(msgs) >= 4 {
 		gid = msgs[3].(int)
 	}
 
