@@ -26,34 +26,7 @@ func initTgBot() {
 			return
 		}
 
-		b.Handle(tb.OnDocument, func(m *tb.Message) {
-			if m.Sender.ID != Config.TelegramUserID {
-				return
-			}
-			b.Download(m.Document.MediaFile(), ExecPath+"/scripts/"+m.Document.FileName)
-			m.Text = fmt.Sprintf("run " + m.Document.FileName)
-			if !m.FromGroup() {
-				rt := handleMessage(m.Text, "tg", m.Sender.ID)
-				// fmt.Println(rt)
-				switch rt.(type) {
-				case string:
-					b.Send(m.Sender, rt.(string))
-				case *http.Response:
-					b.SendAlbum(m.Sender, tb.Album{&tb.Photo{File: tb.FromReader(rt.(*http.Response).Body)}})
-				}
-			} else {
-				rt := handleMessage(m.Text, "tgg", m.Sender.ID, int(m.Chat.ID), m.Sender)
-				// fmt.Println(rt)
-				switch rt.(type) {
-				case string:
-					b.Send(m.Chat, rt.(string), &tb.SendOptions{ReplyTo: m})
-				case *http.Response:
-					b.SendAlbum(m.Chat, tb.Album{&tb.Photo{File: tb.FromReader(rt.(*http.Response).Body)}}, &tb.SendOptions{ReplyTo: m})
-				}
-			}
-		})
-
-		b.Handle(tb.OnText, func(m *tb.Message) {
+		handle := func(m *tb.Message) {
 			// fmt.Println(m.Text, m.FromGroup())
 			if !m.FromGroup() {
 				rt := handleMessage(m.Text, "tg", m.Sender.ID)
@@ -74,7 +47,17 @@ func initTgBot() {
 					b.SendAlbum(m.Chat, tb.Album{&tb.Photo{File: tb.FromReader(rt.(*http.Response).Body)}}, &tb.SendOptions{ReplyTo: m})
 				}
 			}
+		}
+
+		b.Handle(tb.OnDocument, func(m *tb.Message) {
+			if m.Sender.ID != Config.TelegramUserID {
+				return
+			}
+			b.Download(m.Document.MediaFile(), ExecPath+"/scripts/"+m.Document.FileName)
+			m.Text = fmt.Sprintf("run " + m.Document.FileName)
+			handle(m)
 		})
+		b.Handle(tb.OnText, handle)
 		logs.Info("监听tgbot")
 		b.Start()
 	}()
