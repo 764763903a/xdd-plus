@@ -100,13 +100,20 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	if len(msgs) == 4 {
 		gid = msgs[3].(int)
 	}
-	go NewActiveUser(tp, uid, msgs...)
+
 	switch msg {
+	case "取消屏蔽":
+		if !isAdmin(msgs...) {
+			return "你没有权限操作"
+		}
+		return fmt.Sprintf("操作成功，更新%d条记录", db.Model(JdCookie{}).Update(Hack, False).RowsAffected)
 	case "status", "状态":
 		if !isAdmin(msgs...) {
 			return "你没有权限操作"
 		}
 		return Count()
+	case "打卡", "签到", "sign":
+		NewActiveUser(tp, uid, msgs...)
 	case "许愿币":
 		return fmt.Sprintf("余额%d", GetCoin(uid))
 	case "qrcode", "扫码", "二维码", "scan":
