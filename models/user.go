@@ -41,7 +41,6 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 	var first = false
 	total := []int{}
 	err := db.Where("class = ? and number = ?", class, uid).First(&u).Error
-	get := 0
 	if err != nil {
 		first = true
 		u = User{
@@ -60,7 +59,6 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 				"active_at": ntime,
 				"coin":      gorm.Expr("coin+1"),
 			})
-			get++
 			u.Coin++
 		} else {
 			msg += fmt.Sprintf("你打过卡了，许愿币余额%d。", u.Coin)
@@ -69,14 +67,7 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 	}
 	if first {
 		db.Model(User{}).Select("count(id) as total").Where("active_at > ?", zero).Pluck("total", &total)
-		if (total[0]+1)%3 == 0 {
-			db.Model(&u).Updates(map[string]interface{}{
-				"coin": gorm.Expr("coin+1"),
-			})
-			get++
-			u.Coin++
-		}
-		msg += fmt.Sprintf("你是打卡第%d人，奖励%d个许愿币，许愿币余额%d。", total[0]+1, get, u.Coin)
+		msg += fmt.Sprintf("你是打卡第%d人，奖励%d个许愿币，许愿币余额%d。", total[0]+1, 1, u.Coin)
 		// fmt.Println(msg)
 		sendMessagee(msg, msgs...)
 	}
