@@ -10,12 +10,20 @@ import (
 type Repo struct {
 	Git      string
 	filename string
+	ok       bool
 }
 
 var reposPath = ""
 
 func (rp *Repo) init() {
 	rp.filename = strings.Replace(strings.Replace(rp.Git, "https://", "", -1), "/", "_", -1)
+}
+
+func (rp *Repo) exist() bool {
+	if _, err := os.Stat(reposPath + "/" + rp.filename); err != nil {
+		return false
+	}
+	return true
 }
 
 func initRepos() {
@@ -25,7 +33,7 @@ func initRepos() {
 	}
 	for _, repo := range Config.Repos {
 		repo.init()
-		if _, err := os.Stat(reposPath + "/" + repo.filename); err != nil {
+		if !repo.exist() {
 			repo.gitClone()
 		}
 	}
@@ -33,5 +41,6 @@ func initRepos() {
 
 func (rp *Repo) gitClone() {
 	cmd := exec.Command("sh", "-c", fmt.Sprintf("git clone %s %s", rp.Git, rp.filename))
+	cmd.Path = reposPath
 	cmd.Output()
 }
