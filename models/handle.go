@@ -62,6 +62,7 @@ if(pins){
 }
 module.exports = cookies`, cookies))
 			f.Close()
+			go CopyConfigAll()
 			tmp = []JdCookie{}
 			for _, ck := range cks {
 				if ck.Hack != True {
