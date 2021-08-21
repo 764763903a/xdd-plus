@@ -273,7 +273,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						return "许愿币不足，需要5个许愿币。"
 					} else {
 						(&JdCookie{}).Push(fmt.Sprintf("%d许愿%s，许愿币余额%d。", uid, v, b))
-						return "收到许愿"
+						return "收到许愿，愿望达成后会自动扣除5个许愿币。"
 					}
 				case "扣除许愿币":
 					id, _ := strconv.Atoi(v)
