@@ -27,6 +27,7 @@ type Task struct {
 	Hack    bool
 	Git     string
 	Title   string
+	Running bool
 }
 
 type Env struct {
@@ -55,6 +56,7 @@ func createTask(task *Task) {
 }
 
 func runTask(task *Task, msgs ...interface{}) string {
+	task.Running = true
 	path := ""
 	if task.Git != "" {
 		path = task.Git + "/" + task.Name
@@ -165,5 +167,6 @@ func runTask(task *Task, msgs ...interface{}) string {
 	if msg != "" {
 		sendMessagee(msg, msgs...)
 	}
+	task.Running = false
 	return msg
 }

@@ -140,8 +140,16 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		sendMessagee("小滴滴重启程序", msgs...)
 		Daemon()
 		return nil
-	case "ping":
-
+	case "任务列表":
+		rt := ""
+		k := 1
+		for i := range Config.Repos {
+			for j := range Config.Repos[i].Task {
+				rt += fmt.Sprintf("%d: %s\t%s\n", k, Config.Repos[i].Task[j].Name, Config.Repos[i].Task[j].Cron)
+				k++
+			}
+		}
+		return rt
 	case "查询", "query":
 		cks := GetJdCookies()
 		tmp := []JdCookie{}
