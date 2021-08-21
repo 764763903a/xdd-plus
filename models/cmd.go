@@ -9,19 +9,19 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-func cmd(str string, msgs ...interface{}) {
+func cmd(str string, msgs ...interface{}) string {
 	cmd := exec.Command("sh", "-c", str)
 	stdout, err := cmd.StdoutPipe()
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
 		logs.Warn("cmd.StdoutPipe: ", err)
-		return
+		return err.Error()
 	}
 	cmd.Dir = ExecPath + "/scripts/"
 	err = cmd.Start()
 	if err != nil {
 		logs.Warn("%v", err)
-		return
+		return err.Error()
 	}
 	go func() {
 		msg := ""
@@ -57,4 +57,5 @@ func cmd(str string, msgs ...interface{}) {
 		sendMessagee(msg, msgs...)
 	}
 	err = cmd.Wait()
+	return msg
 }
