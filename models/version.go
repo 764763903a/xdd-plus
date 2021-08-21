@@ -34,26 +34,6 @@ func initVersion() {
 					return
 				}
 				(&JdCookie{}).Push("版本过低，自动更新")
-				// rsp, err := httplib.Get(GhProxy + "https://github.com/cdle/jd_study/releases/download/main/" + name).Response()
-				// if err != nil {
-				// 	logs.Warn("无法下载更新")
-				// 	return
-				// }
-				// filename := ExecPath + "/." + pname
-				// f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
-				// if err != nil {
-				// 	logs.Warn("无法创建更新临时文件：%v"+filename, err)
-				// 	return
-				// }
-				// _, err = io.Copy(f, rsp.Body)
-				// f.Close()
-				// if err != nil {
-				// 	logs.Warn("下载更新失败")
-				// 	return
-				// }
-				// if err := os.Rename(filename, ExecPath+"/"+pname); err != nil {
-				// 	logs.Warn("移动临时更新文件失败")
-				// }
 				Daemon()
 			}
 		}

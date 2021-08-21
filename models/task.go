@@ -18,15 +18,15 @@ type Task struct {
 	Cron    string
 	Path    string
 	Enable  bool
-	Mode    string //obo alo
+	Mode    string
 	Word    string
-	Run     func()
 	Name    string
 	Timeout int
 	Envs    []Env
 	Args    string
 	Ykq     bool
 	Hack    bool
+	From    string
 }
 
 type Env struct {
