@@ -34,11 +34,11 @@ type Env struct {
 }
 
 func initTask() {
-	for i := range Config.Tasks {
-		if Config.Tasks[i].Cron != "" {
-			createTask(&Config.Tasks[i])
-		}
-	}
+	// for i := range Config.Tasks {
+	// 	if Config.Tasks[i].Cron != "" {
+	// 		createTask(&Config.Tasks[i])
+	// 	}
+	// }
 }
 
 func createTask(task *Task) {

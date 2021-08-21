@@ -11,8 +11,8 @@ import (
 )
 
 type Yaml struct {
-	Containers         []Container
-	Tasks              []Task
+	Containers []Container
+	// Tasks              []Task
 	Qrcode             string
 	Master             string
 	Mode               string
@@ -37,6 +37,7 @@ type Yaml struct {
 	Pip                string
 	NoAdmin            bool   `yaml:"no_admin"`
 	QbotConfigFile     string `yaml:"qbot_config_file"`
+	Repos              []Repo
 }
 
 var Balance = "balance"
@@ -103,4 +104,5 @@ func initConfig() {
 	if Config.Pip == "" {
 		Config.Pip = "Pip3"
 	}
+
 }
