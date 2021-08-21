@@ -142,11 +142,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		return nil
 	case "任务列表":
 		rt := ""
-		k := 1
 		for i := range Config.Repos {
 			for j := range Config.Repos[i].Task {
-				rt += fmt.Sprintf("%d: %s\t%s\n", k, Config.Repos[i].Task[j].Name, Config.Repos[i].Task[j].Cron)
-				k++
+				rt += fmt.Sprintf("%s\t%s\n", Config.Repos[i].Task[j].Title, Config.Repos[i].Task[j].Cron)
 			}
 		}
 		return rt
