@@ -270,7 +270,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						}
 					}
 					if b < 5 {
-						return "许愿币不足，5个许愿币起步。"
+						return "许愿币不足，需要5个许愿币。"
 					} else {
 						(&JdCookie{}).Push(fmt.Sprintf("%d许愿%s，许愿币余额%d。", uid, v, b))
 						return "收到许愿"
