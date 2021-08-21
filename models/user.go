@@ -61,7 +61,6 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 		}
 	}
 	if first {
-
 		db.Model(User{}).Select("count(id) as total").Where("active_at > ?", zero).Pluck("total", &total)
 		coin := 1
 		if total[0]%3 == 0 {
@@ -74,7 +73,7 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 			"active_at": ntime,
 			"coin":      gorm.Expr(fmt.Sprintf("coin+%d", coin)),
 		})
-		u.Coin++
+		u.Coin += coin
 		msg += fmt.Sprintf("你是打卡第%d人，奖励%d个许愿币，许愿币余额%d。", total[0]+1, coin, u.Coin)
 		sendMessagee(msg, msgs...)
 	}
