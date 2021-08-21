@@ -13,8 +13,6 @@ type Repo struct {
 	ok       bool
 }
 
-var reposPath = ""
-
 func (rp *Repo) init() {
 	rp.filename = strings.Replace(strings.Replace(strings.Replace(rp.Git, "https://", "", -1), "/", "_", -1), ".git", "", -1)
 	if !rp.exist() {
@@ -23,16 +21,15 @@ func (rp *Repo) init() {
 }
 
 func (rp *Repo) exist() bool {
-	if _, err := os.Stat(reposPath + "/" + rp.filename); err != nil {
+	if _, err := os.Stat(ExecPath + "/" + rp.filename); err != nil {
 		return false
 	}
 	return true
 }
 
 func initRepos() {
-	reposPath = ExecPath + "/repos"
-	if _, err := os.Stat(reposPath); err != nil {
-		os.MkdirAll(reposPath, 777)
+	if _, err := os.Stat(ExecPath); err != nil {
+		os.MkdirAll(ExecPath, 777)
 	}
 	for _, repo := range Config.Repos {
 		repo.init()
@@ -41,7 +38,7 @@ func initRepos() {
 
 func (rp *Repo) gitClone() {
 	cmd := exec.Command("sh", "-c", fmt.Sprintf("git clone %s %s", rp.Git, rp.filename))
-	cmd.Path = reposPath
+	cmd.Path = ExecPath
 	fmt.Println("sh", "-c", fmt.Sprintf("git clone %s %s", rp.Git, rp.filename))
 	fmt.Println(cmd.Output())
 }
