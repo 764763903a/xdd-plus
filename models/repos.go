@@ -2,7 +2,9 @@ package models
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -74,23 +76,23 @@ func (rp *Repo) cpConfig() {
 }
 
 func (rp *Repo) addTask() {
-	// dir_list, e := ioutil.ReadDir(rp.path)
-	// if e != nil {
-	// 	return
-	// }
-	// for _, v := range dir_list {
-	// 	if strings.Contains(v.Name(), ".js") {
-	// 		f, err := os.Open(rp.path + "/" + v.Name())
-	// 		if err != nil {
-	// 			continue
-	// 		}
-	// 		data, _ := ioutil.ReadAll(f)
-	// 		f.Close()
-	// 		// fmt.Println(data)
-	// 		res := regexp.MustCompile("().*Env[(]['\"](\\S+)['\"][)]").FindStringSubmatch(string(data))
-	// 		if len(res) > 0 {
-	// 			fmt.Println(res[1])
-	// 		}
-	// 	}
-	// }
+	dir_list, e := ioutil.ReadDir(rp.path)
+	if e != nil {
+		return
+	}
+	for _, v := range dir_list {
+		if strings.Contains(v.Name(), ".js") {
+			f, err := os.Open(rp.path + "/" + v.Name())
+			if err != nil {
+				continue
+			}
+			data, _ := ioutil.ReadAll(f)
+			f.Close()
+			// fmt.Println(data)
+			res := regexp.MustCompile(".*Env[(]['\"](\\S+)['\"][)]").FindStringSubmatch(string(data))
+			if len(res) > 0 {
+				fmt.Println(res[1])
+			}
+		}
+	}
 }
