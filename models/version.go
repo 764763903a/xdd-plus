@@ -12,7 +12,7 @@ import (
 )
 
 var version = "2021082007"
-var describe = "2021082007"
+var describe = "日常更新"
 var AppName = "xdd"
 var pname = regexp.MustCompile(`/([^/\s]+)`).FindStringSubmatch(os.Args[0])[1]
 
@@ -27,14 +27,17 @@ func initVersion() {
 	} else {
 		// name := AppName + "_" + runtime.GOOS + "_" + runtime.GOARCH
 		if match := regexp.MustCompile(`var version = "(\d{10})"`).FindStringSubmatch(value); len(match) != 0 {
+			des := regexp.MustCompile(`var describe = "([^"]+)"`).FindStringSubmatch(value)
+			if len(des) != 0 {
+				describe = des[1]
+			}
 			if match[1] > version {
-
 				err := Update()
 				if err != nil {
 					logs.Warn("更新失败,", err)
 					return
 				}
-				(&JdCookie{}).Push("版本过低，自动更新")
+				(&JdCookie{}).Push("小滴滴更新：" + describe)
 				Daemon()
 			}
 		}
