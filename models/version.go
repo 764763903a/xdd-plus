@@ -12,6 +12,7 @@ import (
 )
 
 var version = "2021082007"
+var describe = "2021082007"
 var AppName = "xdd"
 var pname = regexp.MustCompile(`/([^/\s]+)`).FindStringSubmatch(os.Args[0])[1]
 
