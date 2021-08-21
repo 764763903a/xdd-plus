@@ -69,7 +69,7 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 	}
 	if first {
 		db.Model(User{}).Select("count(id) as total").Where("active_at > ?", zero).Pluck("total", &total)
-		if (total[0]+1)%8 == 0 {
+		if (total[0]+1)%3 == 0 {
 			db.Model(&u).Updates(map[string]interface{}{
 				"coin": gorm.Expr("coin+1"),
 			})
