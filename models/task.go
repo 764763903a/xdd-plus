@@ -14,19 +14,19 @@ import (
 )
 
 type Task struct {
-	ID      int
-	Cron    string
-	Path    string
-	Enable  bool
-	Mode    string
-	Word    string
-	Name    string
-	Timeout int
-	Envs    []Env
-	Args    string
-	Ykq     bool
-	Hack    bool
-	From    string
+	ID       int
+	Cron     string
+	Path     string
+	Enable   bool
+	Mode     string
+	Word     string
+	Name     string
+	Timeout  int
+	Envs     []Env
+	Args     string
+	Ykq      bool
+	Hack     bool
+	RepoName string
 }
 
 type Env struct {
