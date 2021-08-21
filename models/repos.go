@@ -17,6 +17,9 @@ var reposPath = ""
 
 func (rp *Repo) init() {
 	rp.filename = strings.Replace(strings.Replace(rp.Git, "https://", "", -1), "/", "_", -1)
+	if !rp.exist() {
+		rp.gitClone()
+	}
 }
 
 func (rp *Repo) exist() bool {
@@ -33,9 +36,6 @@ func initRepos() {
 	}
 	for _, repo := range Config.Repos {
 		repo.init()
-		if !repo.exist() {
-			repo.gitClone()
-		}
 	}
 }
 
