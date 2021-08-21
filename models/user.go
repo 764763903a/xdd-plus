@@ -55,20 +55,27 @@ func NewActiveUser(class string, uid int, msgs ...interface{}) {
 	} else {
 		if zero.Unix() > u.ActiveAt.Unix() {
 			first = true
-			db.Model(&u).Updates(map[string]interface{}{
-				"active_at": ntime,
-				"coin":      gorm.Expr("coin+1"),
-			})
-			u.Coin++
 		} else {
 			msg += fmt.Sprintf("你打过卡了，许愿币余额%d。", u.Coin)
 			sendMessagee(msg, msgs...)
 		}
 	}
 	if first {
+
 		db.Model(User{}).Select("count(id) as total").Where("active_at > ?", zero).Pluck("total", &total)
-		msg += fmt.Sprintf("你是打卡第%d人，奖励%d个许愿币，许愿币余额%d。", total[0]+1, 1, u.Coin)
-		// fmt.Println(msg)
+		coin := 1
+		if total[0]%3 == 0 {
+			coin = 2
+		}
+		if total[0]%13 == 0 {
+			coin = 8
+		}
+		db.Model(&u).Updates(map[string]interface{}{
+			"active_at": ntime,
+			"coin":      gorm.Expr(fmt.Sprintf("coin+%d", coin)),
+		})
+		u.Coin++
+		msg += fmt.Sprintf("你是打卡第%d人，奖励%d个许愿币，许愿币余额%d。", total[0]+1, coin, u.Coin)
 		sendMessagee(msg, msgs...)
 	}
 }
