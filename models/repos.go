@@ -42,5 +42,6 @@ func initRepos() {
 func (rp *Repo) gitClone() {
 	cmd := exec.Command("sh", "-c", fmt.Sprintf("git clone %s %s", rp.Git, rp.filename))
 	cmd.Path = reposPath
-	cmd.Output()
+	fmt.Println("sh", "-c", fmt.Sprintf("git clone %s %s", rp.Git, rp.filename))
+	fmt.Println(cmd.Output())
 }
