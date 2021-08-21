@@ -16,7 +16,7 @@ type Repo struct {
 var reposPath = ""
 
 func (rp *Repo) init() {
-	rp.filename = strings.Replace(strings.Replace(rp.Git, "https://", "", -1), "/", "_", -1)
+	rp.filename = strings.Replace(strings.Replace(strings.Replace(rp.Git, "https://", "", -1), "/", "_", -1), ".git", "", -1)
 	if !rp.exist() {
 		rp.gitClone()
 	}
@@ -32,7 +32,7 @@ func (rp *Repo) exist() bool {
 func initRepos() {
 	reposPath = ExecPath + "/repos"
 	if _, err := os.Stat(reposPath); err != nil {
-		os.MkdirAll(reposPath, os.ModePerm)
+		os.MkdirAll(reposPath, 777)
 	}
 	for _, repo := range Config.Repos {
 		repo.init()
