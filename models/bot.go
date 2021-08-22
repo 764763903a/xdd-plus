@@ -176,9 +176,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				if Cdle {
 					return "推毛线啊"
 				}
-				runTask(&Task{Path: "jd_tyt.js", Envs: []Env{
-					{Name: "tytpacketId", Value: ss[1]},
-				}}, msgs...)
+				runTask(&Task{Path: "jd_tyt.js"}, msgs...)
 				return nil
 			}
 		}
