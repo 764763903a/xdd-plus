@@ -229,6 +229,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			if len(s) > 0 {
 				v := s[2]
 				switch s[1] {
+				case "send":
+					b.Send(tgg, v)
 				case "查询", "query":
 					if !isAdmin(msgs...) {
 						return "你没有权限操作"
