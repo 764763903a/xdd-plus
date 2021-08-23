@@ -357,7 +357,7 @@ func (c *Container) getToken() error {
 		if err != nil {
 			return err
 		}
-		c.Token, _ = jsonparser.GetString(data, "token")
+		c.Token, _ = jsonparser.GetString(data, "data","token")
 	} else {
 		return err
 	}
