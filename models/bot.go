@@ -272,12 +272,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					return nil
 
 				case "许愿":
-					b := 0
-					for _, ck := range GetJdCookies() {
-						if uid == ck.QQ || uid == ck.Telegram {
-							b++
-						}
-					}
+					b := GetCoin(uid)
 					if b < 5 {
 						return "许愿币不足，需要5个许愿币。"
 					} else {
