@@ -5,43 +5,86 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <title>吃面啦</title>
+    <style>
+        #judge_weixin{
+            display:none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,.5);
+        }
+        .judge-weixin-img{
+            height:50px;
+            padding-top: 10px;
+        }
+        .judge-weixin-img .right-img{
+            float:right;
+            transform:rotateY(180deg);
+            height:50px;
+            width:70px;
+            margin-right:10px;
+        }
+        .weixin-text{
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            height:40px;
+            color: #fff;
+            font-weight: 700;
+        }
+        .weixin-text img{
+            height:18px;
+            margin-right: 4px;
+        }
+    </style>
 </head>
 
 <body style="height:100vh;width:100%;background-attachment:fixed;background-size: cover;-webkit-background-size: cover;-o-background-size: cover;background-image:url(https://s3.bmp.ovh/imgs/2021/08/888f802bdb4029a5.jpeg);background-repeat: no-repeat;background-position: center 0;">
-    <div style="padding-top:10%;text-align:center;">
-        <p>
-            <img id="hd" src="" width="100">
-            <p style="position: relative;top: 10px; left: 0px;font-size:2vh;color:#fff;">
-                <b></b> <br>
-            </p>
-            <div><img id="qrcode" height="170em" class="middle" src="./ok.svg" /></div>
-            <p style="font-size:2vh;color:#fff;">
-                <b>扫码登陆</b> <br>
-            </p>
-            <p>
-                <a style="position: relative;top: 20px; left: 0px;border-radius:8px;padding:6px 20px;font-size:2vh;color:#fff;border-style:solid;text-decoration:none;" id="jumpapp" href="#">京东APP登陆</a>
-                <br>
-            </p>
-            <p style="position: relative;top: 20vh; left: 0px;text-align: center;font-size:2vh;color:#fff;">TG交流:
-                <a style="text-decoration:none;color:#fff;" href="https://t.me/cdles">✈️&nbsp;&nbsp;好好学习&nbsp;✈️</a>
-                <br>
-                <a style="font-size:1.5vh;text-decoration:none;color:#fff;">扫码程序:
-        <script>document.write(returnCitySN["cname"])</script>
-        ©
-        <a style="font-size:1.5vh;text-decoration:none;color:#fff;" href="https://github.com/cdle">Cdle作者</a>
-                <a style="font-size:1.5vh;color:#fff;">&nbsp;网页源码:
-        <script>document.write(returnCitySN["cname"])</script>
-        ©
-        <a style="font-size:1.5vh;text-decoration:none;color:#fff;">不知道</a>
+<div style="padding-top:10%;text-align:center;">
+    <p>
+        <img id="hd" src="" width="100">
+    <p style="position: relative;top: 10px; left: 0px;font-size:2vh;color:#fff;">
+        <b></b> <br>
+    </p>
+    <div><img id="qrcode" height="170em" class="middle" src="./ok.svg" /></div>
+    <p style="font-size:2vh;color:#fff;">
+        <b>扫码登陆</b> <br>
+    </p>
+    <p>
+        <a style="position: relative;top: 20px; left: 0px;border-radius:8px;padding:6px 20px;font-size:2vh;color:#fff;border-style:solid;text-decoration:none;" id="jumpapp" href="#">京东APP登陆</a>
+        <br>
+    </p>
+    <p style="position: relative;top: 20vh; left: 0px;text-align: center;font-size:2vh;color:#fff;">TG交流:
+        <a style="text-decoration:none;color:#fff;" href="https://t.me/cdles">✈️&nbsp;&nbsp;好好学习&nbsp;✈️</a>
+        <br>
+        <a style="font-size:1.5vh;text-decoration:none;color:#fff;">扫码程序:
+            <script>document.write(returnCitySN["cname"])</script>
+            ©
+            <a style="font-size:1.5vh;text-decoration:none;color:#fff;" href="https://github.com/cdle">Cdle作者</a>
+            <a style="font-size:1.5vh;color:#fff;">&nbsp;网页源码:
+                <script>document.write(returnCitySN["cname"])</script>
+                ©
+                <a style="font-size:1.5vh;text-decoration:none;color:#fff;">不知道</a>
                 <a style="font-size:1.5vh;color:#fff;">&nbsp;最终修改:
-        <script>document.write(returnCitySN["cname"])</script>
-        ©
-        <a style="font-size:1.5vh;text-decoration:none;color:#fff;">Eylin</a>
-                <br>
-                <a style="font-size:1vh;font-size:1vh;color:#fff;">程序版本 v1.0.1</a>
-            </p>
-            <script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="https://cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+                    <script>document.write(returnCitySN["cname"])</script>
+                    ©
+                    <a style="font-size:1.5vh;text-decoration:none;color:#fff;">MADAO</a>
+                    <br>
+                    <a style="font-size:1vh;font-size:1vh;color:#fff;">程序版本 v1.0.2</a>
+    </p>
+    <script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="https://cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</div>
+<div id="judge_weixin">
+    <div class="judge-weixin-img">
+        <img class="right-img" src="https://i.loli.net/2021/08/23/n1MuTY8o2siLarD.png" alt="">
     </div>
+    <div class="weixin-text">
+        <img src="https://i.loli.net/2021/08/23/qRB8kCSPjbDfycJ.png" alt="">
+        <span>点击右上角选择浏览器中打开</span>
+    </div>
+</div>
 </body>
 <script>
     var timer;
@@ -50,7 +93,6 @@
     var success = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/xdd/main/static/ok.svg";
     var jumpapp = document.getElementById('jumpapp')
     var hd = document.getElementById("hd")
-
     function showQrcode() {
         var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
         xmlhttp.onreadystatechange = function() {
@@ -106,23 +148,29 @@
             login()
         }, 1500);
     }
+    function is_weixin(){
+        return  navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
+    }
     polling()
-
     jumpapp.addEventListener('click', function() {
-        if (loginUrl) {
-            window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
-                JSON.stringify({
-                    category: 'jump',
-                    des: 'ThirdPartyLogin',
-                    action: 'to',
-                    onekeylogin: 'return',
-                    url: loginUrl,
-                    authlogin_returnurl: 'weixin://',
-                    browserlogin_fromurl: window.location.host,
-                })
-            )}`;
-        } else {
-            alert('还没加载好，请稍后重试');
+        if(is_weixin()){
+            document.getElementById('judge_weixin').style.display = 'block';
+        }else{
+            if (loginUrl) {
+                window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
+                    JSON.stringify({
+                        category: 'jump',
+                        des: 'ThirdPartyLogin',
+                        action: 'to',
+                        onekeylogin: 'return',
+                        url: loginUrl,
+                        authlogin_returnurl: 'weixin://',
+                        browserlogin_fromurl: window.location.host,
+                    })
+                )}`;
+            } else {
+                alert('还没加载好，请稍后重试');
+            }
         }
     })
 </script>
