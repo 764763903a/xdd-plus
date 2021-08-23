@@ -197,7 +197,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							ck.Telegram = uid
 						}
 						if HasKey(ck.PtKey) {
-							sendMessagee(fmt.Sprintf("作弊，许愿币-1，余额%d", RemCoin(uid)), msgs...)
+							sendMessagee(fmt.Sprintf("作弊，许愿币-1，余额%d", RemCoin(uid, 1)), msgs...)
 						} else {
 							if nck, err := GetJdCookie(ck.PtPin); err == nil {
 								nck.InPool(ck.PtKey)
@@ -215,7 +215,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							}
 						}
 					} else {
-						sendMessagee(fmt.Sprintf("无效，许愿币-1，余额%d", RemCoin(uid)), msgs...)
+						sendMessagee(fmt.Sprintf("无效，许愿币-1，余额%d", RemCoin(uid, 1)), msgs...)
 					}
 				}
 				go func() {
@@ -277,7 +277,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						return "许愿币不足，需要5个许愿币。"
 					} else {
 						(&JdCookie{}).Push(fmt.Sprintf("%d许愿%s，许愿币余额%d。", uid, v, b))
-						return "收到许愿，愿望达成后会自动扣除5个许愿币。"
+						RemCoin(uid, 5)
+						return "收到许愿，已扣除5个许愿币。"
 					}
 				case "扣除许愿币":
 					id, _ := strconv.Atoi(v)
