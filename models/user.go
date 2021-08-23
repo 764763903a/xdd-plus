@@ -95,7 +95,7 @@ func RemCoin(uid int, num int) int {
 	db.Model(u).Updates(map[string]interface{}{
 		"coin": gorm.Expr(fmt.Sprintf("coin-%d", num)),
 	})
-	u.Coin--
+	u.Coin -= num
 	return u.Coin
 }
 
