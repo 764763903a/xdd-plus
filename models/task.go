@@ -2,7 +2,6 @@ package models
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -108,16 +107,17 @@ func runTask(task *Task, msgs ...interface{}) string {
 	if strings.Contains(task.Name, ".py") {
 		lan = Config.Python
 	}
-	envs := ""
+	// envs := ""
 	// for _, env := range task.Envs {
 	// 	envs += fmt.Sprintf("export %s=\"%s\"", env.Name, env.Value)
 	// }
-	sh := fmt.Sprintf(`
-%s
-%s %s
-	`, envs,
-		lan, task.Name)
-	cmd := exec.Command("sh", "-c", sh)
+	// 	sh := fmt.Sprintf(`
+	// %s
+	// %s %s
+	// 	`, envs,
+	// 		lan, task.Name)
+	// cmd := exec.Command("sh", "-c", sh)
+	cmd := exec.Command(lan, task.Name)
 	stdout, err := cmd.StdoutPipe()
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
