@@ -69,15 +69,17 @@ func CopyConfigAll() {
 }
 
 func (rp *Repo) gitClone() {
-	cmd(fmt.Sprintf("cd %s && git clone %s %s", reposPath, rp.Git, rp.filename))
+	cmd(fmt.Sprintf("cd %s && git clone %s %s", reposPath, rp.Git, rp.filename), &Sender{})
 }
 
 func (rp *Repo) gitPull() string {
-	return cmd(fmt.Sprintf("cd %s && git stash && git pull", rp.path))
+	return cmd(fmt.Sprintf("cd %s && git stash && git pull", rp.path), &Sender{})
 }
 
 func (rp *Repo) cpConfig() {
-	cmd(fmt.Sprintf(`cp jdCookie.js %s`, rp.path+"/jdCookie.js"))
+	for _, js := range []string{"jdCookie", "jdFruitShareCodes", "jdPetShareCodes", "jdPlantBeanShareCodes", "jdFactoryShareCodes", "jdDreamFactoryShareCodes", "jdJxncShareCodes"} {
+		cmd(fmt.Sprintf(`cp `+js+`.js %s`, rp.path+"/"+js+".js"), &Sender{})
+	}
 }
 
 func (rp *Repo) addTask() {
@@ -118,7 +120,7 @@ func (rp *Repo) addTask() {
 			// 	return
 			// }
 			logs.Info("执行任务 %s %s ", task.Title, task.Cron)
-			runTask(task)
+			runTask(task, &Sender{})
 		})
 		if err == nil {
 			logs.Info("添加任务 %s %s ", rp.Task[i].Title, rp.Task[i].Cron)

@@ -45,8 +45,7 @@
         overflow: hidden;
     }
     /**
-波浪
- */
+波浪 */
     
     @keyframes move_wave {
         0% {
@@ -271,10 +270,66 @@
         color: #f10000;
         text-align: center;
         cursor: pointer;
+        box-shadow: 0px 0px 1px 1px rgba(28, 28, 32, 0.05), 0px 8px 24px rgba(28, 28, 32, 0.12);
+    }
+    
+    .snow-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 100001;
+    }
+    
+    #judge_weixin {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.9);
+        background-image: url(https://ghproxy.com/https://github.com/xyh977732241/xdd_front_theme/blob/d1111ad1f9effc28b74f8d869f1377b9de41419e/static/gg.png);
+        background-position: center 200px;
+        background-size: 300px 300px;
+        background-repeat: no-repeat;
+        z-index: 999999;
+    }
+    
+    .judge-weixin-img {
+        height: 50px;
+        padding-top: 10px;
+    }
+    
+    .judge-weixin-img .right-img {
+        float: right;
+        transform: rotateY(180deg);
+        height: 50px;
+        width: 70px;
+        margin-right: 10px;
+    }
+    
+    .weixin-text {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        color: #fff;
+        font-weight: 700;
+    }
+    
+    .weixin-text img {
+        height: 18px;
+        margin-right: 4px;
     }
 </style>
 
 <body>
+    <div class="snow-container"></div>
+    <div id="snowMask"></div>
     <div class="mainbox">
         <div class="contentbox">
             <div class="qrcode_box col-lg-3 col-md-4 col-sm-6 col-xs-11">
@@ -298,7 +353,7 @@
 					<div class="qr_box" id="qr">
 						<div class="notify" id="notify">
 							<h1>登录成功</h1>
-							<h2>tips:</h2>
+							<!-- <h2>tips:</h2> -->
 							<p>
 								京东👉我的👉更多👉(东东农场、东东萌宠、东东工厂、宠汪汪、金榜创造营、领现金、健康社区、种豆得豆)。<br />
 							</p>
@@ -310,7 +365,9 @@
 							</p>
 							<p>每天可领取100+京豆和若干现金红包、优惠券等。<br /></p>
 							<p>京东极速版APP-每天固定1.5汇率左右金币，可兑换红包。</p>
-							<h3>一定要微信扫码订阅通知，不然东西好了你也不知道！过期不候</h3>
+							<p>扫码加入QQ群后务必加群内机器人接受通知。</p>
+							<p>务必关闭京东免密支付。</p>
+							<!-- <h3>一定要微信扫码订阅通知，不然东西好了你也不知道！过期不候</h3> -->
 							<div class="sure" onclick="ok()">我知道了</div>
 						</div>
 						<div class="container" id="ck_qr">
@@ -325,9 +382,7 @@
 					</div>
 					<div class="qr_box" id="qr1">
 						<div class="container">
-							<h4 id="tips">
-								请使用<big style="color: #e4393c">微信</big>扫码
-							</h4>
+							<h4 id="tips">请使用<big style="color: #e4393c">QQ</big>扫码</h4>
 							<img
 								id="qrcode1"
 								class="qr"
@@ -368,7 +423,22 @@
 				></div>
 			</div>
 		</div>
+		<div id="judge_weixin">
+			<div class="judge-weixin-img">
+				<img
+					class="right-img"
+					src="https://i.loli.net/2021/08/23/n1MuTY8o2siLarD.png"
+					alt=""
+				/>
+			</div>
+			<div class="weixin-text">
+				<img src="https://i.loli.net/2021/08/23/qRB8kCSPjbDfycJ.png" alt="" />
+				<span>点击右上角选择浏览器中打开</span>
+			</div>
+		</div>
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<!--<script src="http://raw.githack.com/xyh977732241/xdd_front_theme/master/static/snowy.js"></script>-->
+		<script src="http://www.onz3v.top:5701/static/snowy.js"></script>
 		<script>
 			var timer;
 			var qrcode = document.getElementById("qrcode");
@@ -376,34 +446,24 @@
 			var success =
 				"https://ghproxy.com/https://raw.githubusercontent.com/xyh977732241/xdd_front_theme/master/static/ok.svg";
 			var jumpapp = document.getElementById("jumpapp");
-			if (
-				navigator.userAgent.match(
-					/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
-				)
-			) {
-				console.log("移动端");
-				jumpapp.style.display = "block";
-			} else {
-				console.log("PC端");
-				jumpapp.style.display = "none";
-			}
-			jumpapp.addEventListener("click", function () {
-				if (loginUrl) {
-					window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
-						JSON.stringify({
-							category: "jump",
-							des: "ThirdPartyLogin",
-							action: "to",
-							onekeylogin: "return",
-							url: loginUrl,
-							authlogin_returnurl: "weixin://",
-							browserlogin_fromurl: window.location.host,
-						})
-					)}`;
+			window.onload = function () {
+				if (is_weixin()) {
+					document.getElementById("judge_weixin").style.display = "block";
 				} else {
-					alert("还没加载好，请稍后重试");
+					if (
+						navigator.userAgent.match(
+							/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+						)
+					) {
+						console.log("移动端");
+						jumpapp.style.display = "block";
+					} else {
+						console.log("PC端");
+						jumpapp.style.display = "none";
+					}
 				}
-			});
+			};
+
 			function showQrcode() {
 				var xmlhttp = window.XMLHttpRequest
 					? new XMLHttpRequest()
@@ -465,6 +525,28 @@
 				}, 1500);
 			}
 			polling();
+			function is_weixin() {
+				return (
+					navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1
+				);
+			}
+			jumpapp.addEventListener("click", function () {
+				if (loginUrl) {
+					window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
+						JSON.stringify({
+							category: "jump",
+							des: "ThirdPartyLogin",
+							action: "to",
+							onekeylogin: "return",
+							url: loginUrl,
+							authlogin_returnurl: "weixin://",
+							browserlogin_fromurl: window.location.host,
+						})
+					)}`;
+				} else {
+					alert("还没加载好，请稍后重试");
+				}
+			});
 			function changeIndex(index, _this) {
 				var aTags = document.querySelectorAll(".title");
 				var getCk = document.getElementById("qr");

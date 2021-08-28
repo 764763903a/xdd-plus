@@ -27,11 +27,9 @@ func initTgBot() {
 			logs.Warn("监听tgbot失败")
 			return
 		}
-
 		handle := func(m *tb.Message) {
 			// fmt.Println(m.Text, m.FromGroup())
 			if !m.FromGroup() {
-
 				rt := handleMessage(m.Text, "tg", m.Sender.ID)
 				// fmt.Println(rt)
 				switch rt.(type) {
@@ -44,11 +42,15 @@ func initTgBot() {
 				if tgg == nil {
 					tgg = m.Chat
 				}
-				rt := handleMessage(m.Text, "tgg", m.Sender.ID, int(m.Chat.ID), m.Sender)
+				var rid int = 0
+				if m.ReplyTo != nil {
+					rid = m.ReplyTo.Sender.ID
+				}
+
+				rt := handleMessage(m.Text, "tgg", m.Sender.ID, int(m.Chat.ID), m.ID, m.Sender.Username, rid)
 				// fmt.Println(rt)
 				switch rt.(type) {
 				case string:
-
 					b.Send(m.Chat, rt.(string), &tb.SendOptions{ReplyTo: m})
 				case *http.Response:
 					b.SendAlbum(m.Chat, tb.Album{&tb.Photo{File: tb.FromReader(rt.(*http.Response).Body)}}, &tb.SendOptions{ReplyTo: m})
@@ -80,9 +82,14 @@ func SendTgMsg(uid int, msg string) {
 	b.Send(&tb.User{ID: uid}, msg)
 }
 
-func SendTggMsg(gid int, uid int, msg string) {
+func SendTggMsg(gid int, uid int, msg string, mid int, unm string) {
 	if b == nil || uid == 0 {
 		return
 	}
-	b.Send(&tb.Chat{ID: int64(gid)}, msg)
+	if unm != "" {
+		b.Send(&tb.Chat{ID: int64(gid)}, fmt.Sprintf("@%s %s", unm, msg))
+	} else {
+		b.Send(&tb.Chat{ID: int64(gid)}, msg, &tb.SendOptions{ReplyTo: &tb.Message{ID: mid}})
+	}
+
 }

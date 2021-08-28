@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/beego/beego/v2/core/logs"
+	"gorm.io/gorm"
 )
 
 func initHandle() {
@@ -21,7 +22,9 @@ func initHandle() {
 				initCookie()
 				continue
 			}
-			cks := GetJdCookies()
+			cks := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
+				return sb.Where(fmt.Sprintf("%s >= ? and %s != ?", Priority, Hack), 0, True)
+			})
 			tmp := []JdCookie{}
 			for _, ck := range cks {
 				if ck.Priority >= 0 && ck.Hack != True {
@@ -42,6 +45,7 @@ func initHandle() {
 			if err != nil {
 				logs.Warn("创建jdCookie.js失败，", err)
 			}
+
 			f.WriteString(fmt.Sprintf(`
 var cookies = %s
 var pins = process.env.pins
@@ -62,6 +66,7 @@ if(pins){
 }
 module.exports = cookies`, cookies))
 			f.Close()
+			WriteHelpJS(cks)
 			go CopyConfigAll()
 			// tmp = []JdCookie{}
 			// for _, ck := range cks {

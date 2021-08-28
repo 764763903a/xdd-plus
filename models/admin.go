@@ -68,6 +68,16 @@ var Admin = `<html lang="zh-cn">
                         width: 90,
                         align: 'center',
                     }, {
+                        field: 'UserLevel',
+                        title: '用户等级',
+                        width: 90,
+                        align: 'center',
+                    }, {
+                        field: 'LevelName',
+                        title: '等级名称',
+                        width: 100,
+                        align: 'center',
+                    }, {
                         field: 'Priority',
                         title: '优先级',
                         width: 80,

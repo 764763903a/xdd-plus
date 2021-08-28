@@ -32,7 +32,7 @@ func initVersion() {
 				describe = des[1]
 			}
 			if match[1] > version {
-				err := Update()
+				err := Update(&Sender{})
 				if err != nil {
 					logs.Warn("更新失败,", err)
 					return
@@ -44,8 +44,8 @@ func initVersion() {
 	}
 }
 
-func Update(msgs ...interface{}) error {
-	sendMessagee("小滴滴开始拉取代码", msgs...)
+func Update(sender *Sender) error {
+	sender.Reply("小滴滴开始拉取代码")
 	rtn, err := exec.Command("sh", "-c", "cd "+ExecPath+" && git stash && git pull").Output()
 	if err != nil {
 		return errors.New("小滴滴拉取代失败：" + err.Error())
@@ -58,14 +58,14 @@ func Update(msgs ...interface{}) error {
 			return errors.New("小滴滴拉取代失败：" + t)
 		}
 	} else {
-		sendMessagee("小滴滴拉取代码成功", msgs...)
+		sender.Reply("小滴滴拉取代码成功")
 	}
-	sendMessagee("小滴滴正在编译程序", msgs...)
+	sender.Reply("小滴滴正在编译程序")
 	rtn, err = exec.Command("sh", "-c", "cd "+ExecPath+" && go build -o "+pname).Output()
 	if err != nil {
 		return errors.New("小滴滴编译失败：" + err.Error())
 	} else {
-		sendMessagee("小滴滴编译成功", msgs...)
+		sender.Reply("小滴滴编译成功")
 	}
 	return nil
 }

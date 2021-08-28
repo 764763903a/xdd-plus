@@ -7,7 +7,8 @@ TG学习交流群https://t.me/cdles
 const $ = new Env("签到领现金兑换")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 let cookiesArr = []
-var exchangeAccounts = process.env.exchangeAccounts ? ? ""!(async() => {
+var exchangeAccounts = process.env.exchangeAccounts ?? ""
+!(async() => {
     if (exchangeAccounts) {
         v = exchangeAccounts.split("&")
         exchangeAccounts = {}

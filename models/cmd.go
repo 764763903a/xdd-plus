@@ -9,7 +9,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-func cmd(str string, msgs ...interface{}) string {
+func cmd(str string, sender *Sender) string {
 	cmd := exec.Command("sh", "-c", str)
 	stdout, err := cmd.StdoutPipe()
 	stderr, err := cmd.StderrPipe()
@@ -34,7 +34,7 @@ func cmd(str string, msgs ...interface{}) string {
 			msg += line
 		}
 		if msg != "" {
-			sendMessagee(msg, msgs...)
+			sender.Reply(msg)
 		}
 	}()
 	msg := ""
@@ -48,13 +48,13 @@ func cmd(str string, msgs ...interface{}) string {
 		msg += line
 		nt := time.Now()
 		if (nt.Unix() - st.Unix()) > 1 {
-			go sendMessagee(msg, msgs...)
+			sender.Reply(msg)
 			st = nt
 			msg = ""
 		}
 	}
 	if msg != "" {
-		sendMessagee(msg, msgs...)
+		sender.Reply(msg)
 	}
 	err = cmd.Wait()
 	return msg

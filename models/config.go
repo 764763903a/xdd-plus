@@ -13,31 +13,32 @@ import (
 type Yaml struct {
 	Containers []Container
 	// Tasks              []Task
-	Qrcode             string
-	Master             string
-	Mode               string
-	Static             string
-	Database           string
-	QywxKey            string `yaml:"qywx_key"`
-	Resident           string
-	UserAgent          string `yaml:"user_agent"`
-	Theme              string
-	TelegramBotToken   string `yaml:"telegram_bot_token"`
-	TelegramUserID     int    `yaml:"telegram_user_id"`
-	QQID               int64  `yaml:"qquid"`
-	QQGroupID          int64  `yaml:"qqgid"`
-	DefaultPriority    int    `yaml:"default_priority"`
-	NoGhproxy          bool   `yaml:"no_ghproxy"`
-	QbotPublicMode     bool   `yaml:"qbot_public_mode"`
-	DailyAssetPushCron string `yaml:"daily_asset_push_cron"`
-	Version            string `yaml:"version"`
-	Node               string
-	Npm                string
-	Python             string
-	Pip                string
-	NoAdmin            bool   `yaml:"no_admin"`
-	QbotConfigFile     string `yaml:"qbot_config_file"`
-	Repos              []Repo
+	Qrcode              string
+	Master              string
+	Mode                string
+	Static              string
+	Database            string
+	QywxKey             string `yaml:"qywx_key"`
+	Resident            string
+	UserAgent           string `yaml:"user_agent"`
+	Theme               string
+	TelegramBotToken    string `yaml:"telegram_bot_token"`
+	TelegramUserID      int    `yaml:"telegram_user_id"`
+	QQID                int64  `yaml:"qquid"`
+	QQGroupID           int64  `yaml:"qqgid"`
+	DefaultPriority     int    `yaml:"default_priority"`
+	NoGhproxy           bool   `yaml:"no_ghproxy"`
+	QbotPublicMode      bool   `yaml:"qbot_public_mode"`
+	DailyAssetPushCron  string `yaml:"daily_asset_push_cron"`
+	Version             string `yaml:"version"`
+	Node                string
+	Npm                 string
+	Python              string
+	Pip                 string
+	NoAdmin             bool   `yaml:"no_admin"`
+	QbotConfigFile      string `yaml:"qbot_config_file"`
+	Repos               []Repo
+	HttpProxyServerPort int `yaml:"http_proxy_server_port"`
 }
 
 var Balance = "balance"
@@ -102,7 +103,6 @@ func initConfig() {
 		Config.Python = "python3"
 	}
 	if Config.Pip == "" {
-		Config.Pip = "Pip3"
+		Config.Pip = "pip3"
 	}
-
 }
