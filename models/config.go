@@ -61,7 +61,7 @@ func initConfig() {
 		s, _ := ioutil.ReadAll(f)
 		if len(s) == 0 {
 			logs.Info("下载配置%s", name)
-			r, err := httplib.Get(GhProxy + "https://raw.githubusercontent.com/cdle/xdd/main/conf/demo_" + name).Response()
+			r, err := httplib.Get(GhProxy + "https://raw.githubusercontent.com/764763903a/xdd/main/conf/demo_" + name).Response()
 			if err == nil {
 				io.Copy(f, r.Body)
 			}
