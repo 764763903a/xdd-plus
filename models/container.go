@@ -269,7 +269,6 @@ func (c *Container) read() error {
 			}
 			return nil
 		} else {
-		   logs.Warn(String(c.Version))
 			var data, err = c.request("/api/cookies")
 			if err != nil {
 				c.Available = false
