@@ -2,16 +2,14 @@ package controllers
 
 import (
 	"encoding/json"
-	"net/http"
-	"strconv"
-	"strings"
-
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/cdle/xdd/models"
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
 	"gopkg.in/go-playground/validator.v9"
 	zh_translations "gopkg.in/go-playground/validator.v9/translations/zh"
+	"net/http"
+	"strconv"
 )
 
 var validate *validator.Validate
@@ -112,15 +110,15 @@ func (c *BaseController) Logined() *BaseController {
 		c.Master = true
 		return c
 	}
-	if v := c.GetSession("pin"); v == nil {
-		c.Ctx.Redirect(302, "/")
-		c.StopRun()
-	} else {
-		c.PtPin = v.(string)
-		if strings.Contains(models.Config.Master, v.(string)) {
-			c.Master = true
-		}
-	}
+	//if v := c.GetSession("pin"); v == nil {
+	//	c.Ctx.Redirect(302, "/")
+	//	c.StopRun()
+	//} else {
+	//	c.PtPin = v.(string)
+	//	if strings.Contains(models.Config.Master, v.(string)) {
+	//		c.Master = true
+	//	}
+	//}
 	c.Master = true
 	return c
 }
