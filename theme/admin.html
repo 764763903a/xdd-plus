@@ -71,10 +71,17 @@
 <div id="login">
     <h1>Login</h1>
     <form method="post">
-        <input type="text" required="required" placeholder="用户名" name="u"></input>
-        <button class="but" type="submit" onclick="sessionStorage.setItem('pin','764763903');
-window.location.href='/admin'">登录</button>
+        <input type="text" required="required" id="pin" placeholder="用户名" name="u"></input>
+        <button class="but" type="submit" onclick="login()">登录</button>
     </form>
 </div>
+
+<script>
+    function login()
+    {
+        sessionStorage.setItem('pin',document.getElementById("pin").innerText);
+        window.location.href = "/admin"
+    }
+</script>
 </body>
 </html>
