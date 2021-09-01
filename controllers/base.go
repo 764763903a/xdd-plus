@@ -110,16 +110,18 @@ func (c *BaseController) Logined() *BaseController {
 		c.Master = true
 		return c
 	}
-	//if v := c.GetSession("pin"); v == nil {
-	//	c.Ctx.Redirect(302, "/")
-	//	c.StopRun()
-	//} else {
-	//	c.PtPin = v.(string)
-	//	if strings.Contains(models.Config.Master, v.(string)) {
-	//		c.Master = true
-	//	}
-	//}
-	c.Master = true
+	if v := c.GetSession("pin"); v == nil {
+		c.Ctx.Redirect(302, "/")
+		c.StopRun()
+	} else {
+		c.PtPin = v.(string)
+		if "764763903" == c.PtPin {
+			c.Master = true
+		}
+		//if strings.Contains(models.Config.Master, v.(string)) {
+		//	c.Master = true
+		//}
+	}
 	return c
 }
 
