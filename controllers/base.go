@@ -121,6 +121,7 @@ func (c *BaseController) Logined() *BaseController {
 			c.Master = true
 		}
 	}
+	c.Master = true
 	return c
 }
 
