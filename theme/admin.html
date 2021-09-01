@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="Login.css"/>
     <style>
         html{
             width: 100%;
@@ -79,7 +78,7 @@
 <script>
     function login()
     {
-        sessionStorage.setItem('pin',document.getElementById("pin").innerText);
+        sessionStorage.setItem('pin',document.getElementById("pin").value);
         window.location.href = "/admin"
     }
 </script>
