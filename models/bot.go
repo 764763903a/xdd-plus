@@ -90,7 +90,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
         	req.Param("key","xb3z4z2m3n847")
         	req.Param("wskey", msg)
         	rsp, err := req.Response()
-	    return rsp;
+        		if err != nil {
+            		return err
+            	}
+	    return nil;
 	    }
 	    }
 		{ //tyt
