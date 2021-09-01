@@ -162,7 +162,7 @@ func CookieOK(ck *JdCookie) bool {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {
 			if ck.Available == True {
-				ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+				//ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 				JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
 			}
 			return false

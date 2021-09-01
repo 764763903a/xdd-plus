@@ -149,7 +149,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								}
 								NewJdCookie(&ck)
 								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-								sender.Reply(fmt.Sprintf("很棒，许愿币+1，余额%d", AddCoin(sender.UserID)))
+								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								logs.Info(msg)
 							}
 						}
