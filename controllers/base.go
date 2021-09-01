@@ -10,6 +10,7 @@ import (
 	zh_translations "gopkg.in/go-playground/validator.v9/translations/zh"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 var validate *validator.Validate
@@ -115,12 +116,9 @@ func (c *BaseController) Logined() *BaseController {
 		c.StopRun()
 	} else {
 		c.PtPin = v.(string)
-		if "764763903" == c.PtPin {
+		if strings.Contains(models.Config.Master, v.(string)) {
 			c.Master = true
 		}
-		//if strings.Contains(models.Config.Master, v.(string)) {
-		//	c.Master = true
-		//}
 	}
 	return c
 }
