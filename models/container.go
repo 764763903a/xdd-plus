@@ -394,12 +394,12 @@ func (c *Container) request(ss ...string) ([]byte, error) {
 			method = s
 		} else if strings.Contains(s, "/api/") {
 			logs.Info(c.Version)
-			//if c.Version == "2.9" {
-			//	api = strings.ReplaceAll(s, "api", "open")
-			//} else {
-			//	api = s
-			//}
-			api = s
+			if c.Version == "2.9" {
+				api = strings.ReplaceAll(s, "api", "open")
+			} else {
+				api = s
+			}
+			//api = s
 		} else {
 			body = s
 		}
