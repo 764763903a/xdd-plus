@@ -369,6 +369,7 @@ func (c *Container) getToken() error {
 			h, _ := time.ParseDuration("+24d")
 			tZero := time.Now().Add(h)
 			logs.Info(tZero)
+			logs.Info(token.expiration)
 			if tZero.After(token.expiration) {
 				err2, done := getT(c, token)
 				if done {
@@ -376,8 +377,6 @@ func (c *Container) getToken() error {
 				}
 			} else {
 				logs.Info("获取缓存成功")
-				logs.Info(token.Token)
-				logs.Info(token.expiration)
 				c.Token = token.Token
 			}
 		}
@@ -412,7 +411,7 @@ func getT(c *Container, token *Token) (error, bool) {
 		}
 		c.Token, _ = jsonparser.GetString(data, "data", "token")
 		token.Token, _ = jsonparser.GetString(data, "data", "token")
-		token.expiration = time.Time{}.Local()
+		token.expiration = time.Now()
 		setSqlToken(token)
 		logs.Info(c.Token)
 	} else {
