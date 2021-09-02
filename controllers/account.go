@@ -75,9 +75,3 @@ func (c *AccountController) CreateOrUpdate() {
 func (c *AccountController) Admin() {
 	c.Ctx.WriteString(models.Admin)
 }
-
-func (c *AccountController) IsAdmin() {
-	var pin = c.GetString("pin")
-	c.SetSession("pin", pin)
-	c.Ctx.WriteString("登录")
-}

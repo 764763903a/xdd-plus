@@ -55,10 +55,11 @@ func main() {
 	web.Router("/api/login/qrcode.png", &controllers.LoginController{}, "get:GetQrcode")
 	web.Router("/api/login/query", &controllers.LoginController{}, "get:Query")
 	web.Router("/api/login/cookie", &controllers.LoginController{}, "get:Cookie")
+	web.Router("/api/login/admin", &controllers.LoginController{}, "post:IsAdmin")
 	web.Router("/api/account", &controllers.AccountController{}, "get:List")
 	web.Router("/api/account", &controllers.AccountController{}, "post:CreateOrUpdate")
 	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
-	web.Router("/admin", &controllers.AccountController{}, "post:IsAdmin")
+	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
 	if models.Config.Static == "" {
 		models.Config.Static = "./static"
 	}
