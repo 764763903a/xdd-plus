@@ -352,7 +352,7 @@ func (c *Container) read() error {
 
 func (c *Container) getToken() error {
 	version, err := GetQlVersion(c.Address)
-	logs.Warn(err)
+	logs.Debug(err)
 	if version == "2.9" {
 		logs.Info("获取新版token")
 		req := httplib.Get(c.Address + fmt.Sprintf(`/open/auth/token?client_id=%s&client_secret=%s`, c.Cid, c.Secret))
@@ -394,13 +394,11 @@ func (c *Container) request(ss ...string) ([]byte, error) {
 		if s == GET || s == POST || s == PUT || s == DELETE {
 			method = s
 		} else if strings.Contains(s, "/api/") {
-			logs.Info(c.Version)
 			if c.Version == "2.9" {
 				api = strings.ReplaceAll(s, "api", "open")
 			} else {
 				api = s
 			}
-			//api = s
 		} else {
 			body = s
 		}
