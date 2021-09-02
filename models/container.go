@@ -29,6 +29,8 @@ type Container struct {
 	Address   string
 	Username  string
 	Password  string
+	Cid       string
+	Secret    string
 	Path      string
 	Version   string
 	Token     string
@@ -353,7 +355,7 @@ func (c *Container) getToken() error {
 	logs.Warn(err)
 	if version == "2.9" {
 		logs.Info("获取新版token")
-		req := httplib.Get(c.Address + fmt.Sprintf(`/open/auth/token?client_id=%s&client_secret=%s`, c.Username, c.Password))
+		req := httplib.Get(c.Address + fmt.Sprintf(`/open/auth/token?client_id=%s&client_secret=%s`, c.Cid, c.Secret))
 		req.Header("Content-Type", "application/json;charset=UTF-8")
 		if rsp, err := req.Response(); err == nil {
 			data, err := ioutil.ReadAll(rsp.Body)
@@ -515,39 +517,20 @@ func (c *Container) postConfig(handle func(config string) string) error {
 }
 
 func (c *Container) getSession() error {
-	if c.Version == "2.9" {
-		req := httplib.Post(c.Address + "/auth")
-		req.Param("username", c.Username)
-		req.Param("password", c.Password)
-		rsp, err := req.Response()
-		if err != nil {
-			return err
-		}
-		c.Token = rsp.Header.Get("Set-Cookie")
-		if data, err := ioutil.ReadAll(rsp.Body); err != nil {
-			return err
-		} else {
-			err, _ := jsonparser.GetInt(data, "err")
-			if err != 0 {
-				return errors.New(string(data))
-			}
-		}
+	req := httplib.Post(c.Address + "/auth")
+	req.Param("username", c.Username)
+	req.Param("password", c.Password)
+	rsp, err := req.Response()
+	if err != nil {
+		return err
+	}
+	c.Token = rsp.Header.Get("Set-Cookie")
+	if data, err := ioutil.ReadAll(rsp.Body); err != nil {
+		return err
 	} else {
-		req := httplib.Post(c.Address + "/auth")
-		req.Param("username", c.Username)
-		req.Param("password", c.Password)
-		rsp, err := req.Response()
-		if err != nil {
-			return err
-		}
-		c.Token = rsp.Header.Get("Set-Cookie")
-		if data, err := ioutil.ReadAll(rsp.Body); err != nil {
-			return err
-		} else {
-			err, _ := jsonparser.GetInt(data, "err")
-			if err != 0 {
-				return errors.New(string(data))
-			}
+		err, _ := jsonparser.GetInt(data, "err")
+		if err != 0 {
+			return errors.New(string(data))
 		}
 	}
 	return nil
