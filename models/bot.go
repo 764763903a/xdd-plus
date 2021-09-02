@@ -93,6 +93,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				req.Body(post)
 				req.Header("Host", "signer.nz.lu")
 				rsp, err := req.String()
+				logs.Warn(err)
+				logs.Info(rsp)
 				if err != nil {
 					return err
 				}
