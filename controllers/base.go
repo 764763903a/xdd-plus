@@ -114,8 +114,7 @@ func (c *BaseController) Logined() *BaseController {
 	} else {
 		logs.Warn("登录成功")
 		c.PtPin = v.(string)
-		logs.Warn(v.(string))
-		if strings.Contains(models.Config.Master, v.(string)) {
+		if strings.EqualFold(models.Config.Master, v.(string)) {
 			c.Master = true
 		}
 	}
