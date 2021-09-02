@@ -108,15 +108,11 @@ func (c *BaseController) ResponseError(ps ...interface{}) *BaseController {
 
 //Logined 登录
 func (c *BaseController) Logined() *BaseController {
-	if models.Cdle { //作者调试
-		c.Master = true
-		return c
-	}
 	if v := c.GetSession("pin"); v == nil {
-		logs.Warn("test")
 		c.Ctx.Redirect(302, "/")
 		c.StopRun()
 	} else {
+		logs.Warn("登录成功")
 		c.PtPin = v.(string)
 		logs.Warn(v.(string))
 		if strings.Contains(models.Config.Master, v.(string)) {
