@@ -359,6 +359,7 @@ func (c *Container) getToken() error {
 			}
 			c.Token, _ = jsonparser.GetString(data, "data", "token")
 			logs.Info(c.Token)
+			logs.Info("拿2.9的token")
 		} else {
 			return err
 		}
@@ -388,11 +389,12 @@ func (c *Container) request(ss ...string) ([]byte, error) {
 		if s == GET || s == POST || s == PUT || s == DELETE {
 			method = s
 		} else if strings.Contains(s, "/api/") {
-			if c.Version == "2.9" {
-				api = strings.ReplaceAll(s, "api", "open")
-			} else {
-				api = s
-			}
+			//if c.Version == "2.9" {
+			//	api = strings.ReplaceAll(s, "api", "open")
+			//} else {
+			//	api = s
+			//}
+			api = s
 		} else {
 			body = s
 		}
@@ -510,7 +512,7 @@ func (c *Container) postConfig(handle func(config string) string) error {
 
 func (c *Container) getSession() error {
 	if c.Version == "2.9" {
-		req := httplib.Post(c.Address + "/open/auth")
+		req := httplib.Post(c.Address + "/auth")
 		req.Param("username", c.Username)
 		req.Param("password", c.Password)
 		rsp, err := req.Response()
