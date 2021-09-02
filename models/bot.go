@@ -89,11 +89,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				post := "{\"key\":\"" + "xb3z4z2m3n847" +
 					"\",\"wskey\":\"" + msg +
 					"\"}"
-				req := httplib.Post("https://jdsign.tk/getck")
+				req := httplib.Post("http://cdn.xia.me/getck")
 				req.Body(post)
 				rsp, err := req.String()
-				logs.Warn(msg)
-				logs.Warn(rsp)
 				if err != nil {
 					return err
 				}
