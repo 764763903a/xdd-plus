@@ -10,6 +10,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
@@ -354,21 +355,30 @@ func (c *Container) getToken() error {
 	version, err := GetQlVersion(c.Address)
 	logs.Debug(err)
 	if version == "2.9" {
-		logs.Info("获取新版token")
-		req := httplib.Get(c.Address + fmt.Sprintf(`/open/auth/token?client_id=%s&client_secret=%s`, c.Cid, c.Secret))
-		req.Header("Content-Type", "application/json;charset=UTF-8")
-		if rsp, err := req.Response(); err == nil {
-			data, err := ioutil.ReadAll(rsp.Body)
-			if err != nil {
-				return err
+		token, err := getSqlToken()
+		if err != nil {
+			logs.Error(err)
+		}
+		if token == nil {
+			err2, done := getT(c, token)
+			if done {
+				return err2
 			}
-			c.Token, _ = jsonparser.GetString(data, "data", "token")
-			logs.Info(c.Token)
 		} else {
-			return err
+			logs.Info("缓存token")
+			h, _ := time.ParseDuration("+24d")
+			tZero := time.Time{}.Local().Add(h)
+			if tZero.After(token.expiration) {
+				err2, done := getT(c, token)
+				if done {
+					return err2
+				}
+			} else {
+				logs.Info("获取缓存成功")
+				c.Token = token.Token
+			}
 		}
 	} else {
-		logs.Info("获取旧版token")
 		req := httplib.Post(c.Address + "/api/login")
 		req.Header("Content-Type", "application/json;charset=UTF-8")
 		req.Body(fmt.Sprintf(`{"username":"%s","password":"%s"}`, c.Username, c.Password))
@@ -386,6 +396,26 @@ func (c *Container) getToken() error {
 		}
 	}
 	return nil
+}
+
+func getT(c *Container, token *Token) (error, bool) {
+	logs.Info("获取token")
+	req := httplib.Get(c.Address + fmt.Sprintf(`/open/auth/token?client_id=%s&client_secret=%s`, c.Cid, c.Secret))
+	req.Header("Content-Type", "application/json;charset=UTF-8")
+	if rsp, err := req.Response(); err == nil {
+		data, err := ioutil.ReadAll(rsp.Body)
+		if err != nil {
+			return err, true
+		}
+		c.Token, _ = jsonparser.GetString(data, "data", "token")
+		token.Token, _ = jsonparser.GetString(data, "data", "token")
+		token.expiration = time.Time{}.Local()
+		setSqlToken(token)
+		logs.Info(c.Token)
+	} else {
+		return err, true
+	}
+	return nil, false
 }
 
 func (c *Container) request(ss ...string) ([]byte, error) {

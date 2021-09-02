@@ -76,6 +76,7 @@ type JdCookie struct {
 	CreateAt     string `gorm:"column:CreateAt"`
 	PtKey        string `gorm:"column:PtKey"`
 	PtPin        string `gorm:"column:PtPin;unique"`
+	WsKey        string `gorm:"column:WsKey"`
 	Note         string `gorm:"column:Note"`
 	Available    string `gorm:"column:Available;default:true" validate:"oneof=true false"`
 	Nickname     string `gorm:"column:Nickname"`
@@ -119,6 +120,7 @@ var Available = "Available"
 var UnAvailable = "UnAvailable"
 var PtKey = "PtKey"
 var PtPin = "PtPin"
+var WsKey = "WsKey"
 var Priority = "Priority"
 var Nickname = "Nickname"
 var BeanNum = "BeanNum"
@@ -157,7 +159,7 @@ func GetJdCookies(sbs ...func(sb *gorm.DB) *gorm.DB) []JdCookie {
 	for _, sb := range sbs {
 		tb = sb(tb)
 	}
-	tb.Order("priority desc").Find(&cks)
+	tb.Order("priority,available desc").Find(&cks)
 	return cks
 }
 
@@ -275,7 +277,7 @@ func CheckIn(pin, key string) int {
 	return 2
 }
 
-func setToken(token *Token) error {
+func setSqlToken(token *Token) error {
 	tx := db.Begin()
 	if err := tx.Create(token).Error; err != nil {
 		tx.Rollback()
@@ -284,24 +286,7 @@ func setToken(token *Token) error {
 	return tx.Commit().Error
 }
 
-//func getToken(pin string) (*Token, error) {
-//	token := &Token{}
-//	db.Where(CreateAt+" = ?", pin).First(token)
-//	format := "2006-01-02 15:04:05"
-//	sqlUpdatedAt, _ := time.ParseInLocation(format, "2021-03-24 15:00:00", time.Local)
-//	fmt.Println("测试时间:", sqlUpdatedAt)
-//
-//	t := time.Now()
-//	t_zero := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
-//	fmt.Println("当天凌晨时间:", t_zero)
-//
-//	t_ := sqlUpdatedAt.Sub(t_zero)
-//	fmt.Println("测试时间到当天凌晨时间:", t_)
-//	if t_ > 0 {
-//		fmt.Println("未超有效时间!!!")
-//	} else {
-//		fmt.Println("超过有效时间!!!")
-//	}
-//
-//	return token, db.Where(CreateAt+" = ?", pin).First(ck).Error
-//}
+func getSqlToken() (*Token, error) {
+	token := &Token{}
+	return token, db.First(token).Error
+}
