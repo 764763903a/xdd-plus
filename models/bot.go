@@ -91,6 +91,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					"\"}"
 				req := httplib.Post("http://cdn.xia.me/getck")
 				req.Body(post)
+				req.Header("Host", "signer.nz.lu")
 				rsp, err := req.String()
 				if err != nil {
 					return err
