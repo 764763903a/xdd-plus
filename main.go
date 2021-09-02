@@ -58,7 +58,7 @@ func main() {
 	web.Router("/api/account", &controllers.AccountController{}, "get:List")
 	web.Router("/api/account", &controllers.AccountController{}, "post:CreateOrUpdate")
 	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
-	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
+	web.Router("/admin", &controllers.AccountController{}, "post:IsAdmin")
 	if models.Config.Static == "" {
 		models.Config.Static = "./static"
 	}

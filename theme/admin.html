@@ -76,8 +76,38 @@
 </div>
 
 <script>
+
     function login()
     {
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var results = xmlhttp.responseText
+                console.log(results)
+                switch (results) {
+                    case "授权登录未确认":
+                        break;
+                    case "登录":
+                        hd.style.visibility = "hidden";
+                        qrcode.src = success
+                        clearInterval(timer)
+                        setTimeout(() => {
+                            window.location.href = "/admin"
+                        }, 1000);
+                        break;
+                    case "成功":
+                        hd.style.visibility = "hidden";
+                        qrcode.src = success
+                        clearInterval(timer)
+                        break;
+                    default:
+                        showQrcode()
+                        break;
+                }
+            }
+        }
+        xmlhttp.open("GET", "/api/login/query", true);
+        xmlhttp.send();
         sessionStorage.setItem('pin',document.getElementById("pin").value);
         window.location.href = "/admin"
     }

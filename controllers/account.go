@@ -75,3 +75,7 @@ func (c *AccountController) CreateOrUpdate() {
 func (c *AccountController) Admin() {
 	c.Ctx.WriteString(models.Admin)
 }
+
+func (c *AccountController) IsAdmin() {
+	c.SetSession("pin", "test")
+}
