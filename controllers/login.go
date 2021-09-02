@@ -330,9 +330,10 @@ func (c *LoginController) IsAdmin() {
 		c.Ctx.Redirect(302, "/")
 		c.StopRun()
 	} else {
-
-		c.SetSession("pin", pin)
-		c.Ctx.WriteString("登录")
+		if strings.EqualFold(models.Config.Master, pin) {
+			c.SetSession("pin", pin)
+			c.Ctx.WriteString("登录")
+		}
 	}
 }
 
