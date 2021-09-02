@@ -508,20 +508,39 @@ func (c *Container) postConfig(handle func(config string) string) error {
 }
 
 func (c *Container) getSession() error {
-	req := httplib.Post(c.Address + "/auth")
-	req.Param("username", c.Username)
-	req.Param("password", c.Password)
-	rsp, err := req.Response()
-	if err != nil {
-		return err
-	}
-	c.Token = rsp.Header.Get("Set-Cookie")
-	if data, err := ioutil.ReadAll(rsp.Body); err != nil {
-		return err
+	if c.Version == "2.9" {
+		req := httplib.Post(c.Address + "/open/auth")
+		req.Param("username", c.Username)
+		req.Param("password", c.Password)
+		rsp, err := req.Response()
+		if err != nil {
+			return err
+		}
+		c.Token = rsp.Header.Get("Set-Cookie")
+		if data, err := ioutil.ReadAll(rsp.Body); err != nil {
+			return err
+		} else {
+			err, _ := jsonparser.GetInt(data, "err")
+			if err != 0 {
+				return errors.New(string(data))
+			}
+		}
 	} else {
-		err, _ := jsonparser.GetInt(data, "err")
-		if err != 0 {
-			return errors.New(string(data))
+		req := httplib.Post(c.Address + "/auth")
+		req.Param("username", c.Username)
+		req.Param("password", c.Password)
+		rsp, err := req.Response()
+		if err != nil {
+			return err
+		}
+		c.Token = rsp.Header.Get("Set-Cookie")
+		if data, err := ioutil.ReadAll(rsp.Body); err != nil {
+			return err
+		} else {
+			err, _ := jsonparser.GetInt(data, "err")
+			if err != 0 {
+				return errors.New(string(data))
+			}
 		}
 	}
 	return nil
