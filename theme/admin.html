@@ -69,16 +69,15 @@
 <body>
 <div id="login">
     <h1>Login</h1>
-    <form method="post">
         <input type="text" required="required" id="pin" placeholder="用户名" name="u"></input>
-        <button class="but" type="submit" onclick="login()">登录</button>
-    </form>
+        <button class="but" onclick="login()">登录</button>
 </div>
 
 <script>
 
     function login()
     {
+        const userName = document.querySelector('#pin').value
         var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
