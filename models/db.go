@@ -42,6 +42,7 @@ func initDB() {
 		&UserAgent{},
 		&Env{},
 		&Wish{},
+		&Token{},
 	)
 	keys = make(map[string]bool)
 	pins = make(map[string]bool)
@@ -273,3 +274,34 @@ func CheckIn(pin, key string) int {
 	}
 	return 2
 }
+
+func setToken(token *Token) error {
+	tx := db.Begin()
+	if err := tx.Create(token).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+
+//func getToken(pin string) (*Token, error) {
+//	token := &Token{}
+//	db.Where(CreateAt+" = ?", pin).First(token)
+//	format := "2006-01-02 15:04:05"
+//	sqlUpdatedAt, _ := time.ParseInLocation(format, "2021-03-24 15:00:00", time.Local)
+//	fmt.Println("测试时间:", sqlUpdatedAt)
+//
+//	t := time.Now()
+//	t_zero := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+//	fmt.Println("当天凌晨时间:", t_zero)
+//
+//	t_ := sqlUpdatedAt.Sub(t_zero)
+//	fmt.Println("测试时间到当天凌晨时间:", t_)
+//	if t_ > 0 {
+//		fmt.Println("未超有效时间!!!")
+//	} else {
+//		fmt.Println("超过有效时间!!!")
+//	}
+//
+//	return token, db.Where(CreateAt+" = ?", pin).First(ck).Error
+//}
