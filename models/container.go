@@ -362,7 +362,6 @@ func (c *Container) getToken() error {
 			}
 			c.Token, _ = jsonparser.GetString(data, "data", "token")
 			logs.Info(c.Token)
-			logs.Info("拿2.9的token")
 		} else {
 			return err
 		}
