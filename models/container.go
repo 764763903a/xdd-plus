@@ -375,6 +375,8 @@ func (c *Container) getToken() error {
 				}
 			} else {
 				logs.Info("获取缓存成功")
+				logs.Info(token.Token)
+				logs.Info(token.expiration)
 				c.Token = token.Token
 			}
 		}
