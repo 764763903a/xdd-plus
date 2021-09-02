@@ -106,10 +106,9 @@
                 }
             }
         }
-        xmlhttp.open("GET", "/api/login/query", true);
-        xmlhttp.send();
-        sessionStorage.setItem('pin',document.getElementById("pin").value);
-        window.location.href = "/admin"
+        xmlhttp.open("POST","/admin", true);
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+        xmlhttp.send("pin="+userName);
     }
 </script>
 </body>

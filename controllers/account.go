@@ -77,5 +77,7 @@ func (c *AccountController) Admin() {
 }
 
 func (c *AccountController) IsAdmin() {
-	c.SetSession("pin", "test")
+	var pin = c.GetString("pin")
+	c.SetSession("pin", pin)
+	c.Ctx.WriteString("登录")
 }
