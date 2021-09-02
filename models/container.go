@@ -349,6 +349,7 @@ func (c *Container) read() error {
 }
 
 func (c *Container) getToken() error {
+	logs.Warn(string(c.Version))
 	if c.Version == "2.9" {
 		req := httplib.Get(c.Address + fmt.Sprintf(`/open/auth/token?client_id=%s&client_secret=%s`, c.Username, c.Password))
 		req.Header("Content-Type", "application/json;charset=UTF-8")
@@ -364,6 +365,7 @@ func (c *Container) getToken() error {
 			return err
 		}
 	} else {
+		logs.Warn("旧版token")
 		req := httplib.Post(c.Address + "/api/login")
 		req.Header("Content-Type", "application/json;charset=UTF-8")
 		req.Body(fmt.Sprintf(`{"username":"%s","password":"%s"}`, c.Username, c.Password))
