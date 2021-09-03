@@ -111,6 +111,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							}
 							if nck, err := GetJdCookie(ck1.PtPin); err == nil {
 								if len(nck.PtPin) == 0 {
+
+								} else {
 									if nck.WsKey == "" || len(nck.WsKey) == 0 {
 										nck.Updates(JdCookie{
 											WsKey: ck1.WsKey,
@@ -123,8 +125,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 										(&JdCookie{}).Push(msg)
 										logs.Info(msg)
 									}
-								} else {
-
 								}
 
 							}
