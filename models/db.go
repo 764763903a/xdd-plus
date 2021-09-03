@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"github.com/beego/beego/v2/adapter/logs"
 	"strings"
 	"time"
 
@@ -193,33 +192,6 @@ func (ck *JdCookie) Update(column string, value interface{}) {
 	if ck.PtPin != "" {
 		db.Model(JdCookie{}).Where(PtPin+" = ?", ck.PtPin).Update(column, value)
 	}
-}
-
-func (ck *JdCookie) InPoolWskey(ws_key string) error {
-	if ck.ID != 0 {
-		date := Date()
-		tx := db.Begin()
-		jp := &JdCookiePool{}
-		logs.Info(ck.PtPin)
-		logs.Info(ws_key)
-		if tx.Where(fmt.Sprintf("%s = '%s'", PtPin, ck.PtPin)).First(jp).Error == nil {
-			return tx.Rollback().Error
-		}
-		if err := tx.Create(&JdCookiePool{
-			PtPin:    ck.PtPin,
-			WsKey:    ck.WsKey,
-			CreateAt: date,
-		}).Error; err != nil {
-			tx.Rollback()
-			return err
-		}
-		tx.Model(ck).Updates(map[string]interface{}{
-			Available: True,
-			WsKey:     ws_key,
-		})
-		return tx.Commit().Error
-	}
-	return nil
 }
 
 func (ck *JdCookie) InPool(pt_key string) error {

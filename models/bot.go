@@ -110,16 +110,23 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								ck1.Telegram = sender.UserID
 							}
 							if nck, err := GetJdCookie(ck1.PtPin); err == nil {
-								if nck.WsKey == "" || len(nck.WsKey) == 0 {
-									nck.InPoolWskey(ck1.WsKey)
-									msg := fmt.Sprintf("写入WsKey，%s", ck1.PtPin)
-									(&JdCookie{}).Push(msg)
-									logs.Info(msg)
+								if len(nck.PtPin) == 0 {
+									if nck.WsKey == "" || len(nck.WsKey) == 0 {
+										nck.Updates(JdCookie{
+											WsKey: ck1.WsKey,
+										})
+										msg := fmt.Sprintf("写入WsKey，%s", ck1.PtPin)
+										(&JdCookie{}).Push(msg)
+										logs.Info(msg)
+									} else {
+										msg := fmt.Sprintf("重复写入")
+										(&JdCookie{}).Push(msg)
+										logs.Info(msg)
+									}
 								} else {
-									msg := fmt.Sprintf("重复写入")
-									(&JdCookie{}).Push(msg)
-									logs.Info(msg)
+
 								}
+
 							}
 
 						}
