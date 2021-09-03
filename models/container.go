@@ -413,7 +413,7 @@ func getT(c *Container, token *Token) (error, bool) {
 		token.Token, _ = jsonparser.GetString(data, "data", "token")
 		token.expiration = time.Now()
 		setSqlToken(token)
-		logs.Info(c.Token)
+		logs.Info(c.Token + token.expiration.String())
 	} else {
 		return err, true
 	}
