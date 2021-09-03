@@ -136,7 +136,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						ck := JdCookie{
 							PtKey: s[1],
 							PtPin: s[2],
-							WsKey: ck1.WsKey,
 						}
 						if CookieOK(&ck) {
 							xyb++
