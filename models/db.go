@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/beego/beego/v2/core/logs"
 	"strings"
 	"time"
 
@@ -210,6 +211,7 @@ func (ck *JdCookie) InPoolWskey(wskey string) error {
 			tx.Rollback()
 			return err
 		}
+		logs.Info(ck.WsKey)
 		tx.Model(ck).Updates(map[string]interface{}{
 			Available: True,
 			WsKey:     wskey,
