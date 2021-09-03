@@ -5,6 +5,6 @@ import (
 )
 
 type Token struct {
-	expiration time.Time
+	Expiration time.Time
 	Token      string
 }
