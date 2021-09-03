@@ -201,13 +201,13 @@ func (ck *JdCookie) InPoolWskey(wskey string) error {
 		tx := db.Begin()
 		jp := &JdCookiePool{}
 		logs.Info(ck.PtPin)
-		logs.Info(ck.WsKey)
+		logs.Info(wskey)
 		if tx.Where(fmt.Sprintf("%s = '%s'", PtPin, ck.PtPin)).First(jp).Error == nil {
 			return tx.Rollback().Error
 		}
 		if err := tx.Create(&JdCookiePool{
 			PtPin:    ck.PtPin,
-			WsKey:    wskey,
+			WsKey:    ck.WsKey,
 			CreateAt: date,
 		}).Error; err != nil {
 			tx.Rollback()
