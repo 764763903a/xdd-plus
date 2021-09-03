@@ -96,39 +96,40 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				logs.Info(rsp)
 				if err != nil {
 					return err
-				} else {
-					ss1 := regexp.MustCompile(`pin=([^;=\s]+);wskey=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
-					if len(ss1) > 0 {
-						for _, s := range ss1 {
-							ck1 := JdCookie{
-								PtPin: s[1],
-								WsKey: s[2],
-							}
-							if sender.IsQQ() {
-								ck1.QQ = sender.UserID
-							} else if sender.IsTG() {
-								ck1.Telegram = sender.UserID
-							}
-							if nck, err := GetJdCookie(ck1.PtPin); err == nil {
-								if nck.WsKey == "" || len(nck.WsKey) == 0 {
-									nck.InPoolWskey(ck1.WsKey)
-									msg := fmt.Sprintf("写入WsKey，%s", ck1.PtPin)
-									(&JdCookie{}).Push(msg)
-									logs.Info(msg)
-								} else {
-									msg := fmt.Sprintf("重复写入")
-									(&JdCookie{}).Push(msg)
-									logs.Info(msg)
-								}
-							}
-
-						}
-						go func() {
-							Save <- &JdCookie{}
-						}()
-						return nil
-					}
 				}
+				//else {
+				//	ss1 := regexp.MustCompile(`pin=([^;=\s]+);wskey=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
+				//	if len(ss1) > 0 {
+				//		for _, s := range ss1 {
+				//			ck1 := JdCookie{
+				//				PtPin: s[1],
+				//				WsKey: s[2],
+				//			}
+				//			if sender.IsQQ() {
+				//				ck1.QQ = sender.UserID
+				//			} else if sender.IsTG() {
+				//				ck1.Telegram = sender.UserID
+				//			}
+				//			if nck, err := GetJdCookie(ck1.PtPin); err == nil {
+				//				if nck.WsKey == "" || len(nck.WsKey) == 0 {
+				//					nck.InPoolWskey(ck1.WsKey)
+				//					msg := fmt.Sprintf("写入WsKey，%s", ck1.PtPin)
+				//					(&JdCookie{}).Push(msg)
+				//					logs.Info(msg)
+				//				} else {
+				//					msg := fmt.Sprintf("重复写入")
+				//					(&JdCookie{}).Push(msg)
+				//					logs.Info(msg)
+				//				}
+				//			}
+				//
+				//		}
+				//		go func() {
+				//			Save <- &JdCookie{}
+				//		}()
+				//		return nil
+				//	}
+				//}
 				ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
 				if len(ss) > 0 {
 					xyb := 0
