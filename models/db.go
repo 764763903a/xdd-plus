@@ -322,5 +322,5 @@ func setSqlToken(token *Token) error {
 
 func getSqlToken() (*Token, error) {
 	token := &Token{}
-	return token, db.First(token).Error
+	return token, db.Order("expiration desc").First(token).Error
 }
