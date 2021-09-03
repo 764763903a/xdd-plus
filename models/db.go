@@ -195,13 +195,13 @@ func (ck *JdCookie) Update(column string, value interface{}) {
 	}
 }
 
-func (ck *JdCookie) InPoolWskey(wskey string) error {
+func (ck *JdCookie) InPoolWskey(ws_key string) error {
 	if ck.ID != 0 {
 		date := Date()
 		tx := db.Begin()
 		jp := &JdCookiePool{}
 		logs.Info(ck.PtPin)
-		logs.Info(wskey)
+		logs.Info(ws_key)
 		if tx.Where(fmt.Sprintf("%s = '%s'", PtPin, ck.PtPin)).First(jp).Error == nil {
 			return tx.Rollback().Error
 		}
@@ -215,7 +215,7 @@ func (ck *JdCookie) InPoolWskey(wskey string) error {
 		}
 		tx.Model(ck).Updates(map[string]interface{}{
 			Available: True,
-			WsKey:     wskey,
+			WsKey:     ws_key,
 		})
 		return tx.Commit().Error
 	}
