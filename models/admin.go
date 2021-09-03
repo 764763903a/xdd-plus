@@ -83,7 +83,13 @@ var Admin = `<html lang="zh-cn">
                         width: 80,
                         edit: 'text',
                         align: 'center',
-                    }, {
+                    },{
+                        field: 'WsKey',
+                        title: 'WsKey',
+                        width: 80,
+                        edit: 'text',
+                        align: 'center',
+                    },{
                         field: 'Available',
                         title: '可用',
                         edit: 'text',
