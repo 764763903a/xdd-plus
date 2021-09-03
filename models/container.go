@@ -366,11 +366,12 @@ func (c *Container) getToken() error {
 			}
 		} else {
 			logs.Info("缓存token")
-			h, _ := time.ParseDuration("+624h")
+			h, _ := time.ParseDuration("-624h")
 			tZero := time.Now().Add(h)
 			logs.Info(tZero)
 			logs.Info(token.Expiration)
-			if tZero.Before(token.Expiration) {
+			t_ := token.Expiration.Sub(tZero)
+			if t_ > 0 {
 				err2, done := getT(c, token)
 				if done {
 					return err2
