@@ -371,7 +371,7 @@ func (c *Container) getToken() error {
 			logs.Info(tZero)
 			logs.Info(token.Expiration)
 			t_ := token.Expiration.Sub(tZero)
-			if t_ > 0 {
+			if t_ < 0 {
 				err2, done := getT(c, token)
 				if done {
 					return err2
