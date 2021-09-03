@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/adapter/logs"
 	"strings"
 	"time"
 
@@ -200,6 +200,8 @@ func (ck *JdCookie) InPoolWskey(wskey string) error {
 		date := Date()
 		tx := db.Begin()
 		jp := &JdCookiePool{}
+		logs.Info(ck.PtPin)
+		logs.Info(ck.WsKey)
 		if tx.Where(fmt.Sprintf("%s = '%s'", PtPin, ck.PtPin)).First(jp).Error == nil {
 			return tx.Rollback().Error
 		}
@@ -211,7 +213,6 @@ func (ck *JdCookie) InPoolWskey(wskey string) error {
 			tx.Rollback()
 			return err
 		}
-		logs.Info(ck.WsKey)
 		tx.Model(ck).Updates(map[string]interface{}{
 			Available: True,
 			WsKey:     wskey,
