@@ -370,7 +370,7 @@ func (c *Container) getToken() error {
 			tZero := time.Now().Add(h)
 			logs.Info(tZero)
 			logs.Info(token.Expiration)
-			if tZero.After(token.Expiration) {
+			if tZero.Before(token.Expiration) {
 				err2, done := getT(c, token)
 				if done {
 					return err2
