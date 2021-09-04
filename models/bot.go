@@ -115,6 +115,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									WsKey: ck.WsKey,
 								})
 								msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
+								if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
+								}
+								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								(&JdCookie{}).Push(msg)
 								logs.Info(msg)
 							} else {
@@ -125,6 +129,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						} else {
 							NewJdCookie(&ck)
 							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+							if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
+								}
 							sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 							logs.Info(msg)
 						}
@@ -178,6 +185,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							if nck, err := GetJdCookie(ck.PtPin); err == nil {
 								nck.InPool(ck.PtKey)
 								msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+								if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
+								}
+								sender.Reply(fmt.Sprintf(msg,AddCoin(sender.UserID)))
 								(&JdCookie{}).Push(msg)
 								logs.Info(msg)
 							} else {
@@ -186,12 +197,15 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								}
 								NewJdCookie(&ck)
 								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+								if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
+								}
 								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								logs.Info(msg)
 							}
 						}
 					} else {
-						sender.Reply(fmt.Sprintf("无效，许愿币-1，余额%d", RemCoin(sender.UserID, 1)))
+						sender.Reply(fmt.Sprintf("无效，东币-1，余额%d", RemCoin(sender.UserID, 1)))
 					}
 				}
 				go func() {
