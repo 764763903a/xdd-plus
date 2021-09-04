@@ -85,7 +85,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	switch msg {
 	default:
 		{
-
 			if strings.Contains(msg, "wskey=") {
 				rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, msg), &Sender{})
 				logs.Info(rsp)
