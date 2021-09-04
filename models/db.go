@@ -130,6 +130,7 @@ var UnAvailable = "UnAvailable"
 var PtKey = "PtKey"
 var PtPin = "PtPin"
 var WsKey = "WsKey"
+var Address = "Address"
 var Priority = "Priority"
 var Nickname = "Nickname"
 var BeanNum = "BeanNum"
@@ -297,7 +298,7 @@ func setSqlToken(token *Token) error {
 	return tx.Commit().Error
 }
 
-func getSqlToken() (*Token, error) {
+func getSqlToken(address string) (*Token, error) {
 	token := &Token{}
-	return token, db.Order("expiration desc").First(token).Error
+	return token, db.Where(Address+" = ?", address).Order("expiration desc").First(token).Error
 }
