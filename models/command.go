@@ -77,8 +77,8 @@ func (sender *Sender) handleJdCookies(handle func(ck *JdCookie)) error {
 			}
 		}
 		if !ok {
-			sender.Reply("你尚未绑定🐶东账号，请对我说扫码，扫码后即可查询账户资产信息。")
-			return errors.New("你尚未绑定🐶东账号，请对我说扫码，扫码后即可查询账户资产信息。")
+			sender.Reply("你尚未绑定🐶东账号，请提交wskey，提交后即可查询账户资产信息。")
+			return errors.New("你尚未绑定🐶东账号，请提交wskey，提交后即可查询账户资产信息。")
 		}
 	} else {
 		cks = LimitJdCookie(cks, a)
@@ -132,7 +132,7 @@ var codeSignals = []CodeSignal{
 				if zero.Unix() > u.ActiveAt.Unix() {
 					first = true
 				} else {
-					return fmt.Sprintf("你打过卡了，许愿币余额%d。", u.Coin)
+					return fmt.Sprintf("你打过卡了，东币余额%d。", u.Coin)
 				}
 			}
 			if first {
@@ -149,7 +149,7 @@ var codeSignals = []CodeSignal{
 					"coin":      gorm.Expr(fmt.Sprintf("coin+%d", coin)),
 				})
 				u.Coin += coin
-				sender.Reply(fmt.Sprintf("你是打卡第%d人，奖励%d个许愿币，许愿币余额%d。", total[0]+1, coin, u.Coin))
+				sender.Reply(fmt.Sprintf("你是打卡第%d人，奖励%d个东币，东币余额%d。", total[0]+1, coin, u.Coin))
 				ReturnCoin(sender)
 				return ""
 			}
@@ -157,25 +157,12 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"coin", "许愿币", "余额", "yu", "yue"},
+		Command: []string{"coin", "东币", "余额", "yu", "yue"},
 		Handle: func(sender *Sender) interface{} {
-			return fmt.Sprintf("余额%d", GetCoin(sender.UserID))
+			return fmt.Sprintf("东币余额%d", GetCoin(sender.UserID))
 		},
 	},
-	{
-		Command: []string{"qrcode", "扫码", "二维码", "scan"},
-		Handle: func(sender *Sender) interface{} {
-			url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?tp=%s&uid=%d&gid=%d", web.BConfig.Listen.HTTPPort, sender.Type, sender.UserID, sender.ChatID)
-			if sender.Type == "tgg" {
-				url += fmt.Sprintf("&mid=%v&unm=%v", sender.MessageID, sender.Username)
-			}
-			rsp, err := httplib.Get(url).Response()
-			if err != nil {
-				return nil
-			}
-			return rsp
-		},
-	},
+	
 	{
 		Command: []string{"升级", "更新", "update", "upgrade"},
 		Admin:   true,
@@ -183,7 +170,7 @@ var codeSignals = []CodeSignal{
 			if err := Update(sender); err != nil {
 				return err.Error()
 			}
-			sender.Reply("小滴滴重启程序")
+			sender.Reply("重启程序")
 			Daemon()
 			return nil
 		},
@@ -192,7 +179,7 @@ var codeSignals = []CodeSignal{
 		Command: []string{"重启", "reload", "restart", "reboot"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
-			sender.Reply("小滴滴重启程序")
+			sender.Reply("重启程序")
 			Daemon()
 			return nil
 		},
@@ -202,11 +189,11 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			if !sender.IsAdmin {
 				coin := GetCoin(sender.UserID)
-				if coin < 0 {
-					return "许愿币不足以查看UserAgent。"
+				if coin < 10 {
+					return "东币不足以查看UserAgent。"
 				}
-				sender.Reply("查看一次扣1个许愿币。")
-				RemCoin(sender.UserID, 1)
+				sender.Reply("查看一次扣10个东币。")
+				RemCoin(sender.UserID, 10)
 			}
 			return ua
 		},
@@ -262,7 +249,7 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"翻翻乐"},
+		Command: []string{"赌一把"},
 		Handle: func(sender *Sender) interface{} {
 			cost := Int(sender.JoinContens())
 			if cost <= 0 || cost > 10000 {
@@ -270,7 +257,7 @@ var codeSignals = []CodeSignal{
 			}
 			u := &User{}
 			if err := db.Where("number = ?", sender.UserID).First(u).Error; err != nil || u.Coin < cost {
-				return "许愿币不足，先去打卡吧。"
+				return "东币不足，先去打卡吧。"
 			}
 			baga := 0
 			if u.Coin > 100000 {
@@ -279,18 +266,18 @@ var codeSignals = []CodeSignal{
 			}
 			r := time.Now().Nanosecond() % 10
 			if r < 5 || baga > 0 {
-				sender.Reply(fmt.Sprintf("很遗憾你失去了%d枚许愿币。", cost))
+				sender.Reply(fmt.Sprintf("很遗憾你失去了%d枚东币。", cost))
 				cost = -cost
 			} else {
 				if r == 9 {
 					cost *= 2
-					sender.Reply(fmt.Sprintf("恭喜你幸运暴击获得%d枚许愿币，20秒后自动转入余额。", cost))
+					sender.Reply(fmt.Sprintf("恭喜你幸运暴击获得%d枚东币，20秒后自动转入余额。", cost))
 					time.Sleep(time.Second * 20)
 				} else {
-					sender.Reply(fmt.Sprintf("很幸运你获得%d枚许愿币，10秒后自动转入余额。", cost))
+					sender.Reply(fmt.Sprintf("很幸运你获得%d枚东币，10秒后自动转入余额。", cost))
 					time.Sleep(time.Second * 10)
 				}
-				sender.Reply(fmt.Sprintf("%d枚许愿币已到账。", cost))
+				sender.Reply(fmt.Sprintf("%d枚东币已到账。", cost))
 			}
 			db.Model(u).Update("coin", gorm.Expr(fmt.Sprintf("coin + %d", cost)))
 			return nil
@@ -336,7 +323,7 @@ var codeSignals = []CodeSignal{
 			u := &User{}
 			if err := tx.Where("number = ?", sender.UserID).First(u).Error; err != nil {
 				tx.Rollback()
-				return "许愿币不足，先去打卡吧。"
+				return "东币不足，先去打卡吧。"
 			}
 			w := &Wish{
 				Content:    ct,
@@ -345,7 +332,7 @@ var codeSignals = []CodeSignal{
 			}
 			if u.Coin < cost {
 				tx.Rollback()
-				return fmt.Sprintf("许愿币不足，需要%d个许愿币。", cost)
+				return fmt.Sprintf("东币不足，需要%d个东币。", cost)
 			}
 			if err := tx.Create(w).Error; err != nil {
 				tx.Rollback()
@@ -357,7 +344,7 @@ var codeSignals = []CodeSignal{
 			}
 			tx.Commit()
 			(&JdCookie{}).Push(fmt.Sprintf("有人许愿%s，愿望id为%d。", w.Content, w.ID))
-			return fmt.Sprintf("收到愿望，已扣除%d个许愿币。", cost)
+			return fmt.Sprintf("收到愿望，已扣除%d个东币。", cost)
 		},
 	},
 	{
@@ -523,7 +510,7 @@ var codeSignals = []CodeSignal{
 			).RowsAffected == 0 {
 				return "先去打卡吧你。"
 			}
-			return "许愿币+1"
+			return "东币+1"
 		},
 	},
 	{
@@ -606,7 +593,7 @@ var codeSignals = []CodeSignal{
 				db.Model(User{}).Where("number = ?", sender.UserID).Updates(map[string]interface{}{
 					"coin": gorm.Expr(fmt.Sprintf("coin - %d", cost)),
 				})
-				return fmt.Sprintf("转账成功，扣除手续费%d枚许愿币。", cost)
+				return fmt.Sprintf("转账成功，扣除手续费%d枚东币。", cost)
 			}
 			if amount > 10000 {
 				return "单笔转账限额10000。"
@@ -625,7 +612,7 @@ var codeSignals = []CodeSignal{
 			if !sender.IsAdmin {
 				if amount <= cost {
 					tx.Rollback()
-					return fmt.Sprintf("转账失败，手续费需要%d个许愿币。", cost)
+					return fmt.Sprintf("转账失败，手续费需要%d个东币。", cost)
 				}
 				real = amount - cost
 			} else {
@@ -707,15 +694,15 @@ func ReturnCoin(sender *Sender) {
 			"coin", gorm.Expr(fmt.Sprintf("coin + %d", w.Coin)),
 		).RowsAffected == 0 {
 			tx.Rollback()
-			sender.Reply("愿望未达成退还许愿币失败。")
+			sender.Reply("愿望未达成退还东币失败。")
 			return
 		}
-		sender.Reply(fmt.Sprintf("愿望未达成退还%d枚许愿币。", w.Coin))
+		sender.Reply(fmt.Sprintf("愿望未达成退还%d枚东币。", w.Coin))
 		if tx.Model(&w).Update(
 			"status", 1,
 		).RowsAffected == 0 {
 			tx.Rollback()
-			sender.Reply("愿望未达成退还许愿币失败。")
+			sender.Reply("愿望未达成退还东币失败。")
 			return
 		}
 	}
