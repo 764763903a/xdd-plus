@@ -100,19 +100,21 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						if err != nil {
 							return err
 						}
-
 						ck := JdCookie{
 							PtPin: s[1],
 							PtKey: rsp,
 							WsKey: s[2],
 						}
+						ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
+						for _, s1 := range ss {
+							ck.PtPin = s1[1]
+							ck.PtKey = s1[2]
+						}
+
 						if sender.IsQQ() {
 							ck.QQ = sender.UserID
 						} else if sender.IsTG() {
 							ck.Telegram = sender.UserID
-						}
-						if CookieOK(&ck) {
-
 						}
 						if nck, err := GetJdCookie(ck.PtPin); err == nil {
 							nck.InPool(ck.PtKey)
