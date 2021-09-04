@@ -135,46 +135,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					}()
 					return nil
 				}
-
-				//ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
-				//if len(ss) > 0 {
-				//	xyb := 0
-				//	for _, s := range ss {
-				//		ck := JdCookie{
-				//			PtKey: s[1],
-				//			PtPin: s[2],
-				//		}
-				//		if CookieOK(&ck) {
-				//			xyb++
-				//			if sender.IsQQ() {
-				//				ck.QQ = sender.UserID
-				//			} else if sender.IsTG() {
-				//				ck.Telegram = sender.UserID
-				//			}
-				//			if nck, err := GetJdCookie(ck.PtPin); err == nil {
-				//				nck.InPool(ck.PtKey)
-				//				msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-				//				(&JdCookie{}).Push(msg)
-				//				logs.Info(msg)
-				//			} else {
-				//				if Cdle {
-				//					ck.Hack = True
-				//				}
-				//				NewJdCookie(&ck)
-				//				msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-				//				sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
-				//				logs.Info(msg)
-				//			}
-				//		} else {
-				//			sender.Reply(fmt.Sprintf("无效，许愿币-1，余额%d", RemCoin(sender.UserID, 1)))
-				//		}
-				//	}
-				//	go func() {
-				//		Save <- &JdCookie{}
-				//	}()
-				//	return nil
-				//}
-				//return rsp
 			}
 		}
 		{ //tyt

@@ -187,6 +187,7 @@ func CookieOK(ck *JdCookie) bool {
 							if Cdle {
 								ck.Hack = True
 							}
+							(&JdCookie{}).Push("转换失败")
 						}
 					}
 
