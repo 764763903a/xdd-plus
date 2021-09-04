@@ -206,6 +206,7 @@ func (ck *JdCookie) InPool(pt_key string) error {
 		if err := tx.Create(&JdCookiePool{
 			PtPin:    ck.PtPin,
 			PtKey:    pt_key,
+			WsKey:    ck.WsKey,
 			CreateAt: date,
 		}).Error; err != nil {
 			tx.Rollback()
@@ -262,6 +263,7 @@ func NewJdCookie(ck *JdCookie) error {
 	if err := tx.Create(&JdCookiePool{
 		PtPin:    ck.PtPin,
 		PtKey:    ck.PtKey,
+		WsKey:    ck.WsKey,
 		CreateAt: date,
 	}).Error; err != nil {
 		tx.Rollback()
