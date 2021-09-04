@@ -168,6 +168,7 @@ func CookieOK(ck *JdCookie) bool {
 
 				//临时使用别人代码
 				JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
+				logs.Info(ck.WsKey)
 				var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
 				msg1 := cmd(fmt.Sprintf(`wskey="%s" python3 wspt.py`, pinky), &Sender{})
 				JdCookie{}.Push(fmt.Sprintf("自动转换wskey---%s", msg1))
