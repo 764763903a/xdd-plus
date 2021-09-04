@@ -107,8 +107,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						}
 						ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
 						for _, s1 := range ss {
-							ck.PtPin = s1[1]
-							ck.PtKey = s1[2]
+							ck.PtPin = s1[2]
+							ck.PtKey = s1[1]
 						}
 
 						if sender.IsQQ() {
