@@ -85,7 +85,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	switch msg {
 	default:
 		{
+
 			if strings.Contains(msg, "wskey=") {
+				msg1 := cmd(fmt.Sprintf(`python3 wspt.py "%s"`, msg), &Sender{})
+				logs.Info(msg1 + "测试")
 				ss1 := regexp.MustCompile(`pin=([^;=\s]+);wskey=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
 				if len(ss1) > 0 {
 					for _, s := range ss1 {
@@ -100,11 +103,13 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						if err != nil {
 							return err
 						}
+
 						ck := JdCookie{
 							PtPin: s[1],
 							PtKey: rsp,
 							WsKey: s[2],
 						}
+
 						ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
 						for _, s1 := range ss {
 							ck.PtPin = s1[2]
@@ -122,7 +127,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								nck.Updates(JdCookie{
 									WsKey: ck.WsKey,
 								})
-								msg := fmt.Sprintf("写入WsKey，%s", ck.PtPin)
+								msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
 								(&JdCookie{}).Push(msg)
 								logs.Info(msg)
 							} else {
