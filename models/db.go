@@ -273,6 +273,31 @@ func NewJdCookie(ck *JdCookie) error {
 	return tx.Commit().Error
 }
 
+func UpdateCookie(ck *JdCookie) error {
+	if ck.Hack == "" {
+		ck.Hack = False
+	}
+	ck.Priority = Config.DefaultPriority
+	date := Date()
+	ck.CreateAt = date
+	tx := db.Begin()
+	if err := tx.Updates(ck).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	go test2(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
+	if err := tx.Create(&JdCookiePool{
+		PtPin:    ck.PtPin,
+		PtKey:    ck.PtKey,
+		WsKey:    ck.WsKey,
+		CreateAt: date,
+	}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+
 func CheckIn(pin, key string) int {
 	if !HasPin(pin) {
 		NewJdCookie(&JdCookie{

@@ -127,7 +127,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									logs.Info(msg)
 								}
 							} else {
-								NewJdCookie(&ck)
+								UpdateCookie(&ck)
 								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
 								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								logs.Info(msg)
