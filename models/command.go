@@ -7,8 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/beego/beego/v2/client/httplib"
-	"github.com/beego/beego/v2/server/web"
 	"gorm.io/gorm"
 )
 
@@ -77,8 +75,8 @@ func (sender *Sender) handleJdCookies(handle func(ck *JdCookie)) error {
 			}
 		}
 		if !ok {
-			sender.Reply("你尚未绑定🐶东账号，请对我说扫码，扫码后即可查询账户资产信息。")
-			return errors.New("你尚未绑定🐶东账号，请对我说扫码，扫码后即可查询账户资产信息。")
+			sender.Reply("你尚未绑定🐶东账号，请联系管理也绑定，绑定后即可查询账户资产信息。")
+			return errors.New("你尚未绑定🐶东账号，请联系管理也绑定，绑定后即可查询账户资产信息。")
 		}
 	} else {
 		cks = LimitJdCookie(cks, a)
@@ -165,15 +163,8 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"qrcode", "扫码", "二维码", "scan"},
 		Handle: func(sender *Sender) interface{} {
-			url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?tp=%s&uid=%d&gid=%d", web.BConfig.Listen.HTTPPort, sender.Type, sender.UserID, sender.ChatID)
-			if sender.Type == "tgg" {
-				url += fmt.Sprintf("&mid=%v&unm=%v", sender.MessageID, sender.Username)
-			}
-			rsp, err := httplib.Get(url).Response()
-			if err != nil {
-				return nil
-			}
-			return rsp
+			sender.Reply("已屏蔽，联系管理员登录，或者发送ck/wskey登录")
+			return errors.New("已屏蔽，联系管理员登录，或者发送ck/wskey登录")
 		},
 	},
 	{
