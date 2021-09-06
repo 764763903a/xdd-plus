@@ -100,38 +100,40 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								PtKey: rsp,
 								WsKey: s[2],
 							}
-
-							ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
-							for _, s1 := range ss {
-								ck.PtPin = s1[2]
-								ck.PtKey = s1[1]
-							}
-
-							if sender.IsQQ() {
-								ck.QQ = sender.UserID
-							} else if sender.IsTG() {
-								ck.Telegram = sender.UserID
-							}
-							if nck, err := GetJdCookie(ck.PtPin); err == nil {
-								nck.InPool(ck.PtKey)
-								if nck.WsKey == "" || len(nck.WsKey) == 0 {
-									nck.Updates(JdCookie{
-										WsKey: ck.WsKey,
-									})
-									msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
-									(&JdCookie{}).Push(msg)
-									logs.Info(msg)
-								} else {
-									msg := fmt.Sprintf("重复写入")
-									(&JdCookie{}).Push(msg)
-									logs.Info(msg)
+						if sender.IsQQ() {
+							ck.QQ = sender.UserID
+						} else if sender.IsTG() {
+							ck.Telegram = sender.UserID
+						}
+						if nck, err := GetJdCookie(ck.PtPin); err == nil {
+							nck.InPool(ck.PtKey)
+							if nck.WsKey == "" || len(nck.WsKey) == 0 {
+								nck.Updates(JdCookie{
+									WsKey: ck.WsKey,
+								})
+								msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
+								if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
 								}
+								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
+								(&JdCookie{}).Push(msg)
+								logs.Info(msg)
 							} else {
 								NewJdCookie(&ck)
 								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
 								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								logs.Info(msg)
 							}
+						} else {
+							NewJdCookie(&ck)
+							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+							if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
+								}
+							sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
+							logs.Info(msg)
+						}
+
 
 						}
 						go func() {
@@ -184,6 +186,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							if nck, err := GetJdCookie(ck.PtPin); err == nil {
 								nck.InPool(ck.PtKey)
 								msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+								if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
+								}
+								sender.Reply(fmt.Sprintf(msg,AddCoin(sender.UserID)))
 								(&JdCookie{}).Push(msg)
 								logs.Info(msg)
 							} else {
@@ -192,12 +198,15 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								}
 								NewJdCookie(&ck)
 								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+								if sender.IsQQ(){
+								ck.Update(QQ, ck.QQ)
+								}
 								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								logs.Info(msg)
 							}
 						}
 					} else {
-						sender.Reply(fmt.Sprintf("无效，许愿币-1，余额%d", RemCoin(sender.UserID, 1)))
+						sender.Reply(fmt.Sprintf("无效，东币-1，余额%d", RemCoin(sender.UserID, 1)))
 					}
 				}
 				go func() {
