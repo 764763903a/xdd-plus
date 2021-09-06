@@ -31,5 +31,5 @@ func init() {
 	InitReplies()
 	initTask()
 	initRepos()
-	intiSky(pri)
+	intiSky()
 }
