@@ -89,52 +89,58 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, msg), &Sender{})
 				logs.Info(rsp)
 				ss1 := regexp.MustCompile(`pin=([^;=\s]+);wskey=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
-				if len(ss1) > 0 {
-					for _, s := range ss1 {
-						ck := JdCookie{
-							PtPin: s[1],
-							PtKey: rsp,
-							WsKey: s[2],
-						}
+				if strings.Contains(rsp, "错误") {
+					logs.Error("wskey错误")
+				} else {
 
-						ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
-						for _, s1 := range ss {
-							ck.PtPin = s1[2]
-							ck.PtKey = s1[1]
-						}
+					if len(ss1) > 0 {
+						for _, s := range ss1 {
+							ck := JdCookie{
+								PtPin: s[1],
+								PtKey: rsp,
+								WsKey: s[2],
+							}
 
-						if sender.IsQQ() {
-							ck.QQ = sender.UserID
-						} else if sender.IsTG() {
-							ck.Telegram = sender.UserID
-						}
-						if nck, err := GetJdCookie(ck.PtPin); err == nil {
-							nck.InPool(ck.PtKey)
-							if nck.WsKey == "" || len(nck.WsKey) == 0 {
-								nck.Updates(JdCookie{
-									WsKey: ck.WsKey,
-								})
-								msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
-								(&JdCookie{}).Push(msg)
-								logs.Info(msg)
+							ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
+							for _, s1 := range ss {
+								ck.PtPin = s1[2]
+								ck.PtKey = s1[1]
+							}
+
+							if sender.IsQQ() {
+								ck.QQ = sender.UserID
+							} else if sender.IsTG() {
+								ck.Telegram = sender.UserID
+							}
+							if nck, err := GetJdCookie(ck.PtPin); err == nil {
+								nck.InPool(ck.PtKey)
+								if nck.WsKey == "" || len(nck.WsKey) == 0 {
+									nck.Updates(JdCookie{
+										WsKey: ck.WsKey,
+									})
+									msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
+									(&JdCookie{}).Push(msg)
+									logs.Info(msg)
+								} else {
+									msg := fmt.Sprintf("重复写入")
+									(&JdCookie{}).Push(msg)
+									logs.Info(msg)
+								}
 							} else {
-								msg := fmt.Sprintf("重复写入")
-								(&JdCookie{}).Push(msg)
+								NewJdCookie(&ck)
+								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								logs.Info(msg)
 							}
-						} else {
-							NewJdCookie(&ck)
-							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-							sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
-							logs.Info(msg)
-						}
 
+						}
+						go func() {
+							Save <- &JdCookie{}
+						}()
+						return nil
 					}
-					go func() {
-						Save <- &JdCookie{}
-					}()
-					return nil
 				}
+
 			}
 		}
 		{ //tyt

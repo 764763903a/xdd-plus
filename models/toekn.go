@@ -7,4 +7,5 @@ import (
 type Token struct {
 	Expiration time.Time
 	Token      string
+	Address    string
 }
