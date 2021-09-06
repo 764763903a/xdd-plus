@@ -355,7 +355,7 @@ func (c *Container) getToken() error {
 	version, err := GetQlVersion(c.Address)
 	logs.Debug(err)
 	if version == "2.9" {
-		token, err := getSqlToken()
+		token, err := getSqlToken(c.Address)
 		if err != nil {
 			logs.Error(err)
 		}
@@ -414,6 +414,7 @@ func getT(c *Container, token *Token) (error, bool) {
 		token.Token, _ = jsonparser.GetString(data, "data", "token")
 		zero, _ := time.ParseInLocation("2006-01-02", time.Now().Local().Format("2006-01-02"), time.Local)
 		token.Expiration = zero
+		token.Address = c.Address
 		setSqlToken(token)
 		logs.Info(c.Token + token.Expiration.String())
 	} else {

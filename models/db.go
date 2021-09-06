@@ -130,6 +130,7 @@ var UnAvailable = "UnAvailable"
 var PtKey = "PtKey"
 var PtPin = "PtPin"
 var WsKey = "WsKey"
+var Address = "Address"
 var Priority = "Priority"
 var Nickname = "Nickname"
 var BeanNum = "BeanNum"
@@ -272,6 +273,31 @@ func NewJdCookie(ck *JdCookie) error {
 	return tx.Commit().Error
 }
 
+func UpdateCookie(ck *JdCookie) error {
+	if ck.Hack == "" {
+		ck.Hack = False
+	}
+	ck.Priority = Config.DefaultPriority
+	date := Date()
+	ck.CreateAt = date
+	tx := db.Begin()
+	if err := tx.Updates(ck).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	go test2(fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
+	if err := tx.Create(&JdCookiePool{
+		PtPin:    ck.PtPin,
+		PtKey:    ck.PtKey,
+		WsKey:    ck.WsKey,
+		CreateAt: date,
+	}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+
 func CheckIn(pin, key string) int {
 	if !HasPin(pin) {
 		NewJdCookie(&JdCookie{
@@ -297,7 +323,7 @@ func setSqlToken(token *Token) error {
 	return tx.Commit().Error
 }
 
-func getSqlToken() (*Token, error) {
+func getSqlToken(address string) (*Token, error) {
 	token := &Token{}
-	return token, db.Order("expiration desc").First(token).Error
+	return token, db.Where(Address+" = ?", address).Order("expiration desc").First(token).Error
 }
