@@ -139,7 +139,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								}
 							} else {
 								NewJdCookie(&ck)
-								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+								msg := fmt.Sprintf("添加账号，用户名：%s", ck.PtPin)
 								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
 								logs.Info(msg)
 							}
@@ -206,7 +206,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									ck.Hack = True
 								}
 								NewJdCookie(&ck)
-								msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+								msg := fmt.Sprintf("添加账号，账号名:%s", ck.PtPin)
 								if sender.IsQQ() {
 									ck.Update(QQ, ck.QQ)
 								}
