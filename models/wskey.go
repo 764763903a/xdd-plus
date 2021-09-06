@@ -15,5 +15,4 @@ func intiSky() {
 	})
 
 	c.Start()
-	select {} //阻塞主线程停止
 }
