@@ -10,7 +10,6 @@ func intiSky(f func()) {
 		for {
 			f()
 			now := time.Now()
-			logs.Info("测试启用")
 			// 计算下一个零点
 			next := now.Add(time.Hour * 12)
 			next = time.Date(next.Year(), next.Month(), next.Day(), 0, 0, 0, 0, next.Location())
