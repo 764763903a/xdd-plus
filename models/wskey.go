@@ -19,3 +19,8 @@ func intiSky(f func()) {
 		}
 	}()
 }
+
+func pri() {
+	logs.Info("测试启用")
+
+}
