@@ -2,14 +2,20 @@ package models
 
 import (
 	"github.com/beego/beego/v2/core/logs"
-	"github.com/robfig/cron/v3"
+	"time"
 )
 
-func intiSky() {
-	logs.Info("Starting...")
-	c := cron.New() // 新建一个定时任务对象
-	c.AddFunc("0 3 1 * * *", func() {
-		logs.Info("hello world")
-	}) // 给对象增加定时任务
-	c.Start()
+func intiSky(f func()) {
+	go func() {
+		for {
+			f()
+			now := time.Now()
+			logs.Info("测试启用")
+			// 计算下一个零点
+			next := now.Add(time.Hour * 12)
+			next = time.Date(next.Year(), next.Month(), next.Day(), 0, 0, 0, 0, next.Location())
+			t := time.NewTimer(next.Sub(now))
+			<-t.C
+		}
+	}()
 }
