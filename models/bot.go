@@ -122,9 +122,20 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									(&JdCookie{}).Push(msg)
 									logs.Info(msg)
 								} else {
-									msg := fmt.Sprintf("重复写入")
-									(&JdCookie{}).Push(msg)
-									logs.Info(msg)
+									if nck.WsKey == ck.WsKey {
+										msg := fmt.Sprintf("重复写入")
+										sender.Reply(fmt.Sprintf(msg))
+										(&JdCookie{}).Push(msg)
+										logs.Info(msg)
+									} else {
+										nck.Updates(JdCookie{
+											WsKey: ck.WsKey,
+										})
+										msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
+										sender.Reply(fmt.Sprintf(msg))
+										(&JdCookie{}).Push(msg)
+										logs.Info(msg)
+									}
 								}
 							} else {
 								NewJdCookie(&ck)
