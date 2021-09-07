@@ -326,6 +326,7 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"赌一把"},
 		Handle: func(sender *Sender) interface{} {
+
 			cost := Int(sender.JoinContens())
 			if cost <= 0 || cost > 10000 {
 				cost = 1
