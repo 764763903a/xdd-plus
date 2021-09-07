@@ -3,13 +3,12 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/beego/beego/v2/client/httplib"
+	"github.com/beego/beego/v2/core/logs"
 	"net/url"
 	"regexp"
 	"strings"
 	"time"
-
-	"github.com/beego/beego/v2/client/httplib"
-	"github.com/beego/beego/v2/core/logs"
 )
 
 type UserInfoResult struct {
@@ -141,8 +140,8 @@ func updateCookie() {
 	l := len(cks)
 	logs.Info(l)
 	for i := range cks {
-		time.Sleep(10 * time.Second)
 		if len(cks[i].WsKey) > 0 {
+			time.Sleep(10 * time.Second)
 			ck := cks[i]
 			JdCookie{}.Push(fmt.Sprintf("更新账号账号，%s", ck.Nickname))
 			var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
