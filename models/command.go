@@ -184,7 +184,7 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"测试测试"},
+		Command: []string{"更新账号"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply("更新所有账号")
