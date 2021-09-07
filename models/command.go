@@ -160,7 +160,7 @@ var codeSignals = []CodeSignal{
 			return fmt.Sprintf("东币余额%d", GetCoin(sender.UserID))
 		},
 	},
-	
+
 	{
 		Command: []string{"升级", "更新", "update", "upgrade"},
 		Admin:   true,
@@ -179,6 +179,15 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply("重启程序")
 			Daemon()
+			return nil
+		},
+	},
+	{
+		Command: []string{"更新账号"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.Reply("更新所有账号")
+			updateCookie()
 			return nil
 		},
 	},
