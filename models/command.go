@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/beego/beego/v2/core/logs"
 	"regexp"
 	"strings"
 	"time"
@@ -183,10 +184,11 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"更新账号"},
+		Command: []string{"测试测试"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply("更新所有账号")
+			logs.Info("更新所有账号")
 			updateCookie()
 			return nil
 		},
