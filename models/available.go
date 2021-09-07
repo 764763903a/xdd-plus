@@ -139,6 +139,12 @@ func updateCookie() {
 	cks := GetJdCookies()
 	l := len(cks)
 	logs.Info(l)
+	for i := range cks {
+		if len(cks[i].WsKey) > 0 {
+			rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, cks[i].WsKey), &Sender{})
+			logs.Info(rsp)
+		}
+	}
 	//for i := 0; i < l-1; i++ {
 	//	if len(cks[i].WsKey) > 0 {
 	//		rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, cks[i].WsKey), &Sender{})
