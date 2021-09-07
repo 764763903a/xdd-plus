@@ -489,6 +489,20 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
+		Command: []string{"绑定"},
+		Handle: func(sender *Sender) interface{} {
+			qq := Int(sender.Contents[0])
+			if len(sender.Contents) > 1 {
+				sender.Contents = sender.Contents[1:]
+				sender.handleJdCookies(func(ck *JdCookie) {
+					ck.Update(QQ, qq)
+					sender.Reply(fmt.Sprintf("已设置账号%s的QQ为%v。", ck.Nickname, ck.QQ))
+				})
+			}
+			return nil
+		},
+	},
+	{
 		Command: []string{"cmd", "command", "命令"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
