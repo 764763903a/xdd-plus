@@ -141,8 +141,10 @@ func updateCookie() {
 	logs.Info(l)
 	for i := range cks {
 		if len(cks[i].WsKey) > 0 {
-			logs.Info(cks[i].WsKey)
-			rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, cks[i].WsKey), &Sender{})
+			ck := cks[i]
+			JdCookie{}.Push(fmt.Sprintf("更新账号账号，%s", ck.Nickname))
+			var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
+			rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
 			logs.Info(rsp)
 		}
 	}
