@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
@@ -140,6 +141,7 @@ func updateCookie() {
 	l := len(cks)
 	logs.Info(l)
 	for i := range cks {
+		time.Sleep(10 * time.Second)
 		if len(cks[i].WsKey) > 0 {
 			ck := cks[i]
 			JdCookie{}.Push(fmt.Sprintf("更新账号账号，%s", ck.Nickname))
