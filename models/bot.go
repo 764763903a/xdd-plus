@@ -140,7 +140,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							} else {
 								NewJdCookie(&ck)
 								msg := fmt.Sprintf("添加账号，用户名：%s", ck.PtPin)
-								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
+								sender.Reply(fmt.Sprintf(msg))
 								logs.Info(msg)
 							}
 
@@ -198,7 +198,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								if sender.IsQQ() {
 									ck.Update(QQ, ck.QQ)
 								}
-								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
+								sender.Reply(fmt.Sprintf(msg))
 								(&JdCookie{}).Push(msg)
 								logs.Info(msg)
 							} else {
@@ -210,7 +210,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								if sender.IsQQ() {
 									ck.Update(QQ, ck.QQ)
 								}
-								sender.Reply(fmt.Sprintf(msg, AddCoin(sender.UserID)))
+								sender.Reply(fmt.Sprintf(msg))
 								logs.Info(msg)
 							}
 						}
