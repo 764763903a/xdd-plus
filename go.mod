@@ -12,7 +12,6 @@ require (
 	github.com/Mrs4s/go-cqhttp v1.0.0-beta5
 	github.com/beego/beego/v2 v2.0.1
 	github.com/buger/jsonparser v1.1.1
-	github.com/go-httpproxy/httpproxy v0.0.0-20180417134941-6977c68bf38e
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
@@ -39,5 +38,4 @@ require (
 	gorm.io/driver/postgres v1.1.0
 	gorm.io/driver/sqlite v1.1.4
 	gorm.io/gorm v1.21.13
-	github.com/robfig/cron/v3 v3.0.1
 )
