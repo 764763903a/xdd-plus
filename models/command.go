@@ -190,6 +190,7 @@ var codeSignals = []CodeSignal{
 			sender.Reply("更新所有账号")
 			logs.Info("更新所有账号")
 			updateCookie()
+
 			return nil
 		},
 	},
@@ -267,17 +268,17 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"我要钱","给点钱","我干","给我钱"},
+		Command: []string{"我要钱", "给点钱", "我干", "给我钱"},
 		Handle: func(sender *Sender) interface{} {
 			cost := Int(sender.JoinContens())
-			if !sender.IsAdmin{
-				if cost>1{
+			if !sender.IsAdmin {
+				if cost > 1 {
 					return "你只能获得1东币"
-					}else{
+				} else {
 					AddCoin(sender.UserID)
 					return "太可怜了，给你1东币"
-					}
-			}else{
+				}
+			} else {
 				AddCoin(sender.UserID)
 				sender.Reply(fmt.Sprintf("你获得1枚东币。"))
 			}
@@ -285,18 +286,18 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"梭哈","拼了","梭了"},
+		Command: []string{"梭哈", "拼了", "梭了"},
 		Handle: func(sender *Sender) interface{} {
 			u := &User{}
 			cost := GetCoin(sender.UserID)
-			
+
 			if cost <= 0 || cost > 10000 {
 				cost = 1
 			}
-			
+
 			if err := db.Where("number = ?", sender.UserID).First(u).Error; err != nil || u.Coin < cost {
 				return "东币不足，先去打卡吧。"
-			}else{
+			} else {
 				sender.Reply(fmt.Sprintf("你使用%d枚东币。", cost))
 			}
 			baga := 0
@@ -635,7 +636,7 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, -1)
-				sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)", ck.PtPin, ck.Nickname,ck.Priority))
+				sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)", ck.PtPin, ck.Nickname, ck.Priority))
 			})
 			return nil
 		},
@@ -646,7 +647,7 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, 2)
-				sender.Reply(fmt.Sprintf("已取消屏蔽账号%s(%s)", ck.PtPin, ck.Nickname,ck.Priority))
+				sender.Reply(fmt.Sprintf("已取消屏蔽账号%s(%s)", ck.PtPin, ck.Nickname, ck.Priority))
 			})
 			return nil
 		},
