@@ -184,13 +184,12 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"更新账号"},
+		Command: []string{"账号更新"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply("更新所有账号")
 			logs.Info("更新所有账号")
-			updateCookie()
-
+			//updateCookie()
 			return nil
 		},
 	},
