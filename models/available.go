@@ -147,44 +147,47 @@ func updateCookie() {
 			var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
 			rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
 			logs.Info(rsp)
-			ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
-			if len(ss) > 0 {
-
-				xyb := 0
-				for _, s := range ss {
-					ck := JdCookie{
-						PtKey: s[1],
-						PtPin: s[2],
-					}
-					if CookieOK(&ck) {
-						xyb++
-						if HasKey(ck.PtKey) {
-							(&JdCookie{}).Push(fmt.Sprintf("重复提交"))
-						} else {
-							if nck, err := GetJdCookie(ck.PtPin); err == nil {
-								nck.InPool(ck.PtKey)
-								msg := fmt.Sprintf("定时更新账号，%s", ck.PtPin)
-								(&JdCookie{}).Push(msg)
-								logs.Info(msg)
-							} else {
-								NewJdCookie(&ck)
-								msg := fmt.Sprintf("添加账号，账号名:%s", ck.PtPin)
-								logs.Info(msg)
-							}
-						}
-					} else {
-						(&JdCookie{}).Push(fmt.Sprintf("无效CK转换失败，%s", ck.PtPin))
-					}
-				}
-			} else {
+			if strings.Contains(rsp, "失效") {
 				(&JdCookie{}).Push(fmt.Sprintf("Wskey失效，%s", ck.PtPin))
+			} else {
+				ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
+				if len(ss) > 0 {
+					xyb := 0
+					for _, s := range ss {
+						ck := JdCookie{
+							PtKey: s[1],
+							PtPin: s[2],
+						}
+						if CookieOK(&ck) {
+							xyb++
+							if HasKey(ck.PtKey) {
+								(&JdCookie{}).Push(fmt.Sprintf("重复提交"))
+							} else {
+								if nck, err := GetJdCookie(ck.PtPin); err == nil {
+									nck.InPool(ck.PtKey)
+									msg := fmt.Sprintf("定时更新账号，%s", ck.PtPin)
+									(&JdCookie{}).Push(msg)
+									logs.Info(msg)
+								} else {
+									NewJdCookie(&ck)
+									msg := fmt.Sprintf("添加账号，账号名:%s", ck.PtPin)
+									logs.Info(msg)
+								}
+							}
+						} else {
+							(&JdCookie{}).Push(fmt.Sprintf("无效CK转换失败，%s", ck.PtPin))
+						}
+					}
+				} else {
+					(&JdCookie{}).Push(fmt.Sprintf("转换失败，请重新转换，%s", ck.PtPin))
+				}
+				go func() {
+					Save <- &JdCookie{}
+				}()
 			}
-			go func() {
-				Save <- &JdCookie{}
-			}()
 		}
-
 	}
+	(&JdCookie{}).Push(fmt.Sprintf("所有CK转换完成，共%d个", len(cks)))
 }
 
 func CookieOK(ck *JdCookie) bool {
