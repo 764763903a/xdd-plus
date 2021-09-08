@@ -541,9 +541,12 @@ func (c *Container) postConfig(handle func(config string) string) error {
 		req.Header("Cookie", c.Token)
 		req.Param("content", handle(c.Config))
 		req.Param("name", "config.sh")
-		_, err := req.Bytes()
+		test, err := req.Bytes()
 		if err != nil {
+			logs.Info(err)
 			return err
+		} else {
+			logs.Info(test)
 		}
 	}
 	return nil
