@@ -184,7 +184,7 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"更新账号", "Whiskey更新","给老子更新"},
+		Command: []string{"更新账号", "Whiskey更新", "给老子更新"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply("更新所有账号")
@@ -243,10 +243,10 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"我要钱", "给点钱", "我干", "给我钱","给我","我要"},
+		Command: []string{"我要钱", "给点钱", "我干", "给我钱", "给我", "我要"},
 		Handle: func(sender *Sender) interface{} {
 			cost := Int(sender.JoinContens())
-			if cost<=0{
+			if cost <= 0 {
 				cost = 1
 			}
 			if !sender.IsAdmin {
@@ -257,8 +257,8 @@ var codeSignals = []CodeSignal{
 					return "太可怜了，给你1东币"
 				}
 			} else {
-				AdddCoin(sender.UserID,cost)
-				sender.Reply(fmt.Sprintf("你获得%d枚互助值。",cost))
+				AdddCoin(sender.UserID, cost)
+				sender.Reply(fmt.Sprintf("你获得%d枚互助值。", cost))
 			}
 			return nil
 		},
@@ -581,6 +581,7 @@ var codeSignals = []CodeSignal{
 			}
 			return "东币+1"
 		},
+	},
 	{
 		Command: []string{"reply", "回复"},
 		Admin:   true,
@@ -621,29 +622,18 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, -1)
-				sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)",ck.Nickname, ck.Priority))
+				sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)", ck.Nickname, ck.Priority))
 			})
 			return nil
 		},
 	},
-	//{
-	//	Command: []string{"清理失效", "clean"},
-	//	Admin:   true,
-	//	Handle: func(sender *Sender) interface{} {
-	//		sender.handleJdCookies(func(ck *JdCookie) {
-	//			ck.Update(Priority, -1)
-	//			sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)", ck.PtPin, ck.Nickname, ck.Priority))
-	//		})
-	//		return nil
-	//	},
-	//},
 	{
 		Command: []string{"取消屏蔽", "unhack"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, 2)
-				sender.Reply(fmt.Sprintf("已取消屏蔽账号%s(%s)",ck.Nickname, ck.Priority))
+				sender.Reply(fmt.Sprintf("已取消屏蔽账号%s(%s)", ck.Nickname, ck.Priority))
 			})
 			return nil
 		},
