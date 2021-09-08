@@ -23,6 +23,10 @@ Whiskey更新 修改为这个更新
 清理过期账号指令
 合并详细查询功能
 
+编码问题参考
+https://blog.csdn.net/qq_29499107/article/details/83583983
+/usr/lib64/python3.6/http
+
 
 
 有问题自己提需求啊。。。有空就解决没空靠自己了各位铁子
