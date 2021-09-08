@@ -543,10 +543,10 @@ func (c *Container) postConfig(handle func(config string) string) error {
 		req.Param("name", "config.sh")
 		test, err := req.Bytes()
 		if err != nil {
-			logs.Info(err)
+			logs.Info("提交错误")
 			return err
 		} else {
-			logs.Info(test)
+			logs.Info(string(test))
 		}
 	}
 	return nil
