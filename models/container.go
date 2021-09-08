@@ -560,7 +560,10 @@ func (c *Container) getSession() error {
 	if err != nil {
 		return err
 	}
-	c.Token = rsp.Header.Get("Set-Cookie")
+	//c.Token = rsp.Header.Get("Set-Cookie")
+	get := rsp.Header.Get("Set-Cookie")
+	all := strings.ReplaceAll(get, " Path=/; HttpOnly", "")
+	c.Token = all
 	logs.Info(c.Token)
 	if data, err := ioutil.ReadAll(rsp.Body); err != nil {
 		return err
