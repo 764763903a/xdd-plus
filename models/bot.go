@@ -91,6 +91,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				ss1 := regexp.MustCompile(`pin=([^;=\s]+);wskey=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
 				if strings.Contains(rsp, "错误") {
 					logs.Error("wskey错误")
+					sender.Reply(fmt.Sprintf("wskey错误"))
 				} else {
 
 					if len(ss1) > 0 {

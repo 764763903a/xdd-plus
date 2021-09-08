@@ -147,7 +147,8 @@ func updateCookie() {
 			var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
 			rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
 			logs.Info(rsp)
-			if strings.Contains(rsp, "失效") {
+			if strings.Contains(rsp, "错误") {
+				ck.Push(fmt.Sprintf("Wskey失效账号，%s", ck.PtPin))
 				(&JdCookie{}).Push(fmt.Sprintf("Wskey失效，%s", ck.PtPin))
 			} else {
 				ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
