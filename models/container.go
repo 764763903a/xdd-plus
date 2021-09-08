@@ -541,12 +541,9 @@ func (c *Container) postConfig(handle func(config string) string) error {
 		req.Header("Cookie", c.Token)
 		req.Param("content", handle(c.Config))
 		req.Param("name", "config.sh")
-		test, err := req.Bytes()
+		_, err := req.Bytes()
 		if err != nil {
-			logs.Info("提交错误")
 			return err
-		} else {
-			logs.Info(string(test))
 		}
 	}
 	return nil
@@ -557,15 +554,10 @@ func (c *Container) getSession() error {
 	req.Param("username", c.Username)
 	req.Param("password", c.Password)
 	rsp, err := req.Response()
-	logs.Info(rsp.Body)
 	if err != nil {
 		return err
 	}
-	//c.Token = rsp.Header.Get("Set-Cookie")
-	get := rsp.Header.Get("Set-Cookie")
-	all := strings.ReplaceAll(get, " Path=/; HttpOnly", "")
-	c.Token = all
-	logs.Info(c.Token)
+	c.Token = rsp.Header.Get("Set-Cookie")
 	if data, err := ioutil.ReadAll(rsp.Body); err != nil {
 		return err
 	} else {

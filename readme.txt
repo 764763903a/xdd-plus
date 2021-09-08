@@ -34,5 +34,13 @@ https://thin-hill-428.notion.site/2-8Faker-QL-pannel-Faker-Repository-environmen
 请使用官方一键安装 就解决此问题了
 
 
+全面适配新版V4  需要旧版V4的同学自己修改下 container代码 553行
+	req := httplib.Post(c.Address + "/api/auth")
+	修改为
+	req := httplib.Post(c.Address + "/auth")
+
+
+
+
 有问题自己提需求啊。。。有空就解决没空靠自己了各位铁子
 
