@@ -655,6 +655,17 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
+	//{
+	//	Command: []string{"清理失效", "clean"},
+	//	Admin:   true,
+	//	Handle: func(sender *Sender) interface{} {
+	//		sender.handleJdCookies(func(ck *JdCookie) {
+	//			ck.Update(Priority, -1)
+	//			sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)", ck.PtPin, ck.Nickname, ck.Priority))
+	//		})
+	//		return nil
+	//	},
+	//},
 	{
 		Command: []string{"取消屏蔽", "unhack"},
 		Admin:   true,
