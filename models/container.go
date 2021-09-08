@@ -561,6 +561,7 @@ func (c *Container) getSession() error {
 		return err
 	}
 	c.Token = rsp.Header.Get("Set-Cookie")
+	logs.Info(c.Token)
 	if data, err := ioutil.ReadAll(rsp.Body); err != nil {
 		return err
 	} else {
