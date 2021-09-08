@@ -47,7 +47,7 @@ func cmd(str string, sender *Sender) string {
 		}
 		msg += line
 		nt := time.Now()
-		if (nt.Unix() - st.Unix()) > 1 {
+		if (nt.Unix() - st.Unix()) > 10 {
 			sender.Reply(msg)
 			st = nt
 			msg = ""
