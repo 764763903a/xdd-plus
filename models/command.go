@@ -628,6 +628,31 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
+		Command: []string{"删除", "clean"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.handleJdCookies(func(ck *JdCookie) {
+				ck.Removes(ck)
+				sender.Reply(fmt.Sprintf("已删除账号%s", ck.Nickname))
+			})
+			return nil
+		},
+	},
+	{
+		Command: []string{"清理过期账号"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.Reply(fmt.Sprintf("删除所有false账号，请慎用"))
+			sender.handleJdCookies(func(ck *JdCookie) {
+				if ck.Available == False {
+					ck.Removes(ck)
+					sender.Reply(fmt.Sprintf("已清理账号%s", ck.Nickname))
+				}
+			})
+			return nil
+		},
+	},
+	{
 		Command: []string{"取消屏蔽", "unhack"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
