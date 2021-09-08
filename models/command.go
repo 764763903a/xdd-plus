@@ -184,37 +184,13 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"更新账号", "Whiskey更新"},
+		Command: []string{"更新账号", "Whiskey更新","给老子更新"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply("更新所有账号")
 			logs.Info("更新所有账号")
 			updateCookie()
 			return nil
-		},
-	},
-	{
-		Command: []string{"get-ua", "ua"},
-		Handle: func(sender *Sender) interface{} {
-			if !sender.IsAdmin {
-				coin := GetCoin(sender.UserID)
-				if coin < 10 {
-					return "东币不足以查看UserAgent。"
-				}
-				sender.Reply("查看一次扣10个东币。")
-				RemCoin(sender.UserID, 10)
-			}
-			return ua
-		},
-	},
-	{
-		Command: []string{"set-ua"},
-		Admin:   true,
-		Handle: func(sender *Sender) interface{} {
-			ctt := sender.JoinContens()
-			db.Create(&UserAgent{Content: ctt})
-			ua = ctt
-			return "已更新User-Agent。"
 		},
 	},
 	{
@@ -267,9 +243,12 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"我要钱", "给点钱", "我干", "给我钱"},
+		Command: []string{"我要钱", "给点钱", "我干", "给我钱","给我","我要"},
 		Handle: func(sender *Sender) interface{} {
 			cost := Int(sender.JoinContens())
+			if cost<=0{
+				cost = 1
+			}
 			if !sender.IsAdmin {
 				if cost > 1 {
 					return "你只能获得1东币"
@@ -278,8 +257,8 @@ var codeSignals = []CodeSignal{
 					return "太可怜了，给你1东币"
 				}
 			} else {
-				AddCoin(sender.UserID)
-				sender.Reply(fmt.Sprintf("你获得1枚东币。"))
+				AdddCoin(sender.UserID,cost)
+				sender.Reply(fmt.Sprintf("你获得%d枚互助值。",cost))
 			}
 			return nil
 		},
@@ -602,14 +581,6 @@ var codeSignals = []CodeSignal{
 			}
 			return "东币+1"
 		},
-	},
-	{
-		Command: []string{"撤销愿望"},
-		Handle: func(sender *Sender) interface{} {
-			ReturnCoin(sender)
-			return nil
-		},
-	},
 	{
 		Command: []string{"reply", "回复"},
 		Admin:   true,
@@ -650,7 +621,7 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, -1)
-				sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)", ck.PtPin, ck.Nickname, ck.Priority))
+				sender.Reply(fmt.Sprintf("已屏蔽账号%s(%s)",ck.Nickname, ck.Priority))
 			})
 			return nil
 		},
@@ -661,7 +632,7 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, 2)
-				sender.Reply(fmt.Sprintf("已取消屏蔽账号%s(%s)", ck.PtPin, ck.Nickname, ck.Priority))
+				sender.Reply(fmt.Sprintf("已取消屏蔽账号%s(%s)",ck.Nickname, ck.Priority))
 			})
 			return nil
 		},
