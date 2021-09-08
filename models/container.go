@@ -557,6 +557,7 @@ func (c *Container) getSession() error {
 	req.Param("username", c.Username)
 	req.Param("password", c.Password)
 	rsp, err := req.Response()
+	logs.Info(rsp.Body)
 	if err != nil {
 		return err
 	}
