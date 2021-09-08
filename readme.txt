@@ -27,6 +27,9 @@ Whiskey更新 修改为这个更新
 https://blog.csdn.net/qq_29499107/article/details/83583983
 /usr/lib64/python3.6/http
 
+Token故障请先用官方教程重装  已排查是nginx问题
+https://thin-hill-428.notion.site/2-8Faker-QL-pannel-Faker-Repository-environment-Setup-45edcbfe90d74d8abb2d71896eab3be7
+请使用官方一键安装 就解决此问题了
 
 
 有问题自己提需求啊。。。有空就解决没空靠自己了各位铁子
