@@ -13,3 +13,12 @@ func IsUserAdmin(id string) bool {
 	}
 	return false
 }
+
+func RemoveUserAdmin(id string) bool {
+	user := &UserAdmin{}
+	db.Where(Content+" = ?", id).Delete(user)
+	if len(user.Content) > 0 {
+		return true
+	}
+	return false
+}
