@@ -6,8 +6,8 @@ type UserAdmin struct {
 }
 
 func IsUserAdmin(id string) bool {
-	user := UserAdmin{}
-	//db.Where(Content+" = ?", id).First(user)
+	user := &UserAdmin{}
+	db.Where(Content+" = ?", id).First(user)
 	if len(user.Content) > 0 {
 		return true
 	}
