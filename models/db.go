@@ -43,6 +43,7 @@ func initDB() {
 		&Env{},
 		&Wish{},
 		&Token{},
+		&UserAdmin{},
 	)
 	keys = make(map[string]bool)
 	pins = make(map[string]bool)
