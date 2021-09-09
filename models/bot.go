@@ -122,6 +122,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									if sender.IsQQ() {
 										ck.Update(QQ, ck.QQ)
 									}
+									nck.Update(PtKey, ck.PtKey)
 									msg := fmt.Sprintf("写入WsKey，并更新账号%s", ck.PtPin)
 									sender.Reply(fmt.Sprintf(msg))
 									(&JdCookie{}).Push(msg)
