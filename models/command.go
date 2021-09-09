@@ -303,6 +303,15 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
+		Command: []string{"设置管理员"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			ctt := sender.JoinContens()
+			db.Create(&UserAdmin{Content: ctt})
+			return "已设置管理员"
+		},
+	},
+	{
 		Command: []string{"赌一把"},
 		Handle: func(sender *Sender) interface{} {
 
