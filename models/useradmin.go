@@ -10,6 +10,6 @@ type UserAdmin struct {
 func IsUserAdmin(id string) bool {
 	user := UserAdmin{}
 	logs.Info(id)
-	db.Model(UserAdmin{}).Where(Content+" = ?", id).First(user)
+	db.Model(user).Where(Content+" = ?", id).First(user)
 	return false
 }
