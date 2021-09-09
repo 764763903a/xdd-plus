@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -71,7 +72,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		sender.IsAdmin = true
 	}
 
-	if IsUserAdmin(string(sender.UserID)) {
+	if IsUserAdmin(strconv.Itoa(sender.UserID)) {
 		sender.IsAdmin = true
 	}
 
