@@ -318,7 +318,7 @@ var codeSignals = []CodeSignal{
 			ctt := sender.JoinContens()
 			db.Delete(&UserAdmin{
 				Content: ctt,
-			})
+			}).Where(ctt)
 			return "已取消管理员"
 		},
 	},
