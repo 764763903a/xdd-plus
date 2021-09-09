@@ -320,6 +320,24 @@ var codeSignals = []CodeSignal{
 			return "已取消管理员"
 		},
 	},
+	//{
+	//	Command: []string{"按许愿币更新排名"},
+	//	Admin:   true,
+	//	Handle: func(sender *Sender) interface{} {
+	//		cookies:= GetJdCookies()
+	//		for i := range cookies {
+	//			cookie := cookies[i]
+	//			if cookie.QQ {
+	//
+	//			}
+	//			cookie.Update(Priority,cookie.)
+	//		}
+	//		sender.handleJdCookies(func(ck *JdCookie) {
+	//			sender.Reply(ck.Query())
+	//		})
+	//		return "已更新排行"
+	//	},
+	//},
 	{
 		Command: []string{"赌一把"},
 		Handle: func(sender *Sender) interface{} {
@@ -641,6 +659,38 @@ var codeSignals = []CodeSignal{
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, -1)
 				sender.Reply(fmt.Sprintf("已屏蔽账号%s", ck.Nickname))
+			})
+			return nil
+		},
+	},
+	{
+		Command: []string{"更新指定"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.handleJdCookies(func(ck *JdCookie) {
+				var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
+				rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
+				ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
+				if len(ss) > 0 {
+					for _, s := range ss {
+						ck := JdCookie{
+							PtKey: s[1],
+							PtPin: s[2],
+						}
+						if nck, err := GetJdCookie(ck.PtPin); err == nil {
+							nck.InPool(ck.PtKey)
+							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+							(&JdCookie{}).Push(msg)
+							logs.Info(msg)
+						} else {
+							if Cdle {
+								ck.Hack = True
+							}
+							(&JdCookie{}).Push("转换失败")
+						}
+					}
+				}
+				sender.Reply(fmt.Sprintf("已更新指定账号%s", ck.Nickname))
 			})
 			return nil
 		},
