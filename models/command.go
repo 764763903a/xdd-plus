@@ -316,9 +316,7 @@ var codeSignals = []CodeSignal{
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			ctt := sender.JoinContens()
-			db.Delete(&UserAdmin{
-				Content: ctt,
-			}).Where(ctt)
+			RemoveUserAdmin(ctt)
 			return "已取消管理员"
 		},
 	},
