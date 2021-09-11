@@ -337,6 +337,94 @@ func (c *LoginController) IsAdmin() {
 	}
 }
 
+func (c *LoginController) CkLogin() {
+	cookies := c.GetString("ck")
+	qq, _ := c.GetInt("qq")
+	bz := c.GetString("bz")
+	push := c.GetString("push")
+
+	if strings.Contains(cookies, "pt_key") {
+		ptKey := FetchJdCookieValue("pt_key", cookies)
+		ptPin := FetchJdCookieValue("pt_pin", cookies)
+		ck := &models.JdCookie{
+			PtKey:    ptKey,
+			PtPin:    ptPin,
+			Hack:     models.False,
+			QQ:       qq,
+			Note:     bz,
+			PushPlus: push,
+		}
+		if ptKey != "" && ptPin != "" {
+			if models.CookieOK(ck) {
+				if !models.HasPin(ptPin) {
+					models.NewJdCookie(ck)
+					c.Ctx.WriteString(fmt.Sprintf("添加成功"))
+				} else if !models.HasKey(ptKey) {
+					ck, _ := models.GetJdCookie(ptPin)
+					ck.InPool(ptKey)
+					c.Ctx.WriteString(fmt.Sprintf("更新成功"))
+				}
+			} else {
+				c.Ctx.WriteString("CK过期")
+			}
+
+		}
+	}
+	c.Ctx.WriteString("ck格式错误")
+
+	//if strings.Contains(ck,"pt_key") {
+	//	ptKey := FetchJdCookieValue("pt_key", msg)
+	//	ptPin := FetchJdCookieValue("pt_pin", msg)
+	//	if len(ptPin)>0 || len(ptKey)>0 {
+	//		ck := JdCookie{
+	//			PtKey: ptKey,
+	//			PtPin: ptPin,
+	//		}
+	//		if CookieOK(&ck) {
+	//			if HasKey(ck.PtKey) {
+	//				sender.Reply(fmt.Sprintf("重复提交"))
+	//			} else {
+	//				if nck, err := GetJdCookie(ck.PtPin); err == nil {
+	//					nck.InPool(ck.PtKey)
+	//					msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+	//					if sender.IsQQ() {
+	//						ck.Update(QQ, ck.QQ)
+	//					}
+	//					sender.Reply(fmt.Sprintf(msg))
+	//					(&JdCookie{}).Push(msg)
+	//					logs.Info(msg)
+	//				} else {
+	//					if Cdle {
+	//						ck.Hack = True
+	//					}
+	//					NewJdCookie(&ck)
+	//					msg := fmt.Sprintf("添加账号，账号名:%s", ck.PtPin)
+	//					if sender.IsQQ() {
+	//						ck.Update(QQ, ck.QQ)
+	//					}
+	//					sender.Reply(fmt.Sprintf(msg))
+	//					logs.Info(msg)
+	//				}
+	//			}
+	//		} else {
+	//			sender.Reply(fmt.Sprintf("无效"))
+	//		}
+	//	}
+	//}else{
+	//	c.Ctx.WriteString("ck格式错误")
+	//}
+
+	//if pin == "" {
+	//	c.Ctx.Redirect(302, "/")
+	//	c.StopRun()
+	//} else {
+	//	if strings.EqualFold(models.Config.Master, pin) {
+	//		c.SetSession("pin", pin)
+	//		c.Ctx.WriteString("登录")
+	//	}
+	//}
+}
+
 func (c *LoginController) Cookie() {
 	cookies := c.Ctx.Input.Header("Set-Cookie")
 	pt_key := FetchJdCookieValue("pt_key", cookies)

@@ -56,6 +56,7 @@ func main() {
 	web.Router("/api/login/query", &controllers.LoginController{}, "get:Query")
 	web.Router("/api/login/cookie", &controllers.LoginController{}, "get:Cookie")
 	web.Router("/api/login/admin", &controllers.LoginController{}, "post:IsAdmin")
+	web.Router("/api/login/cklogin", &controllers.LoginController{}, "post:CkLogin")
 	web.Router("/api/account", &controllers.AccountController{}, "get:List")
 	web.Router("/api/account", &controllers.AccountController{}, "post:CreateOrUpdate")
 	web.Router("/admin", &controllers.AccountController{}, "get:Admin")

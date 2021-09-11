@@ -139,8 +139,10 @@ func updateCookie() {
 	cks := GetJdCookies()
 	l := len(cks)
 	logs.Info(l)
+	xx := 0
 	for i := range cks {
 		if len(cks[i].WsKey) > 0 {
+			xx++
 			time.Sleep(10 * time.Second)
 			ck := cks[i]
 			//JdCookie{}.Push(fmt.Sprintf("更新账号账号，%s", ck.Nickname))
@@ -187,7 +189,7 @@ func updateCookie() {
 			}
 		}
 	}
-	(&JdCookie{}).Push(fmt.Sprintf("所有CK转换完成，共%d个", len(cks)))
+	(&JdCookie{}).Push(fmt.Sprintf("所有CK转换完成，共%d个", xx))
 }
 
 func CookieOK(ck *JdCookie) bool {

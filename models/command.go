@@ -680,13 +680,13 @@ var codeSignals = []CodeSignal{
 						if nck, err := GetJdCookie(ck.PtPin); err == nil {
 							nck.InPool(ck.PtKey)
 							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-							(&JdCookie{}).Push(msg)
+							sender.Reply(msg)
 							logs.Info(msg)
 						} else {
 							if Cdle {
 								ck.Hack = True
 							}
-							(&JdCookie{}).Push("转换失败")
+							sender.Reply("转换失败")
 						}
 					}
 				}
