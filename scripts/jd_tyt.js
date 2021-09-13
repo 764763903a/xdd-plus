@@ -97,7 +97,7 @@ function tythelp() {
                 data = JSON.parse(data);
 
                 if (data.code == 0) {
-                    // console.log("帮砍：" + data.data.amount)
+                    console.log("帮砍：" + data.data.amount)
 
                 } else if (data.msg.indexOf("完成") != -1) {
                     console.log("已完成砍价")
