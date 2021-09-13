@@ -117,7 +117,7 @@ func (c *Container) write(cks []JdCookie) error {
 	switch c.Type {
 	case "ql":
 		if c.Version == "2.9" || c.Version == "2.8" {
-			if len(c.Delete) > 0 || !Config.IsHelp {
+			if len(c.Delete) > 0 {
 				c.request("/api/envs", DELETE, fmt.Sprintf(`[%s]`, strings.Join(c.Delete, ",")))
 			}
 			hh := []string{}
