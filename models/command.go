@@ -172,14 +172,14 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			coin:=GetCoin(sender.UserID)
 			t:=time.Now()
-			if t.Weekday().String()=="Monday"{
+			if t.Weekday().String()=="Monday"&&int(t.Hour())<=10{
 				sender.handleJdCookies(func(ck *JdCookie) {
 					ck.Update(Priority, coin)
 				})
 				sender.Reply("优先级已更新")
 				ClearCoin(sender.UserID)
 			}else{
-					sender.Reply("等周一再更新呆瓜")
+					sender.Reply("你错过时间了呆瓜")
 				}
 			return nil
 		},
