@@ -175,10 +175,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				if !sender.IsAdmin {
 					coin := GetCoin(sender.UserID)
 					if coin < 8 {
-						return "推一推需要8个许愿币。"
+						return "推一推需要8个互助值。"
 					}
 					RemCoin(sender.UserID, 8)
-					sender.Reply("推一推即将开始，已扣除8个许愿币。")
+					sender.Reply("推一推即将开始，已扣除8个互助值。")
 				}
 				runTask(&Task{Path: "jd_tyt.js", Envs: []Env{
 					{Name: "tytpacketId", Value: ss[1]},
@@ -276,7 +276,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							}
 						}
 					} else {
-						sender.Reply(fmt.Sprintf("无效，东币-1，余额%d", RemCoin(sender.UserID, 1)))
+						sender.Reply(fmt.Sprintf("无效，互助值-1，余额%d", RemCoin(sender.UserID, 1)))
 					}
 				}
 				go func() {
