@@ -23,8 +23,15 @@ Whiskey更新
 15 写入失败问题 不知道啥原因
 16 wskey失效两次转换
 17 wskey过期提示
+全面适配所有CK格式  ALOOK  京东APP等啥都行
+修复更新指定跳过空wskey
+修复转换错误自动改为false 修复七次无限转换问题
+新增 AtTime参数 不配置导致失败得别怪我
+AtTime:  #填写1-12之间的数  填错自负默认为10  10点容易出现高峰超时。
 
 以上是做完了 以下是待开发
+
+新增纯CK版本 可配置调整为WSKEY+CK  和纯CK版本
 
 编码问题参考
 https://blog.csdn.net/qq_29499107/article/details/83583983
