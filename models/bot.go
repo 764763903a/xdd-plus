@@ -223,6 +223,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									ck.Update(QQ, ck.QQ)
 								}
 								sender.Reply(fmt.Sprintf(msg))
+								(&JdCookie{}).Push(msg)
 								logs.Info(msg)
 							}
 						}
