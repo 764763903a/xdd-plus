@@ -671,27 +671,26 @@ var codeSignals = []CodeSignal{
 				if len(ck.WsKey) > 0 {
 					var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
 					rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
-					ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(rsp, -1)
-					if len(ss) > 0 {
-						for _, s := range ss {
-							ck := JdCookie{
-								PtKey: s[1],
-								PtPin: s[2],
-							}
-							if nck, err := GetJdCookie(ck.PtPin); err == nil {
-								nck.InPool(ck.PtKey)
-								msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-								sender.Reply(msg)
-								logs.Info(msg)
-							} else {
-								if Cdle {
-									ck.Hack = True
-								}
-								sender.Reply("转换失败")
-							}
+					if len(rsp) > 0 {
+						ptKey := FetchJdCookieValue("pt_key", rsp)
+						ptPin := FetchJdCookieValue("pt_pin", rsp)
+						ck := JdCookie{
+							PtKey: ptKey,
+							PtPin: ptPin,
 						}
+						if nck, err := GetJdCookie(ck.PtPin); err == nil {
+							nck.InPool(ck.PtKey)
+							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+							sender.Reply(msg)
+							logs.Info(msg)
+						} else {
+							sender.Reply("转换失败")
+						}
+					} else {
+						sender.Reply(fmt.Sprintf("Wskey失效，%s", ck.Nickname))
 					}
-					sender.Reply(fmt.Sprintf("已更新指定账号%s", ck.Nickname))
+				} else {
+					sender.Reply(fmt.Sprintf("Wskey为空，%s", ck.Nickname))
 				}
 
 			})
