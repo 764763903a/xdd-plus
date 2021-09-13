@@ -8,6 +8,7 @@ containers:
     weigth:  
     mode: parallel
     limit: 9999
+AtTime:  #填写1-12之间的数  填错自负默认为10  10点容易出现高峰超时。
 theme:  
 static: ./static
 master: 
