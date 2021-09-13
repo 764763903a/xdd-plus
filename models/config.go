@@ -32,6 +32,7 @@ type Yaml struct {
 	DailyAssetPushCron  string `yaml:"daily_asset_push_cron"`
 	Version             string `yaml:"version"`
 	CTime               string `yaml:"AtTime"`
+	IsHelp              bool   `yaml:"IsHelp"`
 	Node                string
 	Npm                 string
 	Python              string
