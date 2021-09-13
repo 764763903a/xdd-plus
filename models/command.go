@@ -131,7 +131,7 @@ var codeSignals = []CodeSignal{
 				if zero.Unix() > u.ActiveAt.Unix() {
 					first = true
 				} else {
-					return fmt.Sprintf("你打过卡了，东币余额%d。", u.Coin)
+					return fmt.Sprintf("你打过卡了，互助值余额%d。", u.Coin)
 				}
 			}
 			if first {
@@ -148,17 +148,47 @@ var codeSignals = []CodeSignal{
 					"coin":      gorm.Expr(fmt.Sprintf("coin+%d", coin)),
 				})
 				u.Coin += coin
-				sender.Reply(fmt.Sprintf("你是打卡第%d人，奖励%d个东币，东币余额%d。", total[0]+1, coin, u.Coin))
+				sender.Reply(fmt.Sprintf("你是打卡第%d人，奖励%d个互助值，互助值余额%d。", total[0]+1, coin, u.Coin))
 				ReturnCoin(sender)
 				return ""
 			}
 			return nil
 		},
 	},
-	{
-		Command: []string{"coin", "东币", "余额", "yu", "yue"},
+    {
+		Command: []string{"清零"},
+		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
-			return fmt.Sprintf("东币余额%d", GetCoin(sender.UserID))
+			sender.handleJdCookies(func(ck *JdCookie) {
+				ck.Update(Priority, 1)
+				
+			})
+			sender.Reply("优先级已清零")
+			return nil
+		},
+	},
+	{
+		Command: []string{"更新优先级"},
+		Handle: func(sender *Sender) interface{} {
+			coin:=GetCoin(sender.UserID)
+			t:=time.Now()
+			if t.Weekday().String()=="Monday"{
+				sender.handleJdCookies(func(ck *JdCookie) {
+					ck.Update(Priority, coin)
+				})
+				sender.Reply("优先级已更新")
+				ClearCoin(sender.UserID)
+			}else{
+					sender.Reply("等周一再更新呆瓜")
+				}
+			return nil
+		},
+	},
+
+	{
+		Command: []string{"coin", "互助值", "余额", "yu", "yue"},
+		Handle: func(sender *Sender) interface{} {
+			return fmt.Sprintf("互助值余额%d", GetCoin(sender.UserID))
 		},
 	},
 
@@ -251,10 +281,10 @@ var codeSignals = []CodeSignal{
 			}
 			if !sender.IsAdmin {
 				if cost > 1 {
-					return "你只能获得1东币"
+					return "你只能获得1互助值"
 				} else {
 					AddCoin(sender.UserID)
-					return "太可怜了，给你1东币"
+					return "太可怜了，给你1互助值"
 				}
 			} else {
 				AdddCoin(sender.UserID, cost)
@@ -274,9 +304,9 @@ var codeSignals = []CodeSignal{
 			}
 
 			if err := db.Where("number = ?", sender.UserID).First(u).Error; err != nil || u.Coin < cost {
-				return "东币不足，先去打卡吧。"
+				return "互助值不足，先去打卡吧。"
 			} else {
-				sender.Reply(fmt.Sprintf("你使用%d枚东币。", cost))
+				sender.Reply(fmt.Sprintf("你使用%d枚互助值。", cost))
 			}
 			baga := 0
 			if u.Coin > 100000 {
@@ -285,18 +315,18 @@ var codeSignals = []CodeSignal{
 			}
 			r := time.Now().Nanosecond() % 10
 			if r < 7 || baga > 0 {
-				sender.Reply(fmt.Sprintf("很遗憾你失去了%d枚东币。", cost))
+				sender.Reply(fmt.Sprintf("很遗憾你失去了%d枚互助值。", cost))
 				cost = -cost
 			} else {
 				if r == 9 {
 					cost *= 4
-					sender.Reply(fmt.Sprintf("恭喜你4倍暴击获得%d枚东币，20秒后自动转入余额。", cost))
+					sender.Reply(fmt.Sprintf("恭喜你4倍暴击获得%d枚互助值，20秒后自动转入余额。", cost))
 					time.Sleep(time.Second * 20)
 				} else {
-					sender.Reply(fmt.Sprintf("很幸运你获得%d枚东币，10秒后自动转入余额。", cost))
+					sender.Reply(fmt.Sprintf("很幸运你获得%d枚互助值，10秒后自动转入余额。", cost))
 					time.Sleep(time.Second * 10)
 				}
-				sender.Reply(fmt.Sprintf("%d枚东币已到账。", cost))
+				sender.Reply(fmt.Sprintf("%d枚互助值已到账。", cost))
 			}
 			db.Model(u).Update("coin", gorm.Expr(fmt.Sprintf("coin + %d", cost)))
 			return nil
@@ -348,7 +378,7 @@ var codeSignals = []CodeSignal{
 			}
 			u := &User{}
 			if err := db.Where("number = ?", sender.UserID).First(u).Error; err != nil || u.Coin < cost {
-				return "东币不足，先去打卡吧。"
+				return "互助值不足，先去打卡吧。"
 			}
 			baga := 0
 			if u.Coin > 100000 {
@@ -357,18 +387,18 @@ var codeSignals = []CodeSignal{
 			}
 			r := time.Now().Nanosecond() % 10
 			if r < 6 || baga > 0 {
-				sender.Reply(fmt.Sprintf("很遗憾你失去了%d枚东币。", cost))
+				sender.Reply(fmt.Sprintf("很遗憾你失去了%d枚互助值。", cost))
 				cost = -cost
 			} else {
 				if r == 9 {
 					cost *= 2
-					sender.Reply(fmt.Sprintf("恭喜你幸运暴击获得%d枚东币，20秒后自动转入余额。", cost))
+					sender.Reply(fmt.Sprintf("恭喜你幸运暴击获得%d枚互助值，20秒后自动转入余额。", cost))
 					time.Sleep(time.Second * 20)
 				} else {
-					sender.Reply(fmt.Sprintf("很幸运你获得%d枚东币，10秒后自动转入余额。", cost))
+					sender.Reply(fmt.Sprintf("很幸运你获得%d枚互助值，10秒后自动转入余额。", cost))
 					time.Sleep(time.Second * 10)
 				}
-				sender.Reply(fmt.Sprintf("%d枚东币已到账。", cost))
+				sender.Reply(fmt.Sprintf("%d枚互助值已到账。", cost))
 			}
 			db.Model(u).Update("coin", gorm.Expr(fmt.Sprintf("coin + %d", cost)))
 			return nil
@@ -414,7 +444,7 @@ var codeSignals = []CodeSignal{
 			u := &User{}
 			if err := tx.Where("number = ?", sender.UserID).First(u).Error; err != nil {
 				tx.Rollback()
-				return "东币不足，先去打卡吧。"
+				return "互助值不足，先去打卡吧。"
 			}
 			w := &Wish{
 				Content:    ct,
@@ -423,7 +453,7 @@ var codeSignals = []CodeSignal{
 			}
 			if u.Coin < cost {
 				tx.Rollback()
-				return fmt.Sprintf("东币不足，需要%d个东币。", cost)
+				return fmt.Sprintf("互助值不足，需要%d个互助值。", cost)
 			}
 			if err := tx.Create(w).Error; err != nil {
 				tx.Rollback()
@@ -435,7 +465,7 @@ var codeSignals = []CodeSignal{
 			}
 			tx.Commit()
 			(&JdCookie{}).Push(fmt.Sprintf("有人许愿%s，愿望id为%d。", w.Content, w.ID))
-			return fmt.Sprintf("收到愿望，已扣除%d个东币。", cost)
+			return fmt.Sprintf("收到愿望，已扣除%d个互助值。", cost)
 		},
 	},
 	{
@@ -615,7 +645,7 @@ var codeSignals = []CodeSignal{
 			).RowsAffected == 0 {
 				return "先去打卡吧你。"
 			}
-			return "东币+1"
+			return "互助值+1"
 		},
 	},
 	{
@@ -750,7 +780,7 @@ var codeSignals = []CodeSignal{
 				db.Model(User{}).Where("number = ?", sender.UserID).Updates(map[string]interface{}{
 					"coin": gorm.Expr(fmt.Sprintf("coin - %d", cost)),
 				})
-				return fmt.Sprintf("转账成功，扣除手续费%d枚东币。", cost)
+				return fmt.Sprintf("转账成功，扣除手续费%d枚互助值。", cost)
 			}
 			if amount > 10000 {
 				return "单笔转账限额10000。"
@@ -769,7 +799,7 @@ var codeSignals = []CodeSignal{
 			if !sender.IsAdmin {
 				if amount <= cost {
 					tx.Rollback()
-					return fmt.Sprintf("转账失败，手续费需要%d个东币。", cost)
+					return fmt.Sprintf("转账失败，手续费需要%d个互助值。", cost)
 				}
 				real = amount - cost
 			} else {
@@ -851,15 +881,15 @@ func ReturnCoin(sender *Sender) {
 			"coin", gorm.Expr(fmt.Sprintf("coin + %d", w.Coin)),
 		).RowsAffected == 0 {
 			tx.Rollback()
-			sender.Reply("愿望未达成退还东币失败。")
+			sender.Reply("愿望未达成退还互助值失败。")
 			return
 		}
-		sender.Reply(fmt.Sprintf("愿望未达成退还%d枚东币。", w.Coin))
+		sender.Reply(fmt.Sprintf("愿望未达成退还%d枚互助值。", w.Coin))
 		if tx.Model(&w).Update(
 			"status", 1,
 		).RowsAffected == 0 {
 			tx.Rollback()
-			sender.Reply("愿望未达成退还东币失败。")
+			sender.Reply("愿望未达成退还互助值失败。")
 			return
 		}
 	}
