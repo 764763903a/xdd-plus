@@ -33,6 +33,8 @@ AtTime:  #填写1-12之间的数  填错自负默认为10  10点容易出现高�
 
 新增纯CK版本 可配置调整为WSKEY+CK  和纯CK版本
 
+考虑仓库私有化  另附如果不喜欢别用  ninja和xdd魔改版大有人做  免费开源没收你钱总不能还挨你一顿喷？
+
 编码问题参考
 https://blog.csdn.net/qq_29499107/article/details/83583983
 /usr/lib64/python3.6/http
