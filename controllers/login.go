@@ -35,6 +35,12 @@ type StepThree struct {
 	Message string `json:"message"`
 }
 
+type Result struct {
+	Code    int         `json:"code"`
+	Data    interface{} `json:"data"`
+	Message string      `json:"message"`
+}
+
 var JdCookieRunners sync.Map
 var jdua = models.GetUserAgent
 
@@ -360,21 +366,55 @@ func (c *LoginController) CkLogin() {
 		}
 		if ptKey != "" && ptPin != "" {
 			if models.CookieOK(ck) {
+				query := ck.Query()
+				result := Result{
+					Data: query,
+					Code: 0,
+				}
+
 				if !models.HasPin(ptPin) {
 					models.NewJdCookie(ck)
-					c.Ctx.WriteString(fmt.Sprintf("添加成功"))
+					result.Message = fmt.Sprintf("添加成功")
+					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+					if errs != nil {
+						fmt.Println(errs.Error())
+					}
+					c.Ctx.WriteString(string(jsons))
 				} else if !models.HasKey(ptKey) {
 					ck, _ := models.GetJdCookie(ptPin)
 					ck.InPool(ptKey)
-					c.Ctx.WriteString(fmt.Sprintf("更新成功"))
+					result.Message = fmt.Sprintf("更新成功")
+					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+					if errs != nil {
+						fmt.Println(errs.Error())
+					}
+					c.Ctx.WriteString(string(jsons))
 				}
 			} else {
-				c.Ctx.WriteString("CK过期")
+				result := Result{
+					Data:    "null",
+					Code:    1,
+					Message: "CK过期",
+				}
+				jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+				if errs != nil {
+					fmt.Println(errs.Error())
+				}
+				c.Ctx.WriteString(string(jsons))
 			}
 
 		}
 	}
-	c.Ctx.WriteString("ck格式错误")
+	result := Result{
+		Data:    "null",
+		Code:    2,
+		Message: "ck格式错误",
+	}
+	jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+	if errs != nil {
+		fmt.Println(errs.Error())
+	}
+	c.Ctx.WriteString(string(jsons))
 
 	//if strings.Contains(ck,"pt_key") {
 	//	ptKey := FetchJdCookieValue("pt_key", msg)
