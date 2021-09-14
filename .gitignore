@@ -25,3 +25,4 @@ scripts/node_modules
 task/*
 *.repo
 repos
+/theme/userCenter.html
