@@ -137,11 +137,13 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								(&JdCookie{}).Push(msg)
 							} else {
 								NewJdCookie(&ck)
+
 								msg := fmt.Sprintf("添加账号，账号名:%s", ck.PtPin)
 								if sender.IsQQ() {
 									ck.Update(QQ, ck.QQ)
 								}
 								sender.Reply(fmt.Sprintf(msg))
+								sender.Reply(ck.Query())
 								(&JdCookie{}).Push(msg)
 							}
 						}
@@ -207,6 +209,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									ck.Update(QQ, ck.QQ)
 								}
 								sender.Reply(fmt.Sprintf(msg))
+								sender.Reply(ck.Query())
 								(&JdCookie{}).Push(msg)
 								logs.Info(msg)
 							}
@@ -261,6 +264,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									ck.Update(QQ, ck.QQ)
 								}
 								sender.Reply(fmt.Sprintf(msg))
+								sender.Reply(ck.Query())
 								logs.Info(msg)
 							}
 						}
