@@ -13,6 +13,7 @@ type User struct {
 	Class    string
 	ActiveAt time.Time
 	Coin     int
+    Womail   string
 }
 func ClearCoin(uid int) int {
 	var u User
