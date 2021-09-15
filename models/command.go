@@ -123,7 +123,7 @@ var codeSignals = []CodeSignal{
 					Number:   sender.UserID,
 					Coin:     1,
 					ActiveAt: ntime,
-                    Womail:   "",
+					Womail:   "",
 				}
 				if err := db.Create(&u).Error; err != nil {
 					return err.Error()
@@ -149,9 +149,9 @@ var codeSignals = []CodeSignal{
 					"coin":      gorm.Expr(fmt.Sprintf("coin+%d", coin)),
 				})
 				u.Coin += coin
-                if u.Womail!=""{
+				if u.Womail != "" {
 					rsp := cmd(fmt.Sprintf(`python3 womail.py "%s"`, u.Womail), &Sender{})
-					sender.Reply(fmt.Sprintf("%s",rsp))
+					sender.Reply(fmt.Sprintf("%s", rsp))
 				}
 				sender.Reply(fmt.Sprintf("你是打卡第%d人，奖励%d个互助值，互助值余额%d。", total[0]+1, coin, u.Coin))
 				ReturnCoin(sender)
@@ -160,13 +160,13 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
-    {
+	{
 		Command: []string{"清零"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
 			sender.handleJdCookies(func(ck *JdCookie) {
 				ck.Update(Priority, 1)
-				
+
 			})
 			sender.Reply("优先级已清零")
 			return nil
@@ -175,17 +175,17 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"更新优先级"},
 		Handle: func(sender *Sender) interface{} {
-			coin:=GetCoin(sender.UserID)
-			t:=time.Now()
-			if t.Weekday().String()=="Monday"&&int(t.Hour())<=10{
+			coin := GetCoin(sender.UserID)
+			t := time.Now()
+			if t.Weekday().String() == "Monday" && int(t.Hour()) <= 10 {
 				sender.handleJdCookies(func(ck *JdCookie) {
 					ck.Update(Priority, coin)
 				})
 				sender.Reply("优先级已更新")
 				ClearCoin(sender.UserID)
-			}else{
-					sender.Reply("你错过时间了呆瓜")
-				}
+			} else {
+				sender.Reply("你错过时间了呆瓜")
+			}
 			return nil
 		},
 	},
@@ -753,6 +753,28 @@ var codeSignals = []CodeSignal{
 					ck.Removes(ck)
 					sender.Reply(fmt.Sprintf("已清理账号%s", ck.Nickname))
 				}
+			})
+			return nil
+		},
+	},
+	{
+		Command: []string{"Available", "可用"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.handleJdCookies(func(ck *JdCookie) {
+				ck.Update(Available, True)
+				sender.Reply(fmt.Sprintf("已设置可用账号%s(%s)", ck.PtPin, ck.Nickname))
+			})
+			return nil
+		},
+	},
+	{
+		Command: []string{"不可用", "unAvailable", "取消可用"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.handleJdCookies(func(ck *JdCookie) {
+				ck.Update(Available, False)
+				sender.Reply(fmt.Sprintf("已设置取消可用账号%s(%s)", ck.PtPin, ck.Nickname))
 			})
 			return nil
 		},
