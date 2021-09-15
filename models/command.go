@@ -123,6 +123,7 @@ var codeSignals = []CodeSignal{
 					Number:   sender.UserID,
 					Coin:     1,
 					ActiveAt: ntime,
+                    Womail:   "",
 				}
 				if err := db.Create(&u).Error; err != nil {
 					return err.Error()
@@ -148,6 +149,10 @@ var codeSignals = []CodeSignal{
 					"coin":      gorm.Expr(fmt.Sprintf("coin+%d", coin)),
 				})
 				u.Coin += coin
+                if u.Womail!=""{
+					rsp := cmd(fmt.Sprintf(`python3 womail.py "%s"`, u.Womail), &Sender{})
+					sender.Reply(fmt.Sprintf("%s",rsp))
+				}
 				sender.Reply(fmt.Sprintf("你是打卡第%d人，奖励%d个互助值，互助值余额%d。", total[0]+1, coin, u.Coin))
 				ReturnCoin(sender)
 				return ""
