@@ -33,6 +33,7 @@ type Yaml struct {
 	Version             string `yaml:"version"`
 	CTime               string `yaml:"AtTime"`
 	IsHelp              bool   `yaml:"IsHelp"`
+	IsOldV4             bool   `yaml:"IsOldV4"`
 	Node                string
 	Npm                 string
 	Python              string

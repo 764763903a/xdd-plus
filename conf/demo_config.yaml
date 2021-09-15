@@ -10,6 +10,7 @@ containers:
     limit: 9999
 AtTime:  #填写1-12之间的数  填错自负默认为10  10点容易出现高峰超时。
 IsHelp:   #填写true或者false  false
+IsOldV4: #填写true或者false  false是否新版或者旧版V4
 theme:  
 static: ./static
 master: 

@@ -71,11 +71,11 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	if sender.UserID == Config.TelegramUserID || sender.UserID == int(Config.QQID) {
 		sender.IsAdmin = true
 	}
-	logs.Info(sender.UserID)
-	if IsUserAdmin(strconv.Itoa(sender.UserID)) {
-		sender.IsAdmin = true
+	if sender.IsAdmin == false {
+		if IsUserAdmin(strconv.Itoa(sender.UserID)) {
+			sender.IsAdmin = true
+		}
 	}
-
 	for i := range codeSignals {
 		for j := range codeSignals[i].Command {
 			if codeSignals[i].Command[j] == head {
@@ -90,7 +90,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	}
 	switch msg {
 	default:
-        { //沃邮箱
+		{ //沃邮箱
 			ss := regexp.MustCompile(`https://nyan.mail.*3D`).FindStringSubmatch(msg)
 			if len(ss) > 0 {
 				var u User

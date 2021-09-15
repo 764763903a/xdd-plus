@@ -28,6 +28,8 @@ Whiskey更新
 修复转换错误自动改为false 修复七次无限转换问题
 新增 AtTime参数 不配置导致失败得别怪我
 AtTime:  #填写1-12之间的数  填错自负默认为10  10点容易出现高峰超时。
+IsHelp:   #填写true或者false  默认false 是否往容器添加助力码
+IsOldV4: #填写true或者false  默认false  是否新版或者旧版V4
 
 以上是做完了 以下是待开发
 
@@ -51,6 +53,8 @@ https://thin-hill-428.notion.site/2-8Faker-QL-pannel-Faker-Repository-environmen
 	req := httplib.Post(c.Address + "/api/auth")
 	修改为
 	req := httplib.Post(c.Address + "/auth")
+
+	修改为可配置
 
 
 
