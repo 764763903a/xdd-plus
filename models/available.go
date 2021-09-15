@@ -201,6 +201,7 @@ func CookieOK(ck *JdCookie) bool {
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {
+
 			if ck.Available == True {
 				ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 				ck.Update(Available, false)
