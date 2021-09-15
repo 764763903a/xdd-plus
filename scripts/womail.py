@@ -381,5 +381,6 @@ class WoMailCheckIn:
             pushplus_bot(title, msg)
         print(msg)
 if __name__ == "__main__":
+    i=i.replace("&amp","").replace(" ","").replace(";","&")
     keyurl = {"womail_url": f"{i}"}
     WoMailCheckIn(check_item=keyurl).main()
