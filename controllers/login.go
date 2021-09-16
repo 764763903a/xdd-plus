@@ -348,7 +348,7 @@ func (c *LoginController) CkLogin() {
 	qq, _ := c.GetInt("qq")
 	bz := c.GetString("bz")
 	push := c.GetString("push")
-
+	logs.Info(cookies)
 	if strings.Contains(cookies, "pt_key") {
 		ptKey := FetchJdCookieValue("pt_key", cookies)
 		ptPin := FetchJdCookieValue("pt_pin", cookies)
