@@ -371,6 +371,7 @@ func (c *LoginController) CkLogin() {
 				if !models.HasPin(ptPin) {
 					models.NewJdCookie(ck)
 					result.Message = fmt.Sprintf("添加成功")
+					result.Data = ck.Query()
 					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
 					if errs != nil {
 						fmt.Println(errs.Error())
@@ -380,6 +381,7 @@ func (c *LoginController) CkLogin() {
 					ck, _ := models.GetJdCookie(ptPin)
 					ck.InPool(ptKey)
 					result.Message = fmt.Sprintf("更新成功")
+					result.Data = ck.Query()
 					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
 					if errs != nil {
 						fmt.Println(errs.Error())
