@@ -135,6 +135,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									ck.Update(QQ, ck.QQ)
 								}
 								sender.Reply(fmt.Sprintf(msg))
+								sender.Reply(ck.Query())
 								(&JdCookie{}).Push(msg)
 							} else {
 								NewJdCookie(&ck)
