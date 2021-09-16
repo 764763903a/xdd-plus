@@ -403,17 +403,18 @@ func (c *LoginController) CkLogin() {
 			}
 
 		}
+	} else {
+		result := Result{
+			Data:    "null",
+			Code:    2,
+			Message: "ck格式错误",
+		}
+		jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+		if errs != nil {
+			fmt.Println(errs.Error())
+		}
+		c.Ctx.WriteString(string(jsons))
 	}
-	result := Result{
-		Data:    "null",
-		Code:    2,
-		Message: "ck格式错误",
-	}
-	jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
-	if errs != nil {
-		fmt.Println(errs.Error())
-	}
-	c.Ctx.WriteString(string(jsons))
 
 	//if strings.Contains(ck,"pt_key") {
 	//	ptKey := FetchJdCookieValue("pt_key", msg)
