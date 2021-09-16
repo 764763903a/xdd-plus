@@ -353,7 +353,7 @@ func (c *LoginController) CkLogin() {
 	logs.Info(key)
 
 	c.Ctx.Redirect(200, "/userCenter?pin="+pin)
-
+	c.StopRun()
 	//if key != "" && pin != "" {
 	//	//ptKey := FetchJdCookieValue("pt_key", cookies)
 	//	//ptPin := FetchJdCookieValue("pt_pin", cookies)
