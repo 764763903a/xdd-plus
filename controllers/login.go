@@ -344,23 +344,24 @@ func (c *LoginController) IsAdmin() {
 }
 
 func (c *LoginController) CkLogin() {
-	cookies := c.GetString("ck")
+	pin := c.GetString("pin")
+	key := c.GetString("key")
 	qq, _ := c.GetInt("qq")
 	bz := c.GetString("bz")
 	push := c.GetString("push")
-	logs.Info(cookies)
-	if strings.Contains(cookies, "pt_key") {
-		ptKey := FetchJdCookieValue("pt_key", cookies)
-		ptPin := FetchJdCookieValue("pt_pin", cookies)
+	logs.Info(pin)
+	if len(key) > 0 && len(pin) > 0 {
+		//ptKey := FetchJdCookieValue("pt_key", cookies)
+		//ptPin := FetchJdCookieValue("pt_pin", cookies)
 		ck := &models.JdCookie{
-			PtKey:    ptKey,
-			PtPin:    ptPin,
+			PtKey:    key,
+			PtPin:    pin,
 			Hack:     models.False,
 			QQ:       qq,
 			Note:     bz,
 			PushPlus: push,
 		}
-		if ptKey != "" && ptPin != "" {
+		if key != "" && pin != "" {
 			if models.CookieOK(ck) {
 				query := ck.Query()
 				result := Result{
@@ -368,7 +369,7 @@ func (c *LoginController) CkLogin() {
 					Code: 0,
 				}
 
-				if !models.HasPin(ptPin) {
+				if !models.HasPin(pin) {
 					models.NewJdCookie(ck)
 					result.Message = fmt.Sprintf("添加成功")
 					result.Data = ck.Query()
@@ -377,9 +378,9 @@ func (c *LoginController) CkLogin() {
 						fmt.Println(errs.Error())
 					}
 					c.Ctx.WriteString(string(jsons))
-				} else if !models.HasKey(ptKey) {
-					ck, _ := models.GetJdCookie(ptPin)
-					ck.InPool(ptKey)
+				} else if !models.HasKey(key) {
+					ck, _ := models.GetJdCookie(pin)
+					ck.InPool(key)
 					result.Message = fmt.Sprintf("更新成功")
 					result.Data = ck.Query()
 					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
