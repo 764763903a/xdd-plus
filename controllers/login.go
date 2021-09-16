@@ -350,7 +350,8 @@ func (c *LoginController) CkLogin() {
 	bz := c.GetString("bz")
 	push := c.GetString("push")
 	logs.Info(pin)
-	if len(key) > 0 && len(pin) > 0 {
+	logs.Info(key)
+	if key != "" && pin != "" {
 		//ptKey := FetchJdCookieValue("pt_key", cookies)
 		//ptPin := FetchJdCookieValue("pt_pin", cookies)
 		ck := &models.JdCookie{
