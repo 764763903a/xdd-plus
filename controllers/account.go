@@ -75,3 +75,7 @@ func (c *AccountController) CreateOrUpdate() {
 func (c *AccountController) Admin() {
 	c.Ctx.WriteString(models.Admin)
 }
+
+func (c *AccountController) UserCenter() {
+	c.Ctx.WriteString(models.UserCenter)
+}
