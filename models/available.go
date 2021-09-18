@@ -228,11 +228,11 @@ func CookieOK(ck *JdCookie) bool {
 							(&JdCookie{}).Push("转换失败")
 						}
 					} else {
-						ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+						//ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 						JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
 					}
 				} else {
-					ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+					//ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 					JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
 				}
 
