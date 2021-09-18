@@ -205,12 +205,9 @@ func CookieOK(ck *JdCookie) bool {
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {
-
 			if ck.Available == True {
+				ck.Update(Available, false)
 				if Config.Wskey {
-					ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
-					ck.Update(Available, false)
-					JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
 					if len(ck.WsKey) > 0 {
 						var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
 						msg := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
