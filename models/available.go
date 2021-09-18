@@ -214,11 +214,12 @@ func CookieOK(ck *JdCookie) bool {
 						JdCookie{}.Push(fmt.Sprintf("自动转换wskey---%s", msg))
 						ptKey := FetchJdCookieValue("pt_key", msg)
 						ptPin := FetchJdCookieValue("pt_pin", msg)
+						logs.Info(ptPin)
 						ck := JdCookie{
 							PtKey: ptKey,
 							PtPin: ptPin,
 						}
-						if nck, err := GetJdCookie(ck.PtPin); err == nil {
+						if nck, err := GetJdCookie(ptPin); err == nil {
 							nck.InPool(ck.PtKey)
 							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
 							(&JdCookie{}).Push(msg)
