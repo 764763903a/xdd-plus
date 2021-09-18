@@ -352,8 +352,7 @@ func (c *LoginController) CkLogin() {
 	logs.Info(pin)
 	logs.Info(key)
 
-	c.Ctx.Redirect(200, "/userCenter?pin="+pin)
-	c.StopRun()
+	c.Ctx.WriteString("添加成功")
 	//if key != "" && pin != "" {
 	//	//ptKey := FetchJdCookieValue("pt_key", cookies)
 	//	//ptPin := FetchJdCookieValue("pt_pin", cookies)

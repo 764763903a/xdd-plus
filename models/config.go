@@ -36,6 +36,7 @@ type Yaml struct {
 	IsHelp              bool   `yaml:"IsHelp"`
 	IsOldV4             bool   `yaml:"IsOldV4"`
 	ApiToken            string `yaml:"ApiToken"`
+	Wskey               bool   `yaml:"Wskey"`
 	Node                string
 	Npm                 string
 	Python              string

@@ -12,6 +12,7 @@ AtTime:  #填写1-12之间的数  填错自负默认为10  10点容易出现高�
 IsHelp:   #填写true或者false  false
 IsOldV4: #填写true或者false  false是否新版或者旧版V4
 ApiToken: #为空默认随机禁用
+Wskey: # 填空默认禁用wskey转换 需要的填true
 theme:  
 static: ./static
 master: 
