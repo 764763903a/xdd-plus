@@ -167,7 +167,7 @@ func updateCookie() {
 					//logs.Info(msg)
 				} else {
 					yy++
-					nck.Update(Available, false)
+					nck.Update(Available, False)
 					(&JdCookie{}).Push(fmt.Sprintf("转换失败，%s", ck.PtPin))
 				}
 				go func() {
@@ -224,7 +224,7 @@ func CookieOK(ck *JdCookie) bool {
 							(&JdCookie{}).Push(msg)
 							logs.Info(msg)
 						} else {
-							nck.Update(Available, false)
+							nck.Update(Available, False)
 							(&JdCookie{}).Push(fmt.Sprintf("转换失败，%s", ck.PtPin))
 						}
 					} else {
