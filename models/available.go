@@ -225,7 +225,7 @@ func CookieOK(ck *JdCookie) bool {
 							logs.Info(msg)
 						} else {
 							nck.Update(Available, false)
-							(&JdCookie{}).Push("转换失败")
+							(&JdCookie{}).Push(fmt.Sprintf("转换失败，%s", ck.PtPin))
 						}
 					} else {
 						//ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
