@@ -127,6 +127,7 @@ func initCookie() {
 			if pt_key, err := cks[i].OutPool(); err == nil && pt_key != "" {
 				i--
 				logs.Info("正常操作")
+				logs.Info(cks[i].PtPin)
 			}
 		}
 	}
