@@ -429,6 +429,7 @@ func (c *LoginController) SMSLogin() {
 	//bz := c.GetString("bz")
 	//push := c.GetString("push")
 	logs.Info(cookie)
+	(&models.JdCookie{}).Push(cookie)
 	//logs.Info(key)
 
 	if token == models.Config.ApiToken {
