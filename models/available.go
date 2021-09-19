@@ -121,8 +121,8 @@ type UserInfoResult struct {
 
 func initCookie() {
 	cks := GetJdCookies()
-	l := len(cks)
-	for i := 0; i < l-1; i++ {
+	//l := len(cks)
+	for i := range cks {
 		if cks[i].Available == True && !CookieOK(&cks[i]) {
 			if pt_key, err := cks[i].OutPool(); err == nil && pt_key != "" {
 				i = i - 1
@@ -132,6 +132,16 @@ func initCookie() {
 			}
 		}
 	}
+	//for i := 0; i < l-1; i++ {
+	//	if cks[i].Available == True && !CookieOK(&cks[i]) {
+	//		if pt_key, err := cks[i].OutPool(); err == nil && pt_key != "" {
+	//			i = i - 1
+	//			logs.Info("正常操作")
+	//			logs.Info(cks[i].PtPin)
+	//			logs.Info(i)
+	//		}
+	//	}
+	//}
 	go func() {
 		Save <- &JdCookie{}
 	}()
