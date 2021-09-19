@@ -128,6 +128,7 @@ func initCookie() {
 				i--
 				logs.Info("正常操作")
 				logs.Info(cks[i].PtPin)
+				logs.Info(i)
 			}
 		}
 	}
