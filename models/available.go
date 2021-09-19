@@ -124,12 +124,7 @@ func initCookie() {
 	//l := len(cks)
 	for i := range cks {
 		if cks[i].Available == True && !CookieOK(&cks[i]) {
-			if pt_key, err := cks[i].OutPool(); err == nil && pt_key != "" {
-				i = i - 1
-				logs.Info("正常操作")
-				logs.Info(cks[i].PtPin)
-				logs.Info(i)
-			}
+			cks[i].OutPool()
 		}
 	}
 	//for i := 0; i < l-1; i++ {
