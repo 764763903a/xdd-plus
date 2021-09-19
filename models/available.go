@@ -222,7 +222,7 @@ func CookieOK(ck *JdCookie) bool {
 						JdCookie{}.Push(fmt.Sprintf("自动转换wskey---%s", msg))
 						//缺少错误判断
 						if strings.Contains(msg, "错误") {
-							ck.Push(fmt.Sprintf("Wskey失效账号，%s", ck.PtPin))
+							//ck.Push(fmt.Sprintf("Wskey失效账号，%s", ck.PtPin))
 							(&JdCookie{}).Push(fmt.Sprintf("Wskey失效，%s", ck.PtPin))
 						} else {
 							ptKey := FetchJdCookieValue("pt_key", msg)
