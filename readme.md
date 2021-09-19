@@ -7,6 +7,12 @@
 
 # 更新日志
 
+## 9-20
+
+感谢大佬增加xdd的接入
+
+[伟大的短信登录]: https://github.com/rubyangxg/jd-qinglong	"短信登录"
+
 ## 9-19
 
 - 短信对接接口等待Y对接
@@ -61,9 +67,19 @@ fix 重大BUG修复，解决以下几个问题，
 
 - 新增头部账号按次序进入容器助力模式
 
-  
+- 优化检测Ck代码
 
 
+
+
+# 鸣谢
+
+
+
+[jd-qinglong]: https://github.com/rubyangxg/jd-qinglong	"短信登录"
+[傻妞]: https://github.com/cdle/sillyGirl	"傻妞"
+
+以及大大小小的模块作者
 
 # 常见问题
 
@@ -74,6 +90,19 @@ https://blog.csdn.net/qq_29499107/article/details/83583983
 Token故障请先用官方教程重装  已排查是nginx问题
 https://thin-hill-428.notion.site/2-8Faker-QL-pannel-Faker-Repository-environment-Setup-45edcbfe90d74d8abb2d71896eab3be7
 请使用官方一键安装 就解决此问题了
+
+
+
+1. 如何自动更新短信镜像
+
+```
+docker run -d \
+    --name watchtower \
+    --restart always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    containrrr/watchtower \
+    --cleanup
+```
 
 
 
