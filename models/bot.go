@@ -19,9 +19,7 @@ var SendQQ = func(a int64, b interface{}) {
 var SendQQGroup = func(a int64, b int64, c interface{}) {
 
 }
-var AggreQQ = func(a int64, b bool, c interface{}) {
 
-}
 var ListenQQPrivateMessage = func(uid int64, msg string) {
 	SendQQ(uid, handleMessage(msg, "qq", int(uid)))
 }
@@ -37,6 +35,10 @@ var ListenQQGroupMessage = func(gid int64, uid int64, msg string) {
 }
 
 var replies = map[string]string{}
+
+func AggQQ() {
+
+}
 
 func InitReplies() {
 	f, err := os.Open(ExecPath + "/conf/reply.php")

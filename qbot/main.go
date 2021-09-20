@@ -100,11 +100,9 @@ func Main() {
 	coolq.PrivateMessageEventCallback = models.ListenQQPrivateMessage
 	coolq.GroupMessageEventCallback = models.ListenQQGroupMessage
 
-	OnFriendMessage := func(_ *client.QQClient, m *client.NewFriendRequest) {
-		m.Accept()
-	}
-
-	bot.Client.OnNewFriendRequest(OnFriendMessage)
+	bot.Client.OnNewFriendRequest(func(_ *client.QQClient, a *client.NewFriendRequest) {
+		a.Accept()
+	})
 
 	// c := flag.String("c", config.DefaultConfigFile, "configuration filename default is config.hjson")
 	// d := flag.Bool("d", false, "running as a daemon")
