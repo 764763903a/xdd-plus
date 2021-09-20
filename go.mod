@@ -9,7 +9,7 @@ replace github.com/Mrs4s/go-cqhttp v1.0.0-beta5 => github.com/cdle/go-cqhttp v1.
 require (
 	github.com/Baozisoftware/qrcode-terminal-go v0.0.0-20170407111555-c0650d8dff0f
 	github.com/Mrs4s/MiraiGo v0.0.0-20210726103104-1d68826cef0e
-	github.com/Mrs4s/go-cqhttp v1.0.0-beta5
+	github.com/Mrs4s/go-cqhttp v1.0.0-beta6
 	github.com/beego/beego/v2 v2.0.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/locales v0.13.0
