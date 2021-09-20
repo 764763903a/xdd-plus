@@ -71,6 +71,7 @@ func Main() {
 		if uid == 0 {
 			return
 		}
+
 		switch msg.(type) {
 		case string:
 			if bot != nil {
@@ -95,8 +96,15 @@ func Main() {
 			bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&message.AtElement{Target: uid}, &message.TextElement{Content: "\n"}, &coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
 		}
 	}
+	models.AggreQQ = func(flag int64, b bool, msg interface{}) {
+		if bot == nil {
+			return
+		}
+
+	}
 	coolq.PrivateMessageEventCallback = models.ListenQQPrivateMessage
 	coolq.GroupMessageEventCallback = models.ListenQQGroupMessage
+
 	// c := flag.String("c", config.DefaultConfigFile, "configuration filename default is config.hjson")
 	// d := flag.Bool("d", false, "running as a daemon")
 	// h := flag.Bool("h", false, "this help")

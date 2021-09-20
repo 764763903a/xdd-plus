@@ -11,7 +11,15 @@
 
 感谢大佬增加xdd的接入
 
-[伟大的短信登录]: https://github.com/rubyangxg/jd-qinglong	"短信登录"
+[Y佬的JD-qinglong](https://github.com/rubyangxg/jd-qinglong )
+
+配置config中的apiToken，即可完成与Y佬的短信对接
+
+XDD_URL格式为http://IP地址:端口/api/login/smslogin
+
+![image-20210920125520315](C:\Users\76476\AppData\Roaming\Typora\typora-user-images\image-20210920125520315.png)
+
+再次感谢Y佬  具体教程问问群里或者等好心群友提供我顶置更新
 
 ## 9-19
 
@@ -60,24 +68,23 @@ fix 重大BUG修复，解决以下几个问题，
 ## 开发目标
 
 - 验证码登录直接接入
-
 - plus登陆页面 
-
 - 加好友自动同意
-
 - 新增头部账号按次序进入容器助力模式
-
 - 优化检测Ck代码
+- wskey转换改为go copy from 芝士
+- 增加扫码登录，问题是只能QQ扫码登录，有点纠结要不要加
 
 
 
 
 # 鸣谢
 
+[jd-qinglong](https://github.com/rubyangxg/jd-qinglong )
 
+[傻妞](https://github.com/rubyangxg/jd-qinglong )
 
-[jd-qinglong]: https://github.com/rubyangxg/jd-qinglong	"短信登录"
-[傻妞]: https://github.com/cdle/sillyGirl	"傻妞"
+[fuckee的拓展插件](https://github.com/ufuckee/jd_cookie)
 
 以及大大小小的模块作者
 
