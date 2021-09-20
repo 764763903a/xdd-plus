@@ -96,12 +96,6 @@ func Main() {
 			bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&message.AtElement{Target: uid}, &message.TextElement{Content: "\n"}, &coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
 		}
 	}
-	models.AggreQQ = func(flag int64, b bool, msg interface{}) {
-		if bot == nil {
-			return
-		}
-
-	}
 
 	OnFriendMessage := func(_ *client.QQClient, m *client.NewFriendRequest) {
 		m.Accept()
