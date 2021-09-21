@@ -749,10 +749,7 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply(fmt.Sprintf("删除所有false账号，请慎用"))
 			sender.handleJdCookies(func(ck *JdCookie) {
-				if ck.Available == False {
-					ck.Removes(ck)
-					sender.Reply(fmt.Sprintf("已清理账号%s", ck.Nickname))
-				}
+				cleanCookie()
 			})
 			return nil
 		},

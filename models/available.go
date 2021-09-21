@@ -142,6 +142,19 @@ func initCookie() {
 	}()
 }
 
+func cleanCookie() {
+	cks := GetJdCookies()
+	(&JdCookie{}).Push("开始清理过期账号")
+	xx := 0
+	for i := range cks {
+		if cks[i].Available == False {
+			xx++
+			cks[i].Removes(cks[i])
+		}
+	}
+	(&JdCookie{}).Push(fmt.Sprintf("所有CK清理，共%d个", xx))
+}
+
 func updateCookie() {
 	cks := GetJdCookies()
 	l := len(cks)
