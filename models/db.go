@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/beego/beego/v2/core/logs"
 	"strings"
 	"time"
 
@@ -243,6 +244,7 @@ func (ck *JdCookie) OutPool() (string, error) {
 		if tx.Where(fmt.Sprintf("%s = '%s' and %s = '%s'", PtPin, ck.PtPin, LoseAt, "")).First(jp).Error != nil {
 			us[Available] = False
 			us[PtKey] = ""
+			logs.Info("开始禁用")
 		} else {
 			us[Available] = True
 			us[PtKey] = jp.PtKey
