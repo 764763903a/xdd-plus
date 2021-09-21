@@ -1,12 +1,9 @@
 package models
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
-	"io/ioutil"
 	"regexp"
 	"strings"
 	"time"
@@ -814,28 +811,6 @@ var codeSignals = []CodeSignal{
 				sender.Reply(fmt.Sprintf("已删除WCK,%s", ck.Nickname))
 			})
 			return nil
-		},
-	},
-	{
-		Command: []string{"qrcode", "扫码", "二维码", "scan"},
-		Handle: func(sender *Sender) interface{} {
-			var test = `{"url":"` + "url" + `","img":"` + "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG8AAABvAQAAAADKvqPNAAAACXBIWXMAAAsTAAALEwEAmpwYAAABbUlEQVQ4jbXVMZKFIAwG4P8NBZ1egBmuQeeV4AL6vIBeyY5rMMMFnh0FYzb63hZbLLHYdSj8CjUJCYJ+XPhDVsAuoDUaD0wSJzJ9sXO0O1WRXpuppNHVsJk7DKWOztyjJcqLpv0GJ7LrZmkz4RNki4AJ8Vzf6TfI5as91XHgl7wL2+BZnLDRMti5KJFe00z55dSCd0YtTptaz2X3eL2qzUI75UObDiLpcAiFA8t7TJPA2g3EDz5i8gNkwj41rUQcG0n0juujXppe7/RbpKdG59Ko1aKryLXwHpnR5avsAp8AJ3voNJXrQy3WR+R41E7qgEi+R09qJfA4SKyd4z6BR+pw9lWb3hnv8s7dVbLIEHlPiSIPphLJHbLylA0JEHnOwiOakWseP4PzO88z50DqI8LVsW3y/M6lep6y+Bn2BvlkeA4VzgBX+iI5to2bME03uEAdjhsAIjmqs1c5fj55JPKZ02kzDsnrLPHffhNfN/uFGIe9KhgAAAAASUVORK5CYII=" + `"}`
-			rsp, err := httplib.Post("https://api.kukuqaq.com/jd/qrcode").Response()
-			if err != nil {
-				return nil
-			}
-			body, err1 := ioutil.ReadAll(rsp.Body)
-			if err1 == nil {
-				fmt.Println(string(body))
-			}
-			s := &QQuery{}
-			if len(body) > 0 {
-				json.Unmarshal(body, &s)
-			}
-			jsonByte, _ := json.Marshal(s)
-			jsonStr := string(jsonByte)
-			fmt.Printf("%v", jsonStr)
-			return test
 		},
 	},
 	{
