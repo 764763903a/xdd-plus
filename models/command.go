@@ -720,7 +720,10 @@ var codeSignals = []CodeSignal{
 			sender.handleJdCookies(func(ck *JdCookie) {
 				if len(ck.WsKey) > 0 {
 					var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
-					rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
+					rsp, err := getKey(pinky)
+					if err != nil {
+						logs.Error(err)
+					}
 					if len(rsp) > 0 {
 						ptKey := FetchJdCookieValue("pt_key", rsp)
 						ptPin := FetchJdCookieValue("pt_pin", rsp)
