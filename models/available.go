@@ -182,18 +182,20 @@ func updateCookie() {
 					PtKey: ptKey,
 					PtPin: ptPin,
 				}
-				if nck, err := GetJdCookie(ck.PtPin); err == nil {
-					xx++
-					nck.InPool(ck.PtKey)
-					nck.Update(Available, True)
-					//msg := fmt.Sprintf("定时更新账号，%s", ck.PtPin)
-					////不再发送成功提醒
-					//(&JdCookie{}).Push(msg)
-					//logs.Info(msg)
-				} else {
-					yy++
-					ck.Update(Available, False)
-					(&JdCookie{}).Push(fmt.Sprintf("转换失败，%s", ck.PtPin))
+				if ptPin != "" || ptKey != "" {
+					if nck, err := GetJdCookie(ck.PtPin); err == nil {
+						xx++
+						nck.InPool(ck.PtKey)
+						nck.Update(Available, True)
+						//msg := fmt.Sprintf("定时更新账号，%s", ck.PtPin)
+						////不再发送成功提醒
+						//(&JdCookie{}).Push(msg)
+						//logs.Info(msg)
+					} else {
+						yy++
+						ck.Update(Available, False)
+						(&JdCookie{}).Push(fmt.Sprintf("查无匹配得ptpin，%s", ck.PtPin))
+					}
 				}
 				go func() {
 					Save <- &JdCookie{}
