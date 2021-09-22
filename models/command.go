@@ -227,7 +227,9 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{`登陆`},
 		Handle: func(s *Sender) interface{} {
+			logs.Info("进入流程")
 			if num := 5; len(codes) >= num {
+				logs.Info("进入流程")
 				return fmt.Sprintf("%v坑位全部在使用中，请排队(稍后再试)。", num)
 			}
 			id := "qq" + strconv.Itoa(s.UserID)
