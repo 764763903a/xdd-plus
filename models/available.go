@@ -168,7 +168,10 @@ func updateCookie() {
 			ck := cks[i]
 			//JdCookie{}.Push(fmt.Sprintf("更新账号账号，%s", ck.Nickname))
 			var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
-			rsp := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
+			rsp, err := getKey(pinky)
+			if err != nil {
+				logs.Error(err)
+			}
 			if strings.Contains(rsp, "错误") {
 				ck.Push(fmt.Sprintf("Wskey失效账号，%s", ck.PtPin))
 				(&JdCookie{}).Push(fmt.Sprintf("Wskey失效，%s", ck.PtPin))
@@ -234,7 +237,10 @@ func CookieOK(ck *JdCookie) bool {
 				if Config.Wskey {
 					if len(ck.WsKey) > 0 {
 						var pinky = fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey)
-						msg := cmd(fmt.Sprintf(`python3 test.py "%s"`, pinky), &Sender{})
+						msg, err := getKey(pinky)
+						if err != nil {
+							logs.Error(err)
+						}
 						JdCookie{}.Push(fmt.Sprintf("自动转换wskey---%s", msg))
 						//缺少错误判断
 						if strings.Contains(msg, "错误") {

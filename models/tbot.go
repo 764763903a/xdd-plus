@@ -20,6 +20,7 @@ func initTgBot() {
 		}
 		var err error
 		b, err = tb.NewBot(tb.Settings{
+			URL:    Config.TGURL,
 			Token:  Config.TelegramBotToken,
 			Poller: &tb.LongPoller{Timeout: 10 * time.Second},
 		})
