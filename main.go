@@ -60,6 +60,7 @@ func main() {
 	web.Router("/api/login/smslogin", &controllers.LoginController{}, "post:SMSLogin")
 	web.Router("/api/account", &controllers.AccountController{}, "get:List")
 	web.Router("/api/account", &controllers.AccountController{}, "post:CreateOrUpdate")
+	web.Router("/api/account/getUserInfo", &controllers.AccountController{}, "post:GetUserInfo")
 	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
 	web.Router("/admin", &controllers.AccountController{}, "post:Admin")
 	web.Router("/userCenter", &controllers.AccountController{}, "get:UserCenter")

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/cdle/xdd/models"
 )
 
@@ -52,6 +53,16 @@ func (c *AccountController) List() {
 		"message": total,
 	}
 	c.ServeJSON()
+}
+
+func (c *AccountController) GetUserInfo() {
+
+	pin := c.GetString("pin")
+	cookie, err := models.GetJdCookie(pin)
+	if err != nil {
+		logs.Error(err)
+	}
+	cookie.Query()
 }
 
 func (c *AccountController) CreateOrUpdate() {

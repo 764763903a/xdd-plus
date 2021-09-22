@@ -13,6 +13,7 @@ IsHelp:   #填写true或者false  false
 IsOldV4: #填写true或者false  false是否新版或者旧版V4
 ApiToken: #为空默认随机禁用
 Wskey: # 填空默认禁用wskey转换 需要的填true
+SMSAddress:
 theme:  
 static: ./static
 master: 

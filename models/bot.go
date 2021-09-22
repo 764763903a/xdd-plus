@@ -135,8 +135,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							}
 							if nck, err := GetJdCookie(ck.PtPin); err == nil {
 								nck.InPool(ck.PtKey)
-								nck.Update(PtKey, ck.PtKey)
-
 								if nck.WsKey == "" || len(nck.WsKey) == 0 {
 									if sender.IsQQ() {
 										ck.Update(QQ, ck.QQ)

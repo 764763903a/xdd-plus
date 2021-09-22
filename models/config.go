@@ -38,6 +38,7 @@ type Yaml struct {
 	ApiToken            string `yaml:"ApiToken"`
 	Wskey               bool   `yaml:"Wskey"`
 	TGURL               string `yaml:"TGURL"`
+	SMSAddress          string `yaml:"SMSAddress"`
 	Node                string
 	Npm                 string
 	Python              string
