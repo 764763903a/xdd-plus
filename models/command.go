@@ -225,18 +225,16 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"登录"},
+		Command: []string{"raw ^登陆$"},
 		Handle: func(s *Sender) interface{} {
 			logs.Info("进入流程")
 			if num := 5; len(codes) >= num {
-				logs.Info("进入流程")
 				return fmt.Sprintf("%v坑位全部在使用中，请排队(稍后再试)。", num)
 			}
 			id := "qq" + strconv.Itoa(s.UserID)
 			if _, ok := codes[id]; ok {
 				return "你已在登录中。"
 			}
-			s.Reply("你要登上敌方的陆地？")
 			s.Reply("请输入手机号___________")
 			return nil
 		},
