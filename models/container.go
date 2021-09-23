@@ -360,28 +360,30 @@ func (c *Container) getToken() error {
 		if err != nil {
 			logs.Error(err)
 		}
-		if token == nil {
-			err2, done := getT(c, token)
-			if done {
-				return err2
-			}
-		} else {
-			logs.Info("缓存token")
-			h, _ := time.ParseDuration("-624h")
-			tZero := time.Now().Add(h)
-			logs.Info(tZero)
-			logs.Info(token.Expiration)
-			t_ := token.Expiration.Sub(tZero)
-			if t_ < 0 {
-				err2, done := getT(c, token)
-				if done {
-					return err2
-				}
-			} else {
-				logs.Info("获取缓存成功")
-				c.Token = token.Token
-			}
-		}
+		getT(c, token)
+		c.Token = token.Token
+		//if token == nil {
+		//	err2, done := getT(c, token)
+		//	if done {
+		//		return err2
+		//	}
+		//} else {
+		//	logs.Info("缓存token")
+		//	h, _ := time.ParseDuration("-624h")
+		//	tZero := time.Now().Add(h)
+		//	logs.Info(tZero)
+		//	logs.Info(token.Expiration)
+		//	t_ := token.Expiration.Sub(tZero)
+		//	if t_ < 0 {
+		//		err2, done := getT(c, token)
+		//		if done {
+		//			return err2
+		//		}
+		//	} else {
+		//		logs.Info("获取缓存成功")
+		//		c.Token = token.Token
+		//	}
+		//}
 	} else {
 		req := httplib.Post(c.Address + "/api/login")
 		req.Header("Content-Type", "application/json;charset=UTF-8")
