@@ -246,7 +246,7 @@ func (ck *JdCookie) OutPool() (string, error) {
 			us[PtKey] = ""
 			logs.Info("开始禁用")
 		} else {
-			us[Available] = True
+			us[Available] = False
 			us[PtKey] = jp.PtKey
 		}
 		e := tx.Model(ck).Updates(us).RowsAffected
