@@ -124,6 +124,7 @@ func initCookie() {
 	//l := len(cks)
 	for i := range cks {
 		if cks[i].Available == True && !CookieOK(&cks[i]) {
+			logs.Info("开始禁用")
 			cks[i].OutPool()
 		}
 	}
