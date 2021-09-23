@@ -225,7 +225,7 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"raw ^登陆$"},
+		Command: []string{"登录"},
 		Handle: func(s *Sender) interface{} {
 			logs.Info("进入流程")
 			if num := 5; len(codes) >= num {
