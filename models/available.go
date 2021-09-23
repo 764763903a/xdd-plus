@@ -234,7 +234,7 @@ func CookieOK(ck *JdCookie) bool {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {
 			if ck.Available == True {
-				//ck.Update(Available, False)
+				ck.Update(Available, False)
 				logs.Info(ck.Available)
 				if Config.Wskey {
 					if len(ck.WsKey) > 0 {
