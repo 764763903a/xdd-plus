@@ -63,6 +63,7 @@ func (c *AccountController) GetUserInfo() {
 		logs.Error(err)
 	}
 	cookie.Query()
+
 }
 
 func (c *AccountController) CreateOrUpdate() {
