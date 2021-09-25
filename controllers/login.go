@@ -435,13 +435,19 @@ func (c *LoginController) CkLogin() {
 					ck, _ := models.GetJdCookie(pin)
 					ck.InPool(key)
 					result.Message = fmt.Sprintf("更新成功")
-					result.Data = ck.Query()
+					//result.Data = ck.Query()
 					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
 					if errs != nil {
 						fmt.Println(errs.Error())
 					}
 					c.Ctx.WriteString(string(jsons))
 				}
+				result.Message = "登录成功"
+				jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+				if errs != nil {
+					fmt.Println(errs.Error())
+				}
+				c.Ctx.WriteString(string(jsons))
 			} else {
 				result := Result{
 					Data:    "null",

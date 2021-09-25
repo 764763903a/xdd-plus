@@ -490,6 +490,7 @@ func GetQlVersion(address string) (string, error) {
 		return "", err
 	}
 	v := ""
+	logs.Info(data)
 	if strings.Contains(data, "v2.8") {
 		v = "2.8"
 	} else if strings.Contains(data, "v2.2") {
