@@ -44,6 +44,26 @@ type Result struct {
 var JdCookieRunners sync.Map
 var jdua = models.GetUserAgent
 
+//func (c *LoginController) GetQrcode1() {
+//	rsp, err := httplib.Get("https://api.kukuqaq.com/jd/qrcode").Response()
+//	if err != nil {
+//		logs.Info(err)
+//	}
+//	body, err1 := ioutil.ReadAll(rsp.Body)
+//	if err1 == nil {
+//		fmt.Println(string(body))
+//	}
+//	s := &models.QQuery{}
+//	if len(body) > 0 {
+//		json.Unmarshal(body, &s)
+//	}
+//	jsonByte, _ := json.Marshal(s)
+//	jsonStr := string(jsonByte)
+//	fmt.Printf("%v", jsonStr)
+//	c.Ctx.WriteString(`{"url":"` + "url" + `","img":"` + base64.StdEncoding.EncodeToString(data) + `"}`) //"data:image/png;base64," +
+//
+//}
+
 func (c *LoginController) GetQrcode() {
 	if v := c.GetSession("jd_token"); v != nil {
 		token := v.(string)

@@ -53,6 +53,7 @@ func main() {
 	})
 	web.Router("/api/login/qrcode", &controllers.LoginController{}, "get:GetQrcode")
 	web.Router("/api/login/qrcode.png", &controllers.LoginController{}, "get:GetQrcode")
+	web.Router("/api/login/qrcode1", &controllers.LoginController{}, "get:GetQrcode1")
 	web.Router("/api/login/query", &controllers.LoginController{}, "get:Query")
 	web.Router("/api/login/cookie", &controllers.LoginController{}, "get:Cookie")
 	web.Router("/api/login/admin", &controllers.LoginController{}, "post:IsAdmin")

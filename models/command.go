@@ -118,6 +118,38 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
+		Command: []string{"删除WCK"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.handleJdCookies(func(ck *JdCookie) {
+				ck.Update(WsKey, "")
+				sender.Reply(fmt.Sprintf("已删除WCK,%s", ck.Nickname))
+			})
+			return nil
+		},
+	},
+	//{
+	//	Command: []string{"qrcode", "扫码", "二维码", "scan"},
+	//	Handle: func(sender *Sender) interface{} {
+	//		rsp, err := httplib.Get("https://api.kukuqaq.com/jd/qrcode").Response()
+	//		if err != nil {
+	//			return nil
+	//		}
+	//		body, err1 := ioutil.ReadAll(rsp.Body)
+	//		if err1 == nil {
+	//			fmt.Println(string(body))
+	//		}
+	//		s := &QQuery{}
+	//		if len(body) > 0 {
+	//			json.Unmarshal(body, &s)
+	//		}
+	//		jsonByte, _ := json.Marshal(s)
+	//		jsonStr := string(jsonByte)
+	//		fmt.Printf("%v", jsonStr)
+	//		return `{"url":"` + "http://www.baidu.com" + `","img":"` + s.Data.QqLoginQrcode.Bytes + `"}`
+	//	},
+	//},
+	{
 		Command: []string{`raw ^(\d{11})$`},
 		Handle: func(s *Sender) interface{} {
 			if num := 5; len(codes) >= num {
