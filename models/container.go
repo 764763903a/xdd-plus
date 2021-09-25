@@ -498,7 +498,7 @@ func GetQlVersion(address string) (string, error) {
 	} else if strings.Contains(data, "v2.9") {
 		v = "2.9"
 	} else {
-		v = "2.9.5"
+		v = "2.9"
 	}
 	return v, nil
 }
