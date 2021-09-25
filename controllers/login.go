@@ -44,6 +44,38 @@ type Result struct {
 var JdCookieRunners sync.Map
 var jdua = models.GetUserAgent
 
+func (c *LoginController) GetUserInfo() {
+
+	pin := c.GetString("pin")
+	logs.Info(pin)
+	logs.Info("进入方法")
+	cookie, err := models.GetJdCookie(pin)
+	if err != nil {
+		logs.Error(err)
+		result := Result{
+			Data:    "null",
+			Code:    1,
+			Message: "查无匹配的pin",
+		}
+		jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+		if errs != nil {
+			fmt.Println(errs.Error())
+		}
+		c.Ctx.WriteString(string(jsons))
+	} else {
+		result := Result{
+			Data:    cookie.Query(),
+			Code:    0,
+			Message: "查询成功",
+		}
+		jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+		if errs != nil {
+			fmt.Println(errs.Error())
+		}
+		c.Ctx.WriteString(string(jsons))
+	}
+}
+
 func (c *LoginController) GetQrcode1() {
 	rsp, err := httplib.Get("https://api.kukuqaq.com/jd/qrcode").Response()
 	if err != nil {
