@@ -398,78 +398,75 @@ func (c *LoginController) IsAdmin() {
 func (c *LoginController) CkLogin() {
 	pin := c.GetString("pin")
 	key := c.GetString("key")
-	//qq, _ := c.GetInt("qq")
-	//bz := c.GetString("bz")
-	//push := c.GetString("push")
-	logs.Info(pin)
-	logs.Info(key)
+	qq, _ := c.GetInt("qq")
+	bz := c.GetString("bz")
+	push := c.GetString("push")
 
-	c.Ctx.WriteString("添加成功")
-	//if key != "" && pin != "" {
-	//	//ptKey := FetchJdCookieValue("pt_key", cookies)
-	//	//ptPin := FetchJdCookieValue("pt_pin", cookies)
-	//	ck := &models.JdCookie{
-	//		PtKey:    key,
-	//		PtPin:    pin,
-	//		Hack:     models.False,
-	//		QQ:       qq,
-	//		Note:     bz,
-	//		PushPlus: push,
-	//	}
-	//	if key != "" && pin != "" {
-	//		if models.CookieOK(ck) {
-	//			query := ck.Query()
-	//			result := Result{
-	//				Data: query,
-	//				Code: 0,
-	//			}
-	//
-	//			if !models.HasPin(pin) {
-	//				models.NewJdCookie(ck)
-	//				result.Message = fmt.Sprintf("添加成功")
-	//				result.Data = ck.Query()
-	//				jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
-	//				if errs != nil {
-	//					fmt.Println(errs.Error())
-	//				}
-	//				c.Ctx.Redirect(200, "/userCenter")
-	//				c.Ctx.WriteString(string(jsons))
-	//			} else if !models.HasKey(key) {
-	//				ck, _ := models.GetJdCookie(pin)
-	//				ck.InPool(key)
-	//				result.Message = fmt.Sprintf("更新成功")
-	//				result.Data = ck.Query()
-	//				jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
-	//				if errs != nil {
-	//					fmt.Println(errs.Error())
-	//				}
-	//				c.Ctx.WriteString(string(jsons))
-	//			}
-	//		} else {
-	//			result := Result{
-	//				Data:    "null",
-	//				Code:    1,
-	//				Message: "CK过期",
-	//			}
-	//			jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
-	//			if errs != nil {
-	//				fmt.Println(errs.Error())
-	//			}
-	//			c.Ctx.WriteString(string(jsons))
-	//		}
-	//	}
-	//} else {
-	//	result := Result{
-	//		Data:    "null",
-	//		Code:    2,
-	//		Message: "ck格式错误",
-	//	}
-	//	jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
-	//	if errs != nil {
-	//		fmt.Println(errs.Error())
-	//	}
-	//	c.Ctx.WriteString(string(jsons))
-	//}
+	//c.Ctx.WriteString("添加成功")
+	if key != "" && pin != "" {
+		//ptKey := FetchJdCookieValue("pt_key", cookies)
+		//ptPin := FetchJdCookieValue("pt_pin", cookies)
+		ck := &models.JdCookie{
+			PtKey:    key,
+			PtPin:    pin,
+			Hack:     models.False,
+			QQ:       qq,
+			Note:     bz,
+			PushPlus: push,
+		}
+		if key != "" && pin != "" {
+			if models.CookieOK(ck) {
+				query := ck.Query()
+				result := Result{
+					Data: query,
+					Code: 0,
+				}
+
+				if !models.HasPin(pin) {
+					models.NewJdCookie(ck)
+					result.Message = fmt.Sprintf("添加成功")
+					//result.Data = ck.Query()
+					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+					if errs != nil {
+						fmt.Println(errs.Error())
+					}
+					c.Ctx.WriteString(string(jsons))
+				} else if !models.HasKey(key) {
+					ck, _ := models.GetJdCookie(pin)
+					ck.InPool(key)
+					result.Message = fmt.Sprintf("更新成功")
+					result.Data = ck.Query()
+					jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+					if errs != nil {
+						fmt.Println(errs.Error())
+					}
+					c.Ctx.WriteString(string(jsons))
+				}
+			} else {
+				result := Result{
+					Data:    "null",
+					Code:    1,
+					Message: "CK过期",
+				}
+				jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+				if errs != nil {
+					fmt.Println(errs.Error())
+				}
+				c.Ctx.WriteString(string(jsons))
+			}
+		}
+	} else {
+		result := Result{
+			Data:    "null",
+			Code:    2,
+			Message: "ck格式错误",
+		}
+		jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+		if errs != nil {
+			fmt.Println(errs.Error())
+		}
+		c.Ctx.WriteString(string(jsons))
+	}
 
 }
 
