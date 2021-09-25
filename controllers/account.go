@@ -60,6 +60,8 @@ func (c *AccountController) List() {
 func (c *AccountController) GetUserInfo() {
 
 	pin := c.GetString("pin")
+	logs.Info(pin)
+	logs.Info("进入方法")
 	cookie, err := models.GetJdCookie(pin)
 	if err != nil {
 		logs.Error(err)
