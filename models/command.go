@@ -459,6 +459,25 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
+    {
+		Command: []string{"设置管理员"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			ctt := sender.JoinContens()
+			db.Create(&UserAdmin{Content: ctt})
+			return "已设置管理员"
+		},
+	},
+	{
+		Command: []string{"取消管理员"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			ctt := sender.JoinContens()
+			RemoveUserAdmin(ctt)
+			return "已取消管理员"
+		},
+	},
+    /*
 	{
 		Command: []string{"我要钱", "给点钱", "我干", "给我钱", "给我", "我要"},
 		Handle: func(sender *Sender) interface{} {
@@ -519,24 +538,7 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
-	{
-		Command: []string{"设置管理员"},
-		Admin:   true,
-		Handle: func(sender *Sender) interface{} {
-			ctt := sender.JoinContens()
-			db.Create(&UserAdmin{Content: ctt})
-			return "已设置管理员"
-		},
-	},
-	{
-		Command: []string{"取消管理员"},
-		Admin:   true,
-		Handle: func(sender *Sender) interface{} {
-			ctt := sender.JoinContens()
-			RemoveUserAdmin(ctt)
-			return "已取消管理员"
-		},
-	},
+	
 	//{
 	//	Command: []string{"按许愿币更新排名"},
 	//	Admin:   true,
@@ -591,6 +593,7 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
+    */
 	{
 		Command: []string{"许愿", "愿望", "wish", "hope", "want"},
 		Handle: func(sender *Sender) interface{} {
