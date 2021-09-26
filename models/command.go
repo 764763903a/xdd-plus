@@ -355,7 +355,7 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
-		Command: []string{"更新优先级"},
+		Command: []string{"更新优先级", "更新车位"},
 		Handle: func(sender *Sender) interface{} {
 			coin := GetCoin(sender.UserID)
 			t := time.Now()
@@ -366,7 +366,7 @@ var codeSignals = []CodeSignal{
 				sender.Reply("优先级已更新")
 				ClearCoin(sender.UserID)
 			} else {
-				sender.Reply("你错过时间了呆瓜")
+				sender.Reply("你错过时间了呆瓜,下周一10点前再来吧.")
 			}
 			return nil
 		},
