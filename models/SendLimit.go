@@ -26,11 +26,13 @@ func getLimit(uid int, typ int) bool {
 			return false
 		}
 	} else {
+		db.Begin()
 		u.ActiveAt = time.Now().Format("2006-01-02")
 		u.Typ = typ
 		u.Number = uid
 		u.Num = 1
 		db.Create(u)
+		db.Commit()
 		return true
 	}
 }
