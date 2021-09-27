@@ -17,6 +17,7 @@ func getLimit(uid int, typ int) bool {
 	if Config.Lim == 0 {
 		return true
 	}
+	logs.Info("开始限制")
 	u := &Limit{}
 	err := db.Where("number = ? and typ = ? and active_at = ?", uid, typ, time.Now().Format("2006-01-02")).First(&u).Error
 	if err != nil {
