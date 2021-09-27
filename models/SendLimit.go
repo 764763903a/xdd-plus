@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"github.com/beego/beego/v2/core/logs"
+	"time"
+)
 
 type Limit struct {
 	ID       int `gorm:"column:ID;primaryKey"`
@@ -26,13 +29,15 @@ func getLimit(uid int, typ int) bool {
 			return false
 		}
 	} else {
-		db.Begin()
-		u.ActiveAt = time.Now().Format("2006-01-02")
-		u.Typ = typ
-		u.Number = uid
-		u.Num = 1
-		db.Create(u)
-		db.Commit()
+		logs.Info("开始进入创建")
+		begin := db.Begin()
+		begin.Create(&Limit{
+			ActiveAt: time.Now().Format("2006-01-02"),
+			Typ:      typ,
+			Number:   uid,
+			Num:      1,
+		})
+		begin.Commit()
 		return true
 	}
 }
