@@ -6,8 +6,8 @@ type Limit struct {
 	ID       int `gorm:"column:ID;primaryKey"`
 	Number   int
 	ActiveAt string
-	typ      int
-	num      int
+	Typ      int
+	Num      int
 }
 
 func getLimit(uid int, typ int) bool {
@@ -17,9 +17,9 @@ func getLimit(uid int, typ int) bool {
 		return true
 	}
 	if u.ID != 0 {
-		if u.num < Config.Lim {
+		if u.Num < Config.Lim {
 			db.Updates(&Limit{
-				num: u.num + 1,
+				Num: u.Num + 1,
 			}).Where("ID = ?", u.ID)
 			return true
 		} else {
@@ -27,9 +27,9 @@ func getLimit(uid int, typ int) bool {
 		}
 	} else {
 		u.ActiveAt = time.Now().Format("2006-01-02")
-		u.typ = typ
+		u.Typ = typ
 		u.Number = uid
-		u.num = 1
+		u.Num = 1
 		db.Create(u)
 		return true
 	}
