@@ -15,6 +15,7 @@ ApiToken: #为空默认随机禁用
 Wskey: # 填空默认禁用wskey转换 需要的填true
 SMSAddress:
 IsAddFriend: #填写true或者false  false
+Lim: #填写1-N 代表限制次数
 theme:  
 static: ./static
 master: 
