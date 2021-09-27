@@ -191,12 +191,15 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			ss := regexp.MustCompile(`packetId=(\S+)(&|&amp;)currentActId`).FindStringSubmatch(msg)
 			if len(ss) > 0 {
 				if !sender.IsAdmin {
+					if Config.tytnum == 0 {
+						Config.tytnum = 8
+					}
 					coin := GetCoin(sender.UserID)
-					if coin < 8 {
-						return "推一推需要8个互助值。"
+					if coin < Config.tytnum {
+						sender.Reply(fmt.Sprintf("推一推需要%d个互助值",Config.tytnum))
 					}
 					RemCoin(sender.UserID, 8)
-					sender.Reply("推一推即将开始，已扣除8个互助值。")
+					sender.Reply(fmt.Sprintf("推一推即将开始，已扣除%d个互助值",Config.tytnum))
 				}
 				runTask(&Task{Path: "jd_tyt.js", Envs: []Env{
 					{Name: "tytpacketId", Value: ss[1]},
