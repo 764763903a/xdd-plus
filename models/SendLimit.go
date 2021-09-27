@@ -12,7 +12,7 @@ type Limit struct {
 
 func getLimit(uid int, typ int) bool {
 	u := &Limit{}
-	db.Where("number = ? and typ = ? and activeat = ?", uid, typ, time.Now().Format("2006-01-02")).First(&u)
+	db.Where("number = ? and typ = ? and activeAt = ?", uid, typ, time.Now().Format("2006-01-02")).First(&u)
 	if Config.Lim == 0 {
 		return true
 	}
