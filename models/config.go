@@ -39,6 +39,7 @@ type Yaml struct {
 	Wskey               bool   `yaml:"Wskey"`
 	TGURL               string `yaml:"TGURL"`
 	SMSAddress          string `yaml:"SMSAddress"`
+	IsAddFriend         bool   `yaml:"IsAddFriend"`
 	Node                string
 	Npm                 string
 	Python              string

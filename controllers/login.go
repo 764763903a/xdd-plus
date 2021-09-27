@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -479,6 +480,7 @@ func (c *LoginController) CkLogin() {
 func (c *LoginController) SMSLogin() {
 	token := c.GetString("token")
 	cookie := c.GetString("ck")
+	qq := c.GetString("qq")
 	logs.Info(cookie)
 	(&models.JdCookie{}).Push(cookie)
 
@@ -490,15 +492,26 @@ func (c *LoginController) SMSLogin() {
 			PtKey: ptKey,
 			PtPin: ptPin,
 			Hack:  models.False,
+			QQ:    0,
+		}
+		if qq != "" {
+			ck.QQ, _ = strconv.Atoi(qq)
 		}
 		if ptKey != "" && ptPin != "" {
 			if models.CookieOK(ck) {
 				if !models.HasPin(ptPin) {
 					models.NewJdCookie(ck)
 					ck.Query()
+					msg := fmt.Sprintf("来自短信的添加,账号：%s,QQ: %s", ck.PtPin, qq)
+					(&models.JdCookie{}).Push(msg)
 				} else if !models.HasKey(ptKey) {
 					ck, _ := models.GetJdCookie(ptPin)
 					ck.InPool(ptKey)
+					if qq != "" {
+						ck.Update(models.QQ, qq)
+					}
+					msg := fmt.Sprintf("来自短信的更新,账号：%s", ck.PtPin)
+					(&models.JdCookie{}).Push(msg)
 				}
 
 				result := Result{
@@ -510,8 +523,6 @@ func (c *LoginController) SMSLogin() {
 				if errs != nil {
 					fmt.Println(errs.Error())
 				}
-				msg := fmt.Sprintf("来自短信的更新,账号：%s", ck.PtPin)
-				(&models.JdCookie{}).Push(msg)
 				c.Ctx.WriteString(string(jsons))
 
 			} else {

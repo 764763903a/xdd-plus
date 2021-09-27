@@ -68,9 +68,6 @@ func Main() {
 		if bot == nil {
 			return
 		}
-		//bot.Client.OnNewFriendRequest(func(_ *client.QQClient, a *client.NewFriendRequest) {
-		//	a.Accept()
-		//})
 		if uid == 0 {
 			return
 		}
@@ -407,7 +404,13 @@ func Main() {
 	}
 	cli.SetOnlineStatus(allowStatus[int(conf.Account.Status)])
 	bot = coolq.NewQQBot(cli, conf)
+
 	_ = bot.Client
+	if models.Config.IsAddFriend {
+		bot.Client.OnNewFriendRequest(func(_ *client.QQClient, a *client.NewFriendRequest) {
+			a.Accept()
+		})
+	}
 	if conf.Message.PostFormat != "string" && conf.Message.PostFormat != "array" {
 		log.Warnf("post-format 配置错误, 将自动使用 string")
 		coolq.SetMessageFormat("string")
