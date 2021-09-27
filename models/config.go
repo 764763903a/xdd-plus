@@ -41,6 +41,7 @@ type Yaml struct {
 	SMSAddress          string `yaml:"SMSAddress"`
 	IsAddFriend         bool   `yaml:"IsAddFriend"`
 	Lim                 int    `yaml:"Lim"`
+    tytnum              int    `yaml:"tytnum"`
 	Node                string
 	Npm                 string
 	Python              string
