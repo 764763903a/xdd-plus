@@ -120,7 +120,7 @@ var codeSignals = []CodeSignal{
 		Command: []string{"清空WCK"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
-			updateCookie()
+			cleanWck()
 			return nil
 		},
 	},
