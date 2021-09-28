@@ -231,14 +231,15 @@ func CookieOK(ck *JdCookie) bool {
 	if ck == nil {
 		return true
 	}
-	req := httplib.Get("https://me-api.jd.com/user_new/info/GetJDUserInfoUnion")
+	req := httplib.Get("https://plogin.m.jd.com/cgi-bin/ml/islogin")
 	req.Header("Cookie", cookie)
-	req.Header("Accept", "*/*")
-	req.Header("Accept-Language", "zh-cn,")
-	req.Header("Connection", "keep-alive,")
-	req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
-	req.Header("Host", "me-api.jd.com")
-	req.Header("User-Agent", "Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1")
+	// req.Header("Accept", "*/*")
+	// req.Header("Accept-Language", "zh-cn,")
+	// req.Header("Connection", "keep-alive,")
+	// req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
+	// req.Header("Host", "me-api.jd.com")
+	req.Header("Referer", "https://h5.m.jd.com/")
+	req.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
 	data, err := req.Bytes()
 	if err != nil {
 		return true
