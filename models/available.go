@@ -156,6 +156,20 @@ func cleanCookie() {
 	(&JdCookie{}).Push(fmt.Sprintf("所有CK清理，共%d个", xx))
 }
 
+func cleanWck() {
+	cks := GetJdCookies()
+	xx := 0
+	(&JdCookie{}).Push("开始清空Wskey")
+	for i := range cks {
+		if len(cks[i].WsKey) > 0 {
+			ck := cks[i]
+			ck.Update(WsKey, "")
+			xx++
+		}
+	}
+	(&JdCookie{}).Push(fmt.Sprintf("已清理WCK，一共%d", xx))
+}
+
 func updateCookie() {
 	cks := GetJdCookies()
 	l := len(cks)

@@ -117,6 +117,14 @@ var codeSignals = []CodeSignal{
 		},
 	},
 	{
+		Command: []string{"清空WCK"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			updateCookie()
+			return nil
+		},
+	},
+	{
 		Command: []string{"删除WCK"},
 		Admin:   true,
 		Handle: func(sender *Sender) interface{} {
