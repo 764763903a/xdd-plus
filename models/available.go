@@ -3,11 +3,12 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/beego/beego/v2/client/httplib"
-	"github.com/beego/beego/v2/core/logs"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/beego/beego/v2/client/httplib"
+	"github.com/beego/beego/v2/core/logs"
 )
 
 type UserInfoResult struct {
@@ -121,6 +122,7 @@ type UserInfoResult struct {
 
 func initCookie() {
 	cks := GetJdCookies()
+	(&JdCookie{}).Push("开始检查")
 	//l := len(cks)
 	for i := range cks {
 		if cks[i].Available == True && !CookieOK(&cks[i]) {
