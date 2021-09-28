@@ -127,6 +127,7 @@ func initCookie() {
 	for i := range cks {
 		if cks[i].Available == True && !CookieOK(&cks[i]) {
 			logs.Info("开始禁用")
+			(&JdCookie{}).Push("开始禁用")
 			cks[i].OutPool()
 		}
 	}
@@ -237,7 +238,7 @@ func CookieOK(ck *JdCookie) bool {
 	req.Header("Connection", "keep-alive,")
 	req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
 	req.Header("Host", "me-api.jd.com")
-	req.Header("User-Agent", "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+	req.Header("User-Agent", "Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1")
 	data, err := req.Bytes()
 	if err != nil {
 		return true
