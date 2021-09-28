@@ -3,10 +3,11 @@ package models
 import (
 	"errors"
 	"fmt"
-	"github.com/beego/beego/v2/core/logs"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/beego/beego/v2/core/logs"
 
 	"gorm.io/gorm"
 )
@@ -270,6 +271,16 @@ var codeSignals = []CodeSignal{
 		Handle: func(sender *Sender) interface{} {
 			sender.Reply("重启程序")
 			Daemon()
+			return nil
+		},
+	},
+	{
+		Command: []string{"检查", "检查账号"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.Reply("检查所有账号")
+			logs.Info("检查所有账号")
+			initCookie()
 			return nil
 		},
 	},
