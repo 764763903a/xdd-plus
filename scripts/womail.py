@@ -344,7 +344,7 @@ class WoMailCheckIn:
                 res = s.post(url).json()
                 if res['success']:
                     puzzle=res['result']['puzzle']
-                    if puzzle == 6:
+                    if puzzle >= 6:
                         #抽奖
                         url='https://nyan.mail.wo.cn/cn/puzzle2/draw/draw'
                         res = s.get(url).json()
