@@ -249,7 +249,7 @@ func CookieOK(ck *JdCookie) bool {
 		return true
 	}
 	switch ui.Retcode {
-	case "1001": //ck.BeanNum
+	case "0": //ck.BeanNum
 		if ui.Msg == "not login" {
 			if ck.Available == True {
 				ck.Update(Available, False)
@@ -297,7 +297,7 @@ func CookieOK(ck *JdCookie) bool {
 			}
 			return false
 		}
-	case "0":
+	case "100":
 		if url.QueryEscape(ui.Data.UserInfo.BaseInfo.CurPin) != ck.PtPin {
 			return av2(cookie)
 		}
