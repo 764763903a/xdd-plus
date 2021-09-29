@@ -156,7 +156,7 @@ var codeSignals = []CodeSignal{
 			logs.Info(s.Data.QqLoginQrcode.Bytes)
 			//ddd, _ := base64.StdEncoding.DecodeString("data:image/png;base64,"+s.Data.QqLoginQrcode.Bytes)
 
-			return s.Data.QqLoginQrcode.Bytes
+			return "data:image/png;base64," + s.Data.QqLoginQrcode.Bytes
 		},
 	},
 	{
