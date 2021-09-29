@@ -115,8 +115,9 @@ type UserInfoResult struct {
 			TrackID         string `json:"trackId"`
 		} `json:"userLifeCycle"`
 	} `json:"data"`
-	Msg       string `json:"msg"`
-	Retcode   string `json:"retcode"`
+	Msg string `json:"msg"`
+	// Retcode   string `json:"retcode"`
+	islogin   string `json:"islogin"`
 	Timestamp int64  `json:"timestamp"`
 }
 
@@ -248,7 +249,7 @@ func CookieOK(ck *JdCookie) bool {
 	if nil != json.Unmarshal(data, ui) {
 		return true
 	}
-	switch ui.Retcode {
+	switch ui.islogin {
 	case "0": //ck.BeanNum
 		if ui.Msg == "not login" {
 			if ck.Available == True {
