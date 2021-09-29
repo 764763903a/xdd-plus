@@ -79,8 +79,9 @@ func Main() {
 				if strings.Contains(msg.(string), "data:image") {
 					photo := msg.(string)
 					logs.Info(photo)
-					b := []byte(photo)
-					bot.SendPrivateMessage(uid, models.Config.QQGroupID, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(b)}}})
+					//b := []byte(photo)
+					//log.Error(b)
+					bot.SendPrivateMessage(uid, models.Config.QQGroupID, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{File: "./output.jpg"}}})
 				} else {
 					bot.SendPrivateMessage(uid, models.Config.QQGroupID, &message.SendingMessage{Elements: []message.IMessageElement{&message.TextElement{Content: msg.(string)}}})
 				}
