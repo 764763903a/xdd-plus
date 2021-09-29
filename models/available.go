@@ -115,9 +115,9 @@ type UserInfoResult struct {
 			TrackID         string `json:"trackId"`
 		} `json:"userLifeCycle"`
 	} `json:"data"`
-	Msg string `json:"msg"`
-	// Retcode   string `json:"retcode"`
-	islogin   string `json:"islogin"`
+	Msg       string `json:"msg"`
+	Retcode   string `json:"retcode"`
+	Islogin   string `json:"islogin"`
 	Timestamp int64  `json:"timestamp"`
 }
 
@@ -126,7 +126,7 @@ func initCookie() {
 	(&JdCookie{}).Push("开始检查")
 	//l := len(cks)
 	for i := range cks {
-		if cks[i].Available == True && !CookieOK(&cks[i]) {
+		if cks[i].Available == True && !CookieOK2(&cks[i]) {
 			logs.Info("开始禁用")
 			(&JdCookie{}).Push("开始禁用")
 			cks[i].OutPool()
@@ -249,7 +249,7 @@ func CookieOK(ck *JdCookie) bool {
 	if nil != json.Unmarshal(data, ui) {
 		return true
 	}
-	switch ui.islogin {
+	switch ui.Retcode {
 	case "0": //ck.BeanNum
 		if ui.Msg == "not login" {
 			if ck.Available == True {
@@ -316,6 +316,37 @@ func CookieOK(ck *JdCookie) bool {
 			ck.BeanNum = ui.Data.AssetInfo.BeanNum
 		}
 		return true
+	}
+	return av2(cookie)
+}
+func CookieOK2(ck *JdCookie) bool {
+	cookie := "pt_key=" + ck.PtKey + ";pt_pin=" + ck.PtPin + ";"
+	// fmt.Println(cookie)
+	// jdzz(cookie, make(chan int64))
+	if ck == nil {
+		return true
+	}
+	req := httplib.Get("https://plogin.m.jd.com/cgi-bin/ml/islogin")
+	req.Header("Cookie", cookie)
+	// req.Header("Accept", "*/*")
+	// req.Header("Accept-Language", "zh-cn,")
+	// req.Header("Connection", "keep-alive,")
+	// req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
+	// req.Header("Host", "me-api.jd.com")
+	req.Header("Referer", "https://h5.m.jd.com/")
+	req.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+	data, err := req.Bytes()
+	if err != nil {
+		return true
+	}
+	ui := &UserInfoResult{}
+	if nil != json.Unmarshal(data, ui) {
+		return true
+	}
+	switch ui.Islogin {
+	case "0":
+		ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+		JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
 	}
 	return av2(cookie)
 }
