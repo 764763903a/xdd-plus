@@ -139,7 +139,7 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"qrcode", "扫码", "二维码", "scan"},
 		Handle: func(sender *Sender) interface{} {
-			rsp, err := httplib.Get("http://127.0.0.1:%d/api/login/qrcode1").Response()
+			rsp, err := httplib.Get("http://127.0.0.1:5703/api/login/qrcode1").Response()
 			if err != nil {
 				return nil
 			}
