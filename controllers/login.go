@@ -94,6 +94,7 @@ func (c *LoginController) GetQrcode1() {
 			return
 		}
 	}
+	logs.Info(s.Data.QqLoginQrcode.Bytes)
 	//jsonByte, _ := json.Marshal(s)
 	//jsonStr := string(jsonByte)
 	//fmt.Printf("%v", jsonStr)
