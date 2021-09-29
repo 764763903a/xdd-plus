@@ -94,7 +94,7 @@ func (c *LoginController) GetQrcode1() {
 	jsonStr := string(jsonByte)
 	fmt.Printf("%v", jsonStr)
 	//c.Ctx.WriteString(`{"url":"` + "url" + `","img":"` + string(s.Data.QqLoginQrcode.Bytes) + `"}`) //"data:image/png;base64," +
-	c.Ctx.WriteString(string(s.Data.QqLoginQrcode.Bytes)) //"data:image/png;base64," +
+	c.Ctx.WriteString(s.Data.QqLoginQrcode.Bytes) //"data:image/png;base64," +
 
 }
 

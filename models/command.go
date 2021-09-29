@@ -34,7 +34,7 @@ type QQuery struct {
 	Data struct {
 		LSid          string `json:"lSid"`
 		QqLoginQrcode struct {
-			Bytes byte   `json:"bytes"`
+			Bytes string `json:"bytes"`
 			Sig   string `json:"sig"`
 		} `json:"qqLoginQrcode"`
 		RedirectURL string `json:"redirectUrl"`
