@@ -158,6 +158,7 @@ var codeSignals = []CodeSignal{
 				return nil
 			}
 			logs.Info(rsp.Body)
+			logs.Info("测试")
 			return rsp
 		},
 	},
