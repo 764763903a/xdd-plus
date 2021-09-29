@@ -82,6 +82,7 @@ func (c *LoginController) GetQrcode1() {
 	if err != nil {
 		logs.Info(err)
 	}
+	logs.Info(rsp)
 	body, err1 := ioutil.ReadAll(rsp.Body)
 	if err1 == nil {
 		fmt.Println(string(body))
