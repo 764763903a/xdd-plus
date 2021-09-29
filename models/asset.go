@@ -89,7 +89,7 @@ func (ck *JdCookie) Query() string {
 		msgs = append(msgs, fmt.Sprintf("账号备注：%s", ck.Note))
 	}
 	asset := Asset{}
-	if CookieOK(ck) {
+	if CookieOK2(ck) {
 		//msgs = append(msgs, fmt.Sprintf("优先级：%v", ck.Priority))
 		msgs = append(msgs, fmt.Sprintf("用户等级：%v", ck.UserLevel))
 		msgs = append(msgs, fmt.Sprintf("等级名称：%v", ck.LevelName))
