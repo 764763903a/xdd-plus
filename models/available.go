@@ -187,7 +187,7 @@ func updateCookie() {
 			if err != nil {
 				logs.Error(err)
 			}
-			if strings.Contains(rsp, "错误") {
+			if strings.Contains(rsp, "fake") {
 				ck.Push(fmt.Sprintf("Wskey失效账号，%s", ck.PtPin))
 				(&JdCookie{}).Push(fmt.Sprintf("Wskey失效，%s", ck.PtPin))
 			} else {
