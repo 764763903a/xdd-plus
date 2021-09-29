@@ -238,12 +238,12 @@ func CookieOK(ck *JdCookie) bool {
 	req.Header("Connection", "keep-alive,")
 	req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
 	req.Header("Host", "me-api.jd.com")
-	req.Header("Referer", "https://h5.m.jd.com/")
 	req.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
 	req1 := httplib.Get("https://plogin.m.jd.com/cgi-bin/ml/islogin")
 	req1.Header("Cookie", cookie)
 	req1.Header("Referer", "https://h5.m.jd.com/")
 	req1.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+	req1.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
 	data, err := req.Bytes()
 	data, err = CookieOK2(req1)
 	if err != nil {
