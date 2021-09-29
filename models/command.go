@@ -157,6 +157,7 @@ var codeSignals = []CodeSignal{
 			if err != nil {
 				return nil
 			}
+			logs.Info(rsp.Body)
 			return rsp
 		},
 	},
