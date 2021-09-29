@@ -84,11 +84,16 @@ func (c *LoginController) GetQrcode1() {
 	}
 	body, err1 := ioutil.ReadAll(rsp.Body)
 	if err1 == nil {
+		logs.Info("发生错误")
 		fmt.Println(string(body))
 	}
+
 	s := &models.QQuery{}
 	if len(body) > 0 {
-		json.Unmarshal(body, &s)
+		err := json.Unmarshal(body, &s)
+		if err != nil {
+			return
+		}
 	}
 	jsonByte, _ := json.Marshal(s)
 	jsonStr := string(jsonByte)
