@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -154,6 +155,11 @@ var codeSignals = []CodeSignal{
 				json.Unmarshal(body, &s)
 			}
 			logs.Info(s.Data.QqLoginQrcode.Bytes)
+			ddd, _ := base64.StdEncoding.DecodeString(s.Data.QqLoginQrcode.Bytes) //成图片文件并把文件写入到buffer
+			err2 := ioutil.WriteFile("./output.jpg", ddd, 0666)                   //buffer输出到jpg文件中（不做处理，直接写到文件）
+			if err2 != nil {
+				logs.Error(err2)
+			}
 			//ddd, _ := base64.StdEncoding.DecodeString("data:image/png;base64,"+s.Data.QqLoginQrcode.Bytes)
 			return "data:image/png;base64," + s.Data.QqLoginQrcode.Bytes
 		},
