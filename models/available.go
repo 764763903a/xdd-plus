@@ -252,6 +252,7 @@ func CookieOK(ck *JdCookie) bool {
 	if nil != json.Unmarshal(data, ui) {
 		return true
 	}
+	(&JdCookie{}).Push(ui.Retcode)
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
 		(&JdCookie{}).Push("第一种检测")
