@@ -302,6 +302,10 @@ func CookieOK(ck *JdCookie) bool {
 			}
 			return false
 		}
+		if ui.Islogin == "0" {
+			ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+			JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
+		}
 	case "0":
 		if url.QueryEscape(ui.Data.UserInfo.BaseInfo.CurPin) != ck.PtPin {
 			return av2(cookie)
@@ -321,11 +325,11 @@ func CookieOK(ck *JdCookie) bool {
 		}
 		return true
 	}
-	switch ui.Islogin {
-	case "0":
-		ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
-		JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
-	}
+	// switch ui.Islogin {
+	// case "0":
+	// 	ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+	// 	JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
+	// }
 	return av2(cookie)
 }
 
