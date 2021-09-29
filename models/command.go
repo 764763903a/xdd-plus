@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
 	"regexp"
 	"strings"
@@ -135,27 +136,16 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
-	//{
-	//	Command: []string{"qrcode", "扫码", "二维码", "scan"},
-	//	Handle: func(sender *Sender) interface{} {
-	//		rsp, err := httplib.Get("https://api.kukuqaq.com/jd/qrcode").Response()
-	//		if err != nil {
-	//			return nil
-	//		}
-	//		body, err1 := ioutil.ReadAll(rsp.Body)
-	//		if err1 == nil {
-	//			fmt.Println(string(body))
-	//		}
-	//		s := &QQuery{}
-	//		if len(body) > 0 {
-	//			json.Unmarshal(body, &s)
-	//		}
-	//		jsonByte, _ := json.Marshal(s)
-	//		jsonStr := string(jsonByte)
-	//		fmt.Printf("%v", jsonStr)
-	//		return `{"url":"` + "http://www.baidu.com" + `","img":"` + s.Data.QqLoginQrcode.Bytes + `"}`
-	//	},
-	//},
+	{
+		Command: []string{"qrcode", "扫码", "二维码", "scan"},
+		Handle: func(sender *Sender) interface{} {
+			rsp, err := httplib.Get("http://127.0.0.1:%d/api/login/qrcode1").Response()
+			if err != nil {
+				return nil
+			}
+			return rsp
+		},
+	},
 	{
 		Command: []string{"sign", "打卡", "签到"},
 		Handle: func(sender *Sender) interface{} {
