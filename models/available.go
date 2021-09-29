@@ -255,6 +255,7 @@ func CookieOK(ck *JdCookie) bool {
 	}
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
+		(&JdCookie{}).Push("第一种检测")
 		if ui.Msg == "not login" {
 			if ck.Available == True {
 				ck.Update(Available, False)
