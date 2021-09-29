@@ -126,9 +126,8 @@ func initCookie() {
 	(&JdCookie{}).Push("开始检查")
 	//l := len(cks)
 	for i := range cks {
-		if cks[i].Available == True && !CookieOK2(&cks[i]) {
+		if cks[i].Available == True && !CookieOK(&cks[i]) && !CookieOK2(&cks[i]) {
 			logs.Info("开始禁用")
-			(&JdCookie{}).Push("开始禁用")
 			cks[i].OutPool()
 		}
 	}
@@ -232,13 +231,13 @@ func CookieOK(ck *JdCookie) bool {
 	if ck == nil {
 		return true
 	}
-	req := httplib.Get("https://plogin.m.jd.com/cgi-bin/ml/islogin")
+	req := httplib.Get("https://me-api.jd.com/user_new/info/GetJDUserInfoUnion")
 	req.Header("Cookie", cookie)
-	// req.Header("Accept", "*/*")
-	// req.Header("Accept-Language", "zh-cn,")
-	// req.Header("Connection", "keep-alive,")
-	// req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
-	// req.Header("Host", "me-api.jd.com")
+	req.Header("Accept", "*/*")
+	req.Header("Accept-Language", "zh-cn,")
+	req.Header("Connection", "keep-alive,")
+	req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
+	req.Header("Host", "me-api.jd.com")
 	req.Header("Referer", "https://h5.m.jd.com/")
 	req.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
 	data, err := req.Bytes()
@@ -328,11 +327,6 @@ func CookieOK2(ck *JdCookie) bool {
 	}
 	req := httplib.Get("https://plogin.m.jd.com/cgi-bin/ml/islogin")
 	req.Header("Cookie", cookie)
-	// req.Header("Accept", "*/*")
-	// req.Header("Accept-Language", "zh-cn,")
-	// req.Header("Connection", "keep-alive,")
-	// req.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
-	// req.Header("Host", "me-api.jd.com")
 	req.Header("Referer", "https://h5.m.jd.com/")
 	req.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
 	data, err := req.Bytes()
