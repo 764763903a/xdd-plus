@@ -142,7 +142,7 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"qrcode", "扫码", "二维码", "scan"},
 		Handle: func(sender *Sender) interface{} {
-			rsp, err := httplib.Get("https://api.kukuqaq.com/jd/qrcode").Response()
+			rsp, err := httplib.Post("https://api.kukuqaq.com/jd/qrcode").Response()
 			if err != nil {
 				return nil
 			}
