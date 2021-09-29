@@ -78,7 +78,7 @@ func (c *LoginController) GetUserInfo() {
 }
 
 func (c *LoginController) GetQrcode1() {
-	rsp, err := httplib.Get("https://api.kukuqaq.com/jd/qrcode").Response()
+	rsp, err := httplib.Post("https://api.kukuqaq.com/jd/qrcode").Response()
 	if err != nil {
 		logs.Info(err)
 	}
