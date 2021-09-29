@@ -507,7 +507,7 @@ func (c *LoginController) SMSLogin() {
 				ck.Query()
 				msg := fmt.Sprintf("来自短信的添加,账号：%s,QQ: %s", ck.PtPin, qq)
 				(&models.JdCookie{}).Push(msg)
-			} else if !models.HasKey(ptKey) {
+			} else {
 				ck, _ := models.GetJdCookie(ptPin)
 				ck.InPool(ptKey)
 				if qq != "" {

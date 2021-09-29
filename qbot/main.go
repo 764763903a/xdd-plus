@@ -80,7 +80,10 @@ func Main() {
 		case *http.Response:
 			data, _ := ioutil.ReadAll(msg.(*http.Response).Body)
 			bot.SendPrivateMessage(uid, models.Config.QQGroupID, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
+		case byte:
+
 		}
+
 	}
 	models.SendQQGroup = func(gid int64, uid int64, msg interface{}) {
 		if bot == nil {
