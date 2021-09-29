@@ -303,6 +303,7 @@ func CookieOK(ck *JdCookie) bool {
 			return false
 		}
 	case "0":
+		(&JdCookie{}).Push("检查没有问题")
 		if url.QueryEscape(ui.Data.UserInfo.BaseInfo.CurPin) != ck.PtPin {
 			return av2(cookie)
 		}
