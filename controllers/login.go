@@ -94,12 +94,12 @@ func (c *LoginController) GetQrcode1() {
 			return
 		}
 	}
-	logs.Info(s.Data.QqLoginQrcode.Bytes)
 	//jsonByte, _ := json.Marshal(s)
 	//jsonStr := string(jsonByte)
 	//fmt.Printf("%v", jsonStr)
-	//c.Ctx.WriteString(`{"url":"` + "url" + `","img":"` + string(s.Data.QqLoginQrcode.Bytes) + `"}`) //"data:image/png;base64," +
-	c.Ctx.WriteString(s.Data.QqLoginQrcode.Bytes) //"data:image/png;base64," +
+	ddd, _ := base64.StdEncoding.DecodeString(s.Data.QqLoginQrcode.Bytes)
+	c.Ctx.WriteString(`{"url":"` + "url" + `","img":"` + base64.StdEncoding.EncodeToString(ddd) + `"}`) //"data:image/png;base64," +
+	//c.Ctx.WriteString(s.Data.QqLoginQrcode.Bytes) //"data:image/png;base64," +
 
 }
 
