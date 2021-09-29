@@ -327,6 +327,23 @@ func CookieOK(ck *JdCookie) bool {
 		(&JdCookie{}).Push("第二种检测")
 		ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 		JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
+	case "1":
+		if url.QueryEscape(ui.Data.UserInfo.BaseInfo.CurPin) != ck.PtPin {
+			return av2(cookie)
+		}
+		if ui.Data.UserInfo.BaseInfo.Nickname != ck.Nickname || ui.Data.AssetInfo.BeanNum != ck.BeanNum || ui.Data.UserInfo.BaseInfo.UserLevel != ck.UserLevel || ui.Data.UserInfo.BaseInfo.LevelName != ck.LevelName {
+			ck.Updates(JdCookie{
+				Nickname:  ui.Data.UserInfo.BaseInfo.Nickname,
+				BeanNum:   ui.Data.AssetInfo.BeanNum,
+				Available: True,
+				UserLevel: ui.Data.UserInfo.BaseInfo.UserLevel,
+				LevelName: ui.Data.UserInfo.BaseInfo.LevelName,
+			})
+			ck.UserLevel = ui.Data.UserInfo.BaseInfo.UserLevel
+			ck.LevelName = ui.Data.UserInfo.BaseInfo.LevelName
+			ck.Nickname = ui.Data.UserInfo.BaseInfo.Nickname
+			ck.BeanNum = ui.Data.AssetInfo.BeanNum
+		}
 	}
 	return av2(cookie)
 }
