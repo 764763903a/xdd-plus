@@ -82,7 +82,6 @@ func (c *LoginController) GetQrcode1() {
 	if err != nil {
 		logs.Info(err)
 	}
-	logs.Info(rsp.Body)
 	body, err1 := ioutil.ReadAll(rsp.Body)
 	if err1 == nil {
 		fmt.Println(string(body))
@@ -94,7 +93,8 @@ func (c *LoginController) GetQrcode1() {
 	jsonByte, _ := json.Marshal(s)
 	jsonStr := string(jsonByte)
 	fmt.Printf("%v", jsonStr)
-	c.Ctx.WriteString(`{"url":"` + "url" + `","img":"` + string(s.Data.QqLoginQrcode.Bytes) + `"}`) //"data:image/png;base64," +
+	//c.Ctx.WriteString(`{"url":"` + "url" + `","img":"` + string(s.Data.QqLoginQrcode.Bytes) + `"}`) //"data:image/png;base64," +
+	c.Ctx.WriteString(string(s.Data.QqLoginQrcode.Bytes)) //"data:image/png;base64," +
 
 }
 
