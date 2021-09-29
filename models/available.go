@@ -245,7 +245,7 @@ func CookieOK(ck *JdCookie) bool {
 	req1.Header("Referer", "https://h5.m.jd.com/")
 	req1.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
 	data, err := req.Bytes()
-	data, err = newFunction(req1)
+	data, err = CookieOK2(req1)
 	if err != nil {
 		return true
 	}
@@ -344,42 +344,15 @@ func CookieOK(ck *JdCookie) bool {
 			ck.Nickname = ui.Data.UserInfo.BaseInfo.Nickname
 			ck.BeanNum = ui.Data.AssetInfo.BeanNum
 		}
+		return true
 	}
 	return av2(cookie)
 }
 
-func newFunction(req1 *httplib.BeegoHTTPRequest) ([]byte, error) {
+func CookieOK2(req1 *httplib.BeegoHTTPRequest) ([]byte, error) {
 	data, err := req1.Bytes()
 	return data, err
 }
-
-// func CookieOK2(ck *JdCookie) bool {
-// 	cookie := "pt_key=" + ck.PtKey + ";pt_pin=" + ck.PtPin + ";"
-// 	// fmt.Println(cookie)
-// 	// jdzz(cookie, make(chan int64))
-// 	if ck == nil {
-// 		return true
-// 	}
-// 	req := httplib.Get("https://plogin.m.jd.com/cgi-bin/ml/islogin")
-// 	req.Header("Cookie", cookie)
-// 	req.Header("Referer", "https://h5.m.jd.com/")
-// 	req.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-// 	data, err := req.Bytes()
-// 	if err != nil {
-// 		return true
-// 	}
-// 	ui := &UserInfoResult{}
-// 	if nil != json.Unmarshal(data, ui) {
-// 		return true
-// 	}
-// 	switch ui.Islogin {
-// 	case "0":
-// 		ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
-// 		JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
-// 	}
-// 	return av2(cookie)
-// }
-
 func av2(cookie string) bool {
 	req := httplib.Get(`https://m.jingxi.com/user/info/GetJDUserBaseInfo?_=1629334995401&sceneval=2&g_login_type=1&g_ty=ls`)
 	req.Header("User-Agent", ua)
