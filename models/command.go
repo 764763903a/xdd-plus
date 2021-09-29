@@ -1,7 +1,6 @@
 package models
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -155,8 +154,8 @@ var codeSignals = []CodeSignal{
 				json.Unmarshal(body, &s)
 			}
 			logs.Info(s.Data.QqLoginQrcode.Bytes)
-			ddd, _ := base64.StdEncoding.DecodeString(s.Data.QqLoginQrcode.Bytes)
-			return ddd
+			//ddd, _ := base64.StdEncoding.DecodeString(s.Data.QqLoginQrcode.Bytes)
+			return rsp
 		},
 	},
 	{
