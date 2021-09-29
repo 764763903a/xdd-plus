@@ -225,6 +225,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						}
 						if HasKey(ck.PtKey) {
 							sender.Reply(fmt.Sprintf("重复提交"))
+							if sender.IsQQ() {
+								ck.Update(QQ, ck.QQ)
+							}
 						} else {
 							if nck, err := GetJdCookie(ck.PtPin); err == nil {
 								nck.InPool(ck.PtKey)
