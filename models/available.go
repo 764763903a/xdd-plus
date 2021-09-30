@@ -245,6 +245,7 @@ func CookieOK(ck *JdCookie) bool {
 	req1.Header("User-Agent", "jdapp;iPhone;10.1.2;15.0;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
 	req1.Header("Referer", "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&")
 	data, err := req.Bytes()
+	data, err = CookieOK2(req1)
 	if err != nil {
 		return true
 	}
@@ -321,14 +322,6 @@ func CookieOK(ck *JdCookie) bool {
 			ck.Nickname = ui.Data.UserInfo.BaseInfo.Nickname
 			ck.BeanNum = ui.Data.AssetInfo.BeanNum
 		}
-		return true
-	}
-	data, err = CookieOK2(req1)
-	if err != nil {
-		return true
-	}
-	ui1 := &UserInfoResult{}
-	if nil != json.Unmarshal(data, ui1) {
 		return true
 	}
 	switch ui1.Islogin {
