@@ -310,7 +310,7 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"查询", "query"},
 		Handle: func(sender *Sender) interface{} {
-			sender.Reply(fmt.Sprintf("鉴于腾讯针对我，查询改在TG查，TG群链接：https://t.me/joinchat/Q8gSVrUgETZmYWI1"))
+			sender.Reply(fmt.Sprintf("鉴于腾讯针对我，查询改在TG查，TG群链接：'https://t.me/joinchat/Q8gSVrUgETZmYWI1'"))
 			// if sender.IsAdmin {
 			// 	sender.handleJdCookies(func(ck *JdCookie) {
 			// 		sender.Reply(ck.Query())
