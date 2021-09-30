@@ -327,7 +327,7 @@ func CookieOK(ck *JdCookie) bool {
 	switch ui.Islogin {
 	case "0":
 		(&JdCookie{}).Push("第二种检测")
-		ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+		ck.Push(fmt.Sprintf("失效账号，%s,QQ在更新账号请确保是加了机器人为好友的", ck.PtPin))
 		JdCookie{}.Push(fmt.Sprintf("失效账号，%s", ck.Nickname))
 	case "1":
 		if url.QueryEscape(ui.Data.UserInfo.BaseInfo.CurPin) != ck.PtPin {
