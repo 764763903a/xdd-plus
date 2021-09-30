@@ -324,7 +324,7 @@ func CookieOK(ck *JdCookie) bool {
 		}
 		return true
 	}
-	switch ui1.Islogin {
+	switch ui.Islogin {
 	case "0":
 		(&JdCookie{}).Push("第二种检测")
 		ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
