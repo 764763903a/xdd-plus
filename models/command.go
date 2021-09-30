@@ -310,6 +310,7 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"查询", "query"},
 		Handle: func(sender *Sender) interface{} {
+			sender.Reply(fmt.Sprintf("鉴于腾讯针对我，查询改在TG查，TG群链接：https://t.me/joinchat/Q8gSVrUgETZmYWI1"))
 			// if sender.IsAdmin {
 			// 	sender.handleJdCookies(func(ck *JdCookie) {
 			// 		sender.Reply(ck.Query())
@@ -323,7 +324,6 @@ var codeSignals = []CodeSignal{
 			// 		sender.Reply(fmt.Sprintf("鉴于东哥对接口限流，为了不影响大家的任务正常运行，即日起每日限流%d次，已超过今日限制", Config.Lim))
 			// 	}
 			// }
-			sender.Reply(fmt.Sprintf("鉴于腾讯针对我，查询改在TG查，TG群链接：https://t.me/joinchat/Q8gSVrUgETZmYWI1"))
 			return nil
 		},
 	},
