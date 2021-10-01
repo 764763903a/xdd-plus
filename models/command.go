@@ -1,13 +1,9 @@
 package models
 
 import (
-	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
-	"io/ioutil"
 	"regexp"
 	"strings"
 	"time"
@@ -139,31 +135,31 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
-	{
-		Command: []string{"qrcode", "扫码", "二维码", "scan"},
-		Handle: func(sender *Sender) interface{} {
-			rsp, err := httplib.Post("https://api.kukuqaq.com/jd/qrcode").Response()
-			if err != nil {
-				return nil
-			}
-			body, err1 := ioutil.ReadAll(rsp.Body)
-			if err1 == nil {
-				fmt.Println(string(body))
-			}
-			s := &QQuery{}
-			if len(body) > 0 {
-				json.Unmarshal(body, &s)
-			}
-			logs.Info(s.Data.QqLoginQrcode.Bytes)
-			ddd, _ := base64.StdEncoding.DecodeString(s.Data.QqLoginQrcode.Bytes) //成图片文件并把文件写入到buffer
-			err2 := ioutil.WriteFile("./output.jpg", ddd, 0666)                   //buffer输出到jpg文件中（不做处理，直接写到文件）
-			if err2 != nil {
-				logs.Error(err2)
-			}
-			//ddd, _ := base64.StdEncoding.DecodeString("data:image/png;base64,"+s.Data.QqLoginQrcode.Bytes)
-			return "data:image/png;base64," + s.Data.QqLoginQrcode.Bytes
-		},
-	},
+	//{
+	//	Command: []string{"qrcode", "扫码", "二维码", "scan"},
+	//	Handle: func(sender *Sender) interface{} {
+	//		rsp, err := httplib.Post("https://api.kukuqaq.com/jd/qrcode").Response()
+	//		if err != nil {
+	//			return nil
+	//		}
+	//		body, err1 := ioutil.ReadAll(rsp.Body)
+	//		if err1 == nil {
+	//			fmt.Println(string(body))
+	//		}
+	//		s := &QQuery{}
+	//		if len(body) > 0 {
+	//			json.Unmarshal(body, &s)
+	//		}
+	//		logs.Info(s.Data.QqLoginQrcode.Bytes)
+	//		ddd, _ := base64.StdEncoding.DecodeString(s.Data.QqLoginQrcode.Bytes) //成图片文件并把文件写入到buffer
+	//		err2 := ioutil.WriteFile("./output.jpg", ddd, 0666)                   //buffer输出到jpg文件中（不做处理，直接写到文件）
+	//		if err2 != nil {
+	//			logs.Error(err2)
+	//		}
+	//		//ddd, _ := base64.StdEncoding.DecodeString("data:image/png;base64,"+s.Data.QqLoginQrcode.Bytes)
+	//		return "data:image/png;base64," + s.Data.QqLoginQrcode.Bytes
+	//	},
+	//},
 	{
 		Command: []string{"sign", "打卡", "签到"},
 		Handle: func(sender *Sender) interface{} {
