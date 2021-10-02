@@ -963,6 +963,16 @@ var codeSignals = []CodeSignal{
 			return nil
 		},
 	},
+    {
+		Command: []string{"导出wsk"},
+		Admin:   true,
+		Handle: func(sender *Sender) interface{} {
+			sender.handleJdCookies(func(ck *JdCookie) {
+				sender.Reply(fmt.Sprintf("pin=%s;wskey=%s;", ck.PtPin, ck.WsKey))
+			})
+			return nil
+		},
+	},
 }
 
 var mx = map[int]bool{}
