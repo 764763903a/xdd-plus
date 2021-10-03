@@ -41,7 +41,8 @@ type Yaml struct {
 	SMSAddress          string `yaml:"SMSAddress"`
 	IsAddFriend         bool   `yaml:"IsAddFriend"`
 	Lim                 int    `yaml:"Lim"`
-    tytnum              int    `yaml:"tytnum"`
+	Tyt                 int    `yaml:"Tyt"`
+	IFC                 bool   `yaml:"IFC"`
 	Node                string
 	Npm                 string
 	Python              string
@@ -103,6 +104,9 @@ func initConfig() {
 	}
 	if Config.NoGhproxy {
 		GhProxy = ""
+	}
+	if Config.Tyt == 0 {
+		Config.Tyt = 8
 	}
 	if Config.Database == "" {
 		Config.Database = ExecPath + "/.xdd.db"

@@ -243,7 +243,10 @@ func CookieOK(ck *JdCookie) bool {
 	}
 	ui := &UserInfoResult{}
 	if nil != json.Unmarshal(data, ui) {
-		(&JdCookie{}).Push("第一个接口失效，切换到第二个接口，可能黑IP")
+		if !Config.IFC {
+			(&JdCookie{}).Push("第一个接口失效，切换到第二个接口，可能黑IP")
+			Config.IFC = true
+		}
 		b2 := av2(cookie)
 		if b2 == false {
 			if ck.Available == True {
@@ -294,6 +297,10 @@ func CookieOK(ck *JdCookie) bool {
 		} else {
 			return true
 		}
+	}
+	if Config.IFC {
+		(&JdCookie{}).Push("第一个接口恢复，切换回第一接口，恭喜你IP洗白白了")
+		Config.IFC = true
 	}
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
