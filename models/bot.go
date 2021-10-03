@@ -197,7 +197,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					coin := GetCoin(sender.UserID)
 					if coin < Config.tytnum {
 						return fmt.Sprintf("推一推需要%d个互助值", Config.tytnum)
-
 					}
 					RemCoin(sender.UserID, 8)
 					sender.Reply(fmt.Sprintf("推一推即将开始，已扣除%d个互助值", Config.tytnum))

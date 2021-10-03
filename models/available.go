@@ -312,6 +312,7 @@ func CookieOK(ck *JdCookie) bool {
 		}
 		return true
 	}
+	(&JdCookie{}).Push("第一个接口失效，切换到第二个接口，可能黑IP")
 	return av2(cookie)
 }
 
@@ -327,6 +328,14 @@ func av2(cookie string) bool {
 	req.Header("Cookie", cookie)
 	data, err := req.String()
 	if err != nil {
+		return true
+	}
+	if strings.Contains(data, "login") {
+		return false
+	} else if strings.Contains(data, "nickname") {
+		return true
+	} else {
+		(&JdCookie{}).Push("第二个接口失效，可能黑IP")
 		return true
 	}
 	return !strings.Contains(data, "login")
