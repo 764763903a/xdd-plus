@@ -125,6 +125,7 @@ func initCookie() {
 	for i := range cks {
 		if cks[i].Available == True && !CookieOK(&cks[i]) {
 			logs.Info("开始禁用")
+			time.Sleep(time.Second * 120)
 			cks[i].OutPool()
 		}
 	}
