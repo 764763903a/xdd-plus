@@ -300,7 +300,7 @@ func CookieOK(ck *JdCookie) bool {
 	}
 	if Config.IFC {
 		(&JdCookie{}).Push("第一个接口恢复，切换回第一接口，恭喜你IP洗白白了")
-		Config.IFC = true
+		Config.IFC = false
 	}
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
