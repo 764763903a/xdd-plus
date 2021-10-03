@@ -123,9 +123,9 @@ func initCookie() {
 	cks := GetJdCookies()
 	//l := len(cks)
 	for i := range cks {
+		time.Sleep(time.Second * time.Duration(60))
 		if cks[i].Available == True && !CookieOK(&cks[i]) {
 			logs.Info("开始禁用")
-			time.Sleep(time.Second * 60)
 			cks[i].OutPool()
 		}
 	}
