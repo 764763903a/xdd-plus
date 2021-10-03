@@ -243,10 +243,10 @@ func CookieOK(ck *JdCookie) bool {
 	}
 	ui := &UserInfoResult{}
 	if nil != json.Unmarshal(data, ui) {
-		if !Config.IFC {
-			(&JdCookie{}).Push("第一个接口失效，切换到第二个接口，可能黑IP")
-			Config.IFC = true
-		}
+		//if !Config.IFC {
+		//	(&JdCookie{}).Push("第一个接口失效，切换到第二个接口，可能黑IP，会导致NickName获取失败，可能会自行恢复。")
+		//	Config.IFC = true
+		//}
 		b2 := av2(cookie)
 		if b2 == false {
 			if ck.Available == True {
@@ -298,10 +298,10 @@ func CookieOK(ck *JdCookie) bool {
 			return true
 		}
 	}
-	if Config.IFC {
-		(&JdCookie{}).Push("第一个接口恢复，切换回第一接口，恭喜你IP洗白白了")
-		Config.IFC = false
-	}
+	//if Config.IFC {
+	//	(&JdCookie{}).Push("第一个接口恢复，切换回第一接口，恭喜你IP洗白白了")
+	//	Config.IFC = false
+	//}
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {
@@ -370,7 +370,7 @@ func CookieOK(ck *JdCookie) bool {
 		}
 		return true
 	}
-	(&JdCookie{}).Push("第一个接口失效，切换到第二个接口，可能黑IP")
+	//(&JdCookie{}).Push("第一个接口失效，切换到第二个接口，可能黑IP")
 	return av2(cookie)
 }
 
@@ -393,7 +393,10 @@ func av2(cookie string) bool {
 	} else if strings.Contains(data, "nickname") {
 		return true
 	} else {
-		(&JdCookie{}).Push("第二个接口失效，可能黑IP")
+		if !Config.IFC {
+			(&JdCookie{}).Push("全部接口都失效，现已无法检测，可能黑IP，会导致NickName获取失败，可能会自行恢复。")
+			Config.IFC = true
+		}
 		return true
 	}
 	return !strings.Contains(data, "login")
