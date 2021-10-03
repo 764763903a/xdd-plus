@@ -197,7 +197,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					}
 					RemCoin(sender.UserID, 8)
 					sender.Reply(fmt.Sprintf("推一推即将开始，已扣除%d个互助值", Config.Tyt))
+				} else {
+					sender.Reply(fmt.Sprintf("推一推即将开始，已扣除%d个互助值，管理员通道", Config.Tyt))
 				}
+
 				runTask(&Task{Path: "jd_tyt.js", Envs: []Env{
 					{Name: "tytpacketId", Value: ss[1]},
 				}}, sender)
