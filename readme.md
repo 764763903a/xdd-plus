@@ -7,11 +7,16 @@
 
 # 支持作者
 
-就当是支持支持作者更新吧 谢谢各位了。  几毛钱的包愿意就当支持我了  不愿意也没事 几块钱的大家可以去买瓶水喝
+就当是支持支持作者更新吧 谢谢各位了。  几毛钱的包愿意就当支持我了 每天都可以领一次 建议保存到本地 辛苦了  不愿意也没事 几块钱的大家可以去买瓶水喝
 
 <img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/hb.jpg" alt="image-20211004172834653" style="zoom: 36%;" /><img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/zfb.jpg" alt="image-20211004173043643" style="zoom: 25%;" />
 
 # 更新日志
+
+## 10-04
+
+- 新增QQ转账功能  格式 QQ转账 QQ 钱 例如        QQ转账  7647 100 
+- 各位大老爷支持支持作者吧 谢谢啦
 
 ## 10-03
 
