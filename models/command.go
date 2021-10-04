@@ -388,29 +388,7 @@ var codeSignals = []CodeSignal{
 			if len(sender.Contents) > 1 {
 				sender.Contents = sender.Contents[1:]
 				AdddCoin(qq, Int(sender.Contents[1]))
-			}
-			return nil
-		},
-	},
-	{
-		Command: []string{"QQ转账"},
-		Admin:   true,
-		Handle: func(sender *Sender) interface{} {
-
-			cost := Int(sender.JoinContens())
-			if cost <= 0 {
-				cost = 1
-			}
-			if !sender.IsAdmin {
-				if cost > 1 {
-					return "你只能获得1互助值"
-				} else {
-					AddCoin(sender.UserID)
-					return "太可怜了，给你1互助值"
-				}
-			} else {
-				AdddCoin(sender.UserID, cost)
-				sender.Reply(fmt.Sprintf("你获得%d枚互助值。", cost))
+				sender.Reply(fmt.Sprintf("你获得%d枚互助值。", Int(sender.Contents[1])))
 			}
 			return nil
 		},
