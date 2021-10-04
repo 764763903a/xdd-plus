@@ -9,7 +9,7 @@
 
 就当是支持支持作者更新吧 谢谢各位了。  几毛钱的包愿意就当支持我了  不愿意也没事 几块钱的大家可以去买瓶水喝
 
-<img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/hb.jpg" alt="image-20211004172834653" style="zoom: 36%;" /><img src="C:\Users\76476\AppData\Roaming\Typora\typora-user-images\image-20211004173043643.png" alt="image-20211004173043643" style="zoom: 25%;" />
+<img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/hb.jpg" alt="image-20211004172834653" style="zoom: 36%;" /><img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/zfb.jpg" alt="image-20211004173043643" style="zoom: 25%;" />
 
 # 更新日志
 
