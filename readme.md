@@ -2,8 +2,14 @@
 
 ## 注意事项
 
- 1. master:的值即为密码，后面不可带注释，全匹配方可登录，也不要pt_pin 可自定义
-  2. 2.9+版本需要配置    cid和secret 在青龙里面系统设置，添加应用后配置
+  1. master:的值即为密码，后面不可带注释，全匹配方可登录，也不要pt_pin 可自定义
+   2. 2.9+版本需要配置    cid和secret 在青龙里面系统设置，添加应用后配置
+
+# 支持作者
+
+就当是支持支持作者更新吧 谢谢各位了。  几毛钱的包愿意就当支持我了  不愿意也没事 几块钱的大家可以去买瓶水喝
+
+<img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/hb.jpg" alt="image-20211004172834653" style="zoom: 36%;" /><img src="C:\Users\76476\AppData\Roaming\Typora\typora-user-images\image-20211004173043643.png" alt="image-20211004173043643" style="zoom: 25%;" />
 
 # 更新日志
 
