@@ -43,6 +43,7 @@ type Yaml struct {
 	Lim                 int    `yaml:"Lim"`
 	Tyt                 int    `yaml:"Tyt"`
 	IFC                 bool   `yaml:"IFC"`
+	Later               int    `yaml:"Later"`
 	Node                string
 	Npm                 string
 	Python              string
@@ -107,6 +108,9 @@ func initConfig() {
 	}
 	if Config.Tyt == 0 {
 		Config.Tyt = 8
+	}
+	if Config.Later == 0 {
+		Config.Later = 60
 	}
 	if Config.Database == "" {
 		Config.Database = ExecPath + "/.xdd.db"
