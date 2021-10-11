@@ -143,6 +143,32 @@ fix 重大BUG修复，解决以下几个问题，
 
 以及大大小小的模块作者
 
+# 安装教程 
+
+xdd-plus安装教程
+第一步：下载go
+cd /usr/local && wget https://golang.google.cn/dl/go1.16.7.linux-amd64.tar.gz -O go1.16.7.linux-amd64.tar.gz
+第二步：解压go
+tar -xvzf go1.16.7.linux-amd64.tar.gz
+第三步：设置环境变量 
+vi /etc/profile
+将文本复制到最后一行
+export GO111MODULE=on
+export GOPROXY=https://goproxy.cn
+export GOROOT=/usr/local/go
+export GOPATH=/usr/local/go/path
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+第五步：先按   esc 
+然后输入  :wq 
+保存文件后 
+source /etc/profile
+第六步：检查go安装
+go env
+第七步：拉xdd-plus的库
+cd ~ && git clone https://ghproxy.com/https://github.com/764763903a/xdd-plus.git
+第八步：编译xdd-plus
+cd /root/xdd-plus && go build
+
 # 常见问题
 
 编码问题参考
