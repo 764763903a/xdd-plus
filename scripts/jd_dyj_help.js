@@ -42,7 +42,7 @@ let tools = []
           data = await openRedEnvelopeInteract({redEnvelopeId: helps[0].redEnvelopeId,inviter: helps[0].markedPin, helpType:"1"})
           errMsg = data?.data?.helpResult?.errMsg
           if(errMsg){
-                console.log(`${tool.id}->${helps[0].id} ${errMsg}`) 
+                // console.log(`${tool.id}->${helps[0].id} ${errMsg}`)
                 if(errMsg.indexOf("成功提现")!=-1){
                     console.log(errMsg)
                     helps.shift()
