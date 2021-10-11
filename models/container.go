@@ -355,7 +355,7 @@ func (c *Container) read() error {
 func (c *Container) getToken() error {
 	version, err := GetQlVersion(c.Address)
 	logs.Debug(err)
-	if version == "2.9" {
+	if version == "openapi" {
 		token := &Token{}
 		err, b2 := getT(c, token)
 		if b2 {
