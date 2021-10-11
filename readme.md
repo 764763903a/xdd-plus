@@ -9,7 +9,9 @@
 
 就当是支持支持作者更新吧 谢谢各位了。  几毛钱的包愿意就当支持我了 每天都可以领一次 建议保存到本地 辛苦了  不愿意也没事 几块钱的大家可以去买瓶水喝
 
-<img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/hb.jpg" alt="image-20211004172834653" style="zoom: 36%;" /><img src="https://gitee.com/jia_yuan/xdd-plus/raw/main/static/zfb.jpg" alt="image-20211004173043643" style="zoom: 25%;" />
+
+
+<img src="https://i.loli.net/2021/10/11/odcbTfw4LM9svOS.jpg" alt="1.jpg" style="zoom:33%;" /><img src="https://i.loli.net/2021/10/11/ru73IykXez9g48K.jpg" alt="2.jpg" style="zoom: 23%;" />
 
 # 更新日志
 
