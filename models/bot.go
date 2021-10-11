@@ -119,9 +119,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					if err != nil {
 						logs.Error(err)
 					}
-					if strings.Contains(rsp, "错误") {
+					if strings.Contains(rsp, "fake_") {
 						logs.Error("wskey错误")
-						sender.Reply(fmt.Sprintf("wskey错误"))
+						sender.Reply(fmt.Sprintf("wskey错误 除京东APP皆不可用"))
 					} else {
 						ptKey := FetchJdCookieValue("pt_key", rsp)
 						ptPin := FetchJdCookieValue("pt_pin", rsp)
