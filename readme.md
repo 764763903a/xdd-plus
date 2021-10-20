@@ -2,10 +2,32 @@
 
 ## 注意事项
 
- 1. master:的值即为密码，后面不可带注释，全匹配方可登录，也不要pt_pin 可自定义
-  2. 2.9+版本需要配置    cid和secret 在青龙里面系统设置，添加应用后配置
+  1. master:的值即为密码，后面不可带注释，全匹配方可登录，也不要pt_pin 可自定义
+   2. 2.9+版本需要配置    cid和secret 在青龙里面系统设置，添加应用后配置
+
+# 支持作者
+
+就当是支持支持作者更新吧 谢谢各位了。  几毛钱的包愿意就当支持我了 每天都可以领一次 建议保存到本地 辛苦了  不愿意也没事 几块钱的大家可以去买瓶水喝
+
+
+
+<img src="https://i.loli.net/2021/10/11/odcbTfw4LM9svOS.jpg" alt="1.jpg" style="zoom:33%;" /><img src="https://i.loli.net/2021/10/11/ru73IykXez9g48K.jpg" alt="2.jpg" style="zoom: 23%;" />
 
 # 更新日志
+
+## 10-11
+
+- 适配V2.8+版本包括即将来的3.0版本都适配了  = - 基本你们能用到黄了把
+- 修复了QQ转账功能
+
+## 10-07
+
+- 新增延时设置，怕黑号调高，不怕的调低
+
+## 10-04
+
+- 新增QQ转账功能  格式 QQ转账 QQ 钱 例如        QQ转账  7647 100 
+- 各位大老爷支持支持作者吧 谢谢啦
 
 ## 10-03
 
@@ -122,6 +144,32 @@ fix 重大BUG修复，解决以下几个问题，
 [fuckee的拓展插件](https://github.com/ufuckee/jd_cookie)
 
 以及大大小小的模块作者
+
+# 安装教程 
+
+xdd-plus安装教程
+第一步：下载go
+cd /usr/local && wget https://golang.google.cn/dl/go1.16.7.linux-amd64.tar.gz -O go1.16.7.linux-amd64.tar.gz
+第二步：解压go
+tar -xvzf go1.16.7.linux-amd64.tar.gz
+第三步：设置环境变量 
+vi /etc/profile
+将文本复制到最后一行
+export GO111MODULE=on
+export GOPROXY=https://goproxy.cn
+export GOROOT=/usr/local/go
+export GOPATH=/usr/local/go/path
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+第五步：先按   esc 
+然后输入  :wq 
+保存文件后 
+source /etc/profile
+第六步：检查go安装
+go env
+第七步：拉xdd-plus的库
+cd ~ && git clone https://ghproxy.com/https://github.com/764763903a/xdd-plus.git
+第八步：编译xdd-plus
+cd /root/xdd-plus && go build
 
 # 常见问题
 

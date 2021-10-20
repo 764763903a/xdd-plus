@@ -321,17 +321,3 @@ func CheckIn(pin, key string) int {
 	}
 	return 2
 }
-
-func setSqlToken(token *Token) error {
-	tx := db.Begin()
-	if err := tx.Create(token).Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-	return tx.Commit().Error
-}
-
-func getSqlToken(address string) (*Token, error) {
-	token := &Token{}
-	return token, db.Where(Address+" = ?", address).Order("expiration desc").First(token).Error
-}
