@@ -20,15 +20,40 @@
  echo "127.0.0.1 jdsharecode.xyz" | tee -a /etc/hosts
  fi
 
- if [ "$(grep 'helpu.cf' /etc/hosts)" = "" ];
+ if [ "$(grep 'jdsign.cf' /etc/hosts)" = "" ];
  then
- echo "127.0.0.1 helpu.cf" | tee -a /etc/hosts
+ echo "127.0.0.1 jdsign.cf" | tee -a /etc/hosts
  fi
 
-#result=$(grep 'smiek.tk' /etc/hosts)
-# if [ "$reusult" = "" ]
-# then
-#$ echo "127.0.0.1 smiek.tk" | sudo tee -a /etc/hosts
-# fi
-#
+ if [ "$(grep 'code.chiang.fun' /etc/hosts)" = "" ];
+ then
+ echo "127.0.0.1 code.chiang.fun" | tee -a /etc/hosts
+ fi
+ 
+  if [ "$(grep 'cdn.nz.lu' /etc/hosts)" = "" ];
+ then
+ echo "127.0.0.1 cdn.nz.lu" | tee -a /etc/hosts
+ fi
+ 
+  if [ "$(grep 'share.turinglabs.net' /etc/hosts)" = "" ];
+ then
+ echo "127.0.0.1 share.turinglabs.net" | tee -a /etc/hosts
+ fi
+ 
+  if [ "$(grep 'purge.jsdelivr.net' /etc/hosts)" = "" ];
+ then
+ echo "127.0.0.1 purge.jsdelivr.net" | tee -a /etc/hosts
+ fi
+ 
+  if [ "$(grep 'cdn.jsdelivr.net' /etc/hosts)" = "" ];
+ then
+ echo "127.0.0.1 cdn.jsdelivr.net" | tee -a /etc/hosts
+ fi
+ 
+result=$(grep 'smiek.tk' /etc/hosts)
+if [ "$reusult" = "" ]
+then
+$ echo "127.0.0.1 smiek.tk" | sudo tee -a /etc/hosts
+fi
+
 
