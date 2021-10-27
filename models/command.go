@@ -410,21 +410,26 @@ var codeSignals = []CodeSignal{
 	{
 		Command: []string{"我要钱", "给点钱", "我干", "给我钱", "给我", "我要"},
 		Handle: func(sender *Sender) interface{} {
-			cost := Int(sender.JoinContens())
-			if cost <= 0 {
-				cost = 1
-			}
-			if !sender.IsAdmin {
-				if cost > 1 {
-					return "你只能获得1互助值"
+			if getLimit(sender.UserID, 2) {
+				cost := Int(sender.JoinContens())
+				if cost <= 0 {
+					cost = 1
+				}
+				if !sender.IsAdmin {
+					if cost > 1 {
+						return "你只能获得1互助值"
+					} else {
+						AddCoin(sender.UserID)
+						return "太可怜了，给你1互助值"
+					}
 				} else {
-					AddCoin(sender.UserID)
-					return "太可怜了，给你1互助值"
+					AdddCoin(sender.UserID, cost)
+					sender.Reply(fmt.Sprintf("你获得%d枚互助值。", cost))
 				}
 			} else {
-				AdddCoin(sender.UserID, cost)
-				sender.Reply(fmt.Sprintf("你获得%d枚互助值。", cost))
+				return "超过今日限制"
 			}
+
 			return nil
 		},
 	},
