@@ -510,12 +510,17 @@ func (c *LoginController) SMSLogin() {
 			if !models.HasPin(ptPin) {
 				models.NewJdCookie(ck)
 				ck.Query()
-				msg := fmt.Sprintf("来自短信的添加,账号：%s,QQ: %s", ck.PtPin, qq)
-				(&models.JdCookie{}).Push(msg)
+				if qq != "" {
+					msg := fmt.Sprintf("来自短信的添加,账号：%s,QQ: %s", ck.PtPin, qq)
+					(&models.JdCookie{}).Push(msg)
+				} else {
+					msg := fmt.Sprintf("来自短信的添加,账号：%s", ck.PtPin)
+					(&models.JdCookie{}).Push(msg)
+				}
 			} else {
 				ck, _ := models.GetJdCookie(ptPin)
 				ck.InPool(ptKey)
-				if qq != "" {
+				if qq != "" && len(qq) > 6 {
 					ck.Update(models.QQ, qq)
 				}
 				msg := fmt.Sprintf("来自短信的更新,账号：%s", ck.PtPin)
