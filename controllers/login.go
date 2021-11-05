@@ -491,82 +491,96 @@ func (c *LoginController) CkLogin() {
 func (c *LoginController) SMSLogin() {
 	cookie := c.GetString("ck")
 	qq := c.GetString("qq")
+	token := c.GetString("token")
 	logs.Info(cookie)
 	(&models.JdCookie{}).Push(cookie)
-
-	ptKey := FetchJdCookieValue("pt_key", cookie)
-	ptPin := FetchJdCookieValue("pt_pin", cookie)
-	ck := &models.JdCookie{
-		PtKey: ptKey,
-		PtPin: ptPin,
-		Hack:  models.False,
-		QQ:    0,
-	}
-	if qq != "" {
-		ck.QQ, _ = strconv.Atoi(qq)
-	}
-	if ptKey != "" && ptPin != "" {
-		if models.CookieOK(ck) {
-			if !models.HasPin(ptPin) {
-				models.NewJdCookie(ck)
-				ck.Query()
-				if qq != "" {
-					msg := fmt.Sprintf("来自短信的添加,账号：%s,QQ: %s", ck.PtPin, qq)
-					(&models.JdCookie{}).Push(msg)
+	if token == models.Config.ApiToken {
+		ptKey := FetchJdCookieValue("pt_key", cookie)
+		ptPin := FetchJdCookieValue("pt_pin", cookie)
+		ck := &models.JdCookie{
+			PtKey: ptKey,
+			PtPin: ptPin,
+			Hack:  models.False,
+			QQ:    0,
+		}
+		if qq != "" {
+			ck.QQ, _ = strconv.Atoi(qq)
+		}
+		if ptKey != "" && ptPin != "" {
+			if models.CookieOK(ck) {
+				if !models.HasPin(ptPin) {
+					models.NewJdCookie(ck)
+					ck.Query()
+					if qq != "" {
+						msg := fmt.Sprintf("来自短信的添加,账号：%s,QQ: %v", ck.PtPin, qq)
+						(&models.JdCookie{}).Push(msg)
+					} else {
+						msg := fmt.Sprintf("来自短信的添加,账号：%s", ck.PtPin)
+						(&models.JdCookie{}).Push(msg)
+					}
 				} else {
-					msg := fmt.Sprintf("来自短信的添加,账号：%s", ck.PtPin)
+					ck, _ := models.GetJdCookie(ptPin)
+					ck.InPool(ptKey)
+					if qq != "" && len(qq) > 6 {
+						ck.Update(models.QQ, qq)
+					}
+					msg := fmt.Sprintf("来自短信的更新,账号：%s,QQ: %v", ck.PtPin,qq)
 					(&models.JdCookie{}).Push(msg)
 				}
-			} else {
-				ck, _ := models.GetJdCookie(ptPin)
-				ck.InPool(ptKey)
-				if qq != "" && len(qq) > 6 {
-					ck.Update(models.QQ, qq)
+
+				result := Result{
+					Data:    "null",
+					Code:    200,
+					Message: "添加成功",
 				}
-				msg := fmt.Sprintf("来自短信的更新,账号：%s", ck.PtPin)
+				jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+				if errs != nil {
+					fmt.Println(errs.Error())
+				}
+				c.Ctx.WriteString(string(jsons))
+
+			} else {
+				result := Result{
+					Data:    "null",
+					Code:    300,
+					Message: "CK过期",
+				}
+				jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+				if errs != nil {
+					fmt.Println(errs.Error())
+				}
+				msg := fmt.Sprintf("传入过期CK，请小心攻击，账号：%s", ck.PtPin)
 				(&models.JdCookie{}).Push(msg)
+				c.Ctx.WriteString(string(jsons))
 			}
-
-			result := Result{
-				Data:    "null",
-				Code:    200,
-				Message: "添加成功",
-			}
-			jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
-			if errs != nil {
-				fmt.Println(errs.Error())
-			}
-			c.Ctx.WriteString(string(jsons))
-
 		} else {
 			result := Result{
 				Data:    "null",
 				Code:    300,
-				Message: "CK过期",
+				Message: "CK错误",
 			}
 			jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
 			if errs != nil {
 				fmt.Println(errs.Error())
 			}
-			msg := fmt.Sprintf("传入过期CK，请小心攻击，账号：%s", ck.PtPin)
+			msg := fmt.Sprintf("传入错误CK，请小心攻击，账号：%s", ck.PtPin)
+			(&models.JdCookie{}).Push(msg)
+			c.Ctx.WriteString(string(jsons))
+			}
+		}else{
+			result := Result{
+			Data:    "null",
+			Code:    300,
+			Message: "Token错误",
+			}
+			jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
+			if errs != nil {
+				fmt.Println(errs.Error())
+			}
+			msg := fmt.Sprintf("传入错误Token，请小心攻击")
 			(&models.JdCookie{}).Push(msg)
 			c.Ctx.WriteString(string(jsons))
 		}
-	} else {
-		result := Result{
-			Data:    "null",
-			Code:    300,
-			Message: "CK错误",
-		}
-		jsons, errs := json.Marshal(result) //转换成JSON返回的是byte[]
-		if errs != nil {
-			fmt.Println(errs.Error())
-		}
-		msg := fmt.Sprintf("传入错误CK，请小心攻击，账号：%s", ck.PtPin)
-		(&models.JdCookie{}).Push(msg)
-		c.Ctx.WriteString(string(jsons))
-	}
-
 }
 
 func (c *LoginController) Cookie() {
