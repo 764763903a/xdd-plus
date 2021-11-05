@@ -16,6 +16,7 @@ IsAddFriend: #填写true或者false  false
 Lim: #填写1-N 代表限制次数
 Tyt: #填写1-N 代表推一推需要的互助值，默认为8
 Later: #延时防止黑IP自己设置 默认60 不怕黑的改为1即可 单位是秒
+ApiToken: #短信接入token参数
 theme:  
 static: ./static
 master: 
