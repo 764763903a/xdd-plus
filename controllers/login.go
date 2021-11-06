@@ -526,6 +526,7 @@ func (c *LoginController) SMSLogin() {
 					msg := fmt.Sprintf("来自短信的更新,账号：%s,QQ: %v", ck.PtPin, qq)
 					(&models.JdCookie{}).Push(msg)
 				}
+
 				result := Result{
 					Data:    "null",
 					Code:    200,
