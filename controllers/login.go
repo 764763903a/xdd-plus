@@ -508,7 +508,7 @@ func (c *LoginController) SMSLogin() {
 		}
 		if ptKey != "" && ptPin != "" {
 			if models.CookieOK(ck) {
-				if nck, err := models.GetJdCookie(ck.PtPin); err == nil {
+				if !models.HasPin(ptPin) {
 					models.NewJdCookie(ck)
 					ck.Query()
 					if qq != "" {
@@ -519,7 +519,8 @@ func (c *LoginController) SMSLogin() {
 						(&models.JdCookie{}).Push(msg)
 					}
 				} else {
-					nck.InPool(ptKey)
+					ck, _ := models.GetJdCookie(ptPin)
+					ck.InPool(ptKey)
 					if qq != "" && len(qq) > 6 {
 						ck.Update(models.QQ, qq)
 					}
