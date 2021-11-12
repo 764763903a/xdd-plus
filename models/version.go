@@ -60,12 +60,12 @@ func Update(sender *Sender) error {
 	} else {
 		sender.Reply("小滴滴拉取代码成功")
 	}
-	//sender.Reply("小滴滴正在编译程序")
-	//rtn, err = exec.Command("sh", "-c", "cd "+ExecPath+" && go build -o "+pname).Output()
-	//if err != nil {
-	//	return errors.New("小滴滴编译失败：" + err.Error())
-	//} else {
-	//	sender.Reply("小滴滴编译成功")
-	//}
+	sender.Reply("小滴滴正在编译程序")
+	rtn, err = exec.Command("sh", "-c", "cd "+ExecPath+" && go build -o "+pname).Output()
+	if err != nil {
+		return errors.New("小滴滴编译失败：" + err.Error())
+	} else {
+		sender.Reply("小滴滴编译成功")
+	}
 	return nil
 }
