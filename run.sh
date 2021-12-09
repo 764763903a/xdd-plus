@@ -11,12 +11,15 @@ aarch64)
      arch="arm"
      ;;
 esac
-filename="xdd_linux_${arch}"
-url="https://ghproxy.com/https://github.com/cdle/jd_study/releases/download/main/${filename}"
+filename="xdd-linux-${arch}"
+url="https://github.91chi.fun/https://github.com/764763903a/xdd-plus/releases/download/main/${filename}"
 dirname="xdd"
 cd $HOME
 if [ ! -d dirname ];then
   mkdir dirname
 fi
 cd xdd
-curl -L $url -O $filename
+#curl -L $url -O $filename
+curl -L $url -o xdd
+chmod 777 xdd
+./xdd -d
