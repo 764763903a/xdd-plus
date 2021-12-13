@@ -42,6 +42,8 @@ type Container struct {
 	Reader    *bufio.Reader
 	Config    string
 	Limit     int
+	Zhu       int
+	Ci        int
 }
 
 func initContainer() {

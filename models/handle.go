@@ -23,7 +23,7 @@ func initHandle() {
 				continue
 			}
 			cks := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
-				return sb.Where(fmt.Sprintf("%s >= ? and %s != ?", Priority, Hack), 0, True)
+				return sb.Where(fmt.Sprintf("%s >= ? and %s != ? and Available = ?", Priority, Hack), 0, True, True)
 			})
 			tmp := []JdCookie{}
 			for _, ck := range cks {
@@ -119,49 +119,96 @@ module.exports = cookies`, cookies))
 					}
 				}
 				bat := cks
-				for {
-					left := []JdCookie{}
-					l := len(cks)
-					total := 0.0
-					for i := range bs {
-						total += float64(bs[i].Weigth)
-					}
-					for i := range bs {
-						if bs[i].Weigth == 0 {
-							bs[i].Should = 0
-						} else {
-							bs[i].Should = int(math.Ceil(bs[i].Weigth / total * float64(l)))
+				//是否配置了优先级
+				if Config.Priority == 0 {
+					for {
+						left := []JdCookie{}
+						l := len(cks)
+						total := 0.0
+						for i := range bs {
+							total += float64(bs[i].Weigth)
 						}
+						for i := range bs {
+							if bs[i].Weigth == 0 {
+								bs[i].Should = 0
+							} else {
+								bs[i].Should = int(math.Ceil(bs[i].Weigth / total * float64(l)))
+							}
 
-					}
-					a := 0
-					for i := range bs {
-						j := bs[i].Should
-						if j == 0 {
+						}
+						a := 0
+						for i := range bs {
+							j := bs[i].Should
+							if j == 0 {
+								continue
+							}
+							s := 0
+							if bs[i].Container.Limit > 0 && j > bs[i].Container.Limit {
+								s = a + bs[i].Container.Limit
+								left = append(left, cks[s:a+j]...)
+								bs[i].Weigth = 0
+							} else {
+								s = a + j
+							}
+							if s > l {
+								s = l
+							}
+							bs[i].Ready = append(bs[i].Ready, cks[a:s]...)
+							a += j
+							if a >= l-1 {
+								break
+							}
+						}
+						if len(left) != 0 {
+							cks = left
 							continue
 						}
-						s := 0
-						if bs[i].Container.Limit > 0 && j > bs[i].Container.Limit {
-							s = a + bs[i].Container.Limit
-							left = append(left, cks[s:a+j]...)
-							bs[i].Weigth = 0
+						break
+					}
+				} else {
+					ups := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
+						return sb.Where(fmt.Sprintf("%s >= ? and %s != ? and and Available = ?", Priority, Hack), Config.Priority, True, True)
+					})
+					downs := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
+						return sb.Where(fmt.Sprintf("%s < ? and %s != ? and and Available = ?", Priority, Hack), Config.Priority, True, True)
+					})
+					upi := 0
+					downi := 0
+					for i := 0; i < len(bs); i++ {
+						//最后一个，ck全部放进去
+						if i == len(bs)-1 {
+							bs[i].Ready = append(bs[i].Ready, ups[upi:]...)
+							bs[i].Ready = append(bs[i].Ready, downs[downi:]...)
 						} else {
-							s = a + j
-						}
-						if s > l {
-							s = l
-						}
-						bs[i].Ready = append(bs[i].Ready, cks[a:s]...)
-						a += j
-						if a >= l-1 {
-							break
+							//必须配置了main的数量，并且main的数量要小于总数
+							s := 0
+							if bs[i].Container.Zhu != 0 {
+								s = upi + bs[i].Container.Zhu
+							} else {
+								s = int(math.Ceil(float64(len(ups) / len(bs))))
+							}
+
+							if s > len(ups) {
+								s = len(ups)
+							}
+							bs[i].Ready = append(bs[i].Ready, ups[upi:s]...)
+							upi = s
+
+							s = 0
+							if bs[i].Container.Ci != 0 {
+								s = downi + bs[i].Container.Ci
+							} else {
+								s = int(math.Ceil(float64(len(downs) / len(bs))))
+							}
+
+							if s > len(downs) {
+								s = len(downs)
+							}
+
+							bs[i].Ready = append(bs[i].Ready, downs[downi:s]...)
+							downi = s
 						}
 					}
-					if len(left) != 0 {
-						cks = left
-						continue
-					}
-					break
 				}
 				for i := range bs {
 					bs[i].Container.write(append(resident, bs[i].Ready...))
