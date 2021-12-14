@@ -23,7 +23,7 @@ func initHandle() {
 				continue
 			}
 			cks := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
-				return sb.Where(fmt.Sprintf("%s >= ? and %s != ? and Available = ?", Priority, Hack), 0, True, True)
+				return sb.Where(fmt.Sprintf("%s >= ? and %s != ? and %s = ?", Priority, Hack, Available), 0, True, True)
 			})
 			tmp := []JdCookie{}
 			for _, ck := range cks {
@@ -84,12 +84,29 @@ module.exports = cookies`, cookies))
 				}
 			} else {
 				resident := []JdCookie{}
+				//不影响原本的设置车头逻辑,在容器内单独配置车头，并且可以覆盖全局的车头
+				var containerResident []string
+				for _, container := range Config.Containers {
+					if container.Resident != "" {
+						containerResident = append(containerResident, container.Resident)
+					}
+				}
+
+				//为了过滤设置头的ck并且不影响原来逻辑
+				if len(containerResident) > 0 {
+					//如果配置了单独的车头，则全局不生效
+					Config.Resident = strings.Join(containerResident, "&")
+				}
+
+				var residentCkMap = make(map[string]JdCookie)
+
 				if Config.Resident != "" {
 					tmp := cks
 					cks = []JdCookie{}
 					for _, ck := range tmp {
 						if strings.Contains(Config.Resident, ck.PtPin) {
 							resident = append(resident, ck)
+							residentCkMap[ck.PtPin] = ck
 						} else {
 							cks = append(cks, ck)
 						}
@@ -99,6 +116,7 @@ module.exports = cookies`, cookies))
 					Container Container
 					Weigth    float64
 					Ready     []JdCookie
+					Resident  []JdCookie
 					Should    int
 				}
 				availables := []Container{}
@@ -166,24 +184,39 @@ module.exports = cookies`, cookies))
 						break
 					}
 				} else {
-					ups := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
-						return sb.Where(fmt.Sprintf("%s >= ? and %s != ? and and Available = ?", Priority, Hack), Config.Priority, True, True)
-					})
-					downs := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
-						return sb.Where(fmt.Sprintf("%s < ? and %s != ? and and Available = ?", Priority, Hack), Config.Priority, True, True)
-					})
-					upi := 0
-					downi := 0
+					var ups []JdCookie
+					var downs []JdCookie
+					for _, ck := range cks {
+						if ck.Priority >= Config.Priority {
+							ups = append(ups, ck)
+						} else {
+							downs = append(downs, ck)
+						}
+					}
+					zhuCks := 0
+					ciCks := 0
 					for i := 0; i < len(bs); i++ {
+						//处理车头
+						//获取容器配置中的车头
+						containerResident := bs[i].Container.Resident
+						var bsResident []JdCookie
+						if containerResident != "" {
+							containerResidents := strings.Split(containerResident, "&")
+							for _, cr := range containerResidents {
+								bsResident = append(bsResident, residentCkMap[cr])
+							}
+							bs[i].Resident = bsResident
+						}
+
 						//最后一个，ck全部放进去
 						if i == len(bs)-1 {
-							bs[i].Ready = append(bs[i].Ready, ups[upi:]...)
-							bs[i].Ready = append(bs[i].Ready, downs[downi:]...)
+							bs[i].Ready = append(bs[i].Ready, ups[zhuCks:]...)
+							bs[i].Ready = append(bs[i].Ready, downs[ciCks:]...)
 						} else {
 							//必须配置了main的数量，并且main的数量要小于总数
 							s := 0
 							if bs[i].Container.Zhu != 0 {
-								s = upi + bs[i].Container.Zhu
+								s = zhuCks + bs[i].Container.Zhu
 							} else {
 								s = int(math.Ceil(float64(len(ups) / len(bs))))
 							}
@@ -191,12 +224,12 @@ module.exports = cookies`, cookies))
 							if s > len(ups) {
 								s = len(ups)
 							}
-							bs[i].Ready = append(bs[i].Ready, ups[upi:s]...)
-							upi = s
+							bs[i].Ready = append(bs[i].Ready, ups[zhuCks:s]...)
+							zhuCks = s
 
 							s = 0
 							if bs[i].Container.Ci != 0 {
-								s = downi + bs[i].Container.Ci
+								s = ciCks + bs[i].Container.Ci
 							} else {
 								s = int(math.Ceil(float64(len(downs) / len(bs))))
 							}
@@ -205,13 +238,18 @@ module.exports = cookies`, cookies))
 								s = len(downs)
 							}
 
-							bs[i].Ready = append(bs[i].Ready, downs[downi:s]...)
-							downi = s
+							bs[i].Ready = append(bs[i].Ready, downs[ciCks:s]...)
+							ciCks = s
 						}
 					}
 				}
+
 				for i := range bs {
-					bs[i].Container.write(append(resident, bs[i].Ready...))
+					if len(bs[i].Resident) != 0 {
+						bs[i].Container.write(append(bs[i].Resident, bs[i].Ready...))
+					} else {
+						bs[i].Container.write(append(resident, bs[i].Ready...))
+					}
 				}
 				for i := range parallels {
 					parallels[i].write(append(resident, bat...))

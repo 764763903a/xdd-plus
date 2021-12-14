@@ -44,6 +44,7 @@ type Container struct {
 	Limit     int
 	Zhu       int
 	Ci        int
+	Resident  string
 }
 
 func initContainer() {

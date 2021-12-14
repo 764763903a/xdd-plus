@@ -13,6 +13,7 @@ containers:
     zhu: 30
     #均衡模式下每个容器的工具人的数据，需要和Priority一起配合使用，账号优先级低于Priority的优先级则代表工具人
     ci: 90
+    resident: jd_xxx&jd_cccc
 #代表200优先级以上是主账号，200以下为工具人账号
 #配置则代表开启 需要和container中的Main和Sub一起用，0代表不开启
 Priority: 200
