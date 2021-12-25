@@ -9,7 +9,7 @@
 
 就当是支持支持作者更新吧 谢谢各位了。
 
-![微信图片_20211026143647.jpg](https://i.loli.net/2021/10/26/Av6oWqYS5UpFf2g.jpg)
+![mm_reward_qrcode_1640425982105.png](https://s2.loli.net/2021/12/25/AhfEOj6wHdcaU25.png)
 # 更新日志
 ## 10-26
 - 修复了推一推不正常扣余额问题
