@@ -21,4 +21,5 @@ ADD ./scripts /xdd-plus/scripts/
 
 WORKDIR /xdd-plus
 COPY --from=build-env /xdd-plus/xdd /xdd-plus/
+EXPOSE 8080
 ENTRYPOINT /xdd-plus/xdd
