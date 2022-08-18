@@ -52,6 +52,7 @@ type Yaml struct {
 	QbotConfigFile      string `yaml:"qbot_config_file"`
 	Repos               []Repo
 	HttpProxyServerPort int `yaml:"http_proxy_server_port"`
+	Priority            int `yaml:"Priority"`
 }
 
 var Balance = "balance"

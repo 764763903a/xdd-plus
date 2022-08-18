@@ -5,9 +5,18 @@ containers:
     password: admin
     cid: admin
     secret: admin
-    weigth:  
+    weigth:
     mode: parallel
     limit: 9999
+    #按照每个容器的设置进行分配，如果开启了Priority却没有设置Main或者Sub的话，则按照比例进行分配
+    #均衡模式下每个容器的主账号的数量，需要和Priority一起配合使用，账号优先级高于Priority的优先级则代表主账号
+    zhu: 30
+    #均衡模式下每个容器的工具人的数据，需要和Priority一起配合使用，账号优先级低于Priority的优先级则代表工具人
+    ci: 90
+    resident: jd_xxx&jd_cccc
+#代表200优先级以上是主账号，200以下为工具人账号
+#配置则代表开启 需要和container中的Main和Sub一起用，0代表不开启
+Priority: 200
 AtTime:  #填写1-12之间的数  填错自负默认为10  10点容易出现高峰超时。
 IsHelp:   #填写true或者false  false
 IsOldV4: #填写true或者false  false是否新版或者旧版V4
@@ -17,10 +26,10 @@ Lim: #填写1-N 代表限制次数
 Tyt: #填写1-N 代表推一推需要的互助值，默认为8
 Later: #延时防止黑IP自己设置 默认60 不怕黑的改为1即可 单位是秒
 ApiToken: #短信接入token参数
-theme:  
+theme:
 static: ./static
-master: 
-database:  
+master:
+database:
 qywx_key:
 daily_push:
 resident:
